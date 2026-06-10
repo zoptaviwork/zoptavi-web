@@ -162,10 +162,12 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
 .z-bnav-item.active svg,.z-bnav-item:hover svg{stroke:var(--teal-deep)}
 
 /* ====== MOBILE NAVBAR ====== */
+.zhead-search-btn{padding:0 20px}
 @media(max-width:600px){
   .nav-act-label{display:none}
-  .zhead-search-btn span{display:none}
-  .zlogo img{height:36px}
+  .zhead-search-btn span{display:none!important}
+  .zhead-search-btn{padding:0 14px!important;min-width:44px}
+  .zlogo img{height:34px}
 }
 
 /* ====== FOOTER MOBILE ====== */
@@ -181,12 +183,12 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
   .home-main-banner-title{font-size:20px!important}
   .flash-strip{flex-direction:column!important;align-items:flex-start!important;gap:10px!important;padding:12px 14px!important}
   .flash-quicklinks{margin-left:0!important;overflow-x:auto;width:100%;flex-wrap:nowrap!important;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-  .flash-quicklinks a{min-width:86px!important;flex-shrink:0}
+  .flash-quicklinks a{min-width:80px!important;flex-shrink:0;font-size:11px!important;padding:6px 8px!important}
   .finds-grid{grid-template-columns:repeat(2,1fr)!important}
   .home-deal-banners{grid-template-columns:1fr!important}
   .brands-grid{grid-template-columns:repeat(3,1fr)!important}
   .trust-strip{grid-template-columns:repeat(2,1fr)!important}
-  .hscroll-item{min-width:158px!important;max-width:158px!important}
+  .hscroll-item{min-width:170px!important;max-width:170px!important}
   .hscroll-item .zcard{border-radius:12px}
   .toast{bottom:70px!important;right:12px!important;left:12px!important;text-align:center;font-size:13px}
   /* Smaller product card text on mobile */
