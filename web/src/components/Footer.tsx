@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer style={{ background:'var(--navy)', color:'#cbd5e1', padding:'60px 0 24px' }}>
       <div style={{ maxWidth:'1400px', margin:'0 auto', padding:'0 24px' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr 1fr 1fr', gap:40, marginBottom:48 }}>
+        <div className="zfoot-cols" style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
           <div>
             <div style={{ background:'#fff', borderRadius:14, padding:'12px 16px', display:'inline-block', boxShadow:'0 6px 24px rgba(0,0,0,.2)', marginBottom:18 }}>
               <img src="/zoptavi-logo-clean.png" alt="Zoptavi" style={{ height:56, width:'auto' }}/>
@@ -44,11 +44,11 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div style={{ borderTop:'1px solid rgba(255,255,255,.1)', paddingTop:22, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:14 }}>
-          <p style={{ fontSize:13, color:'#64748b' }}>© 2026 Zoptavi Technologies Pvt. Ltd. All rights reserved.</p>
-          <div style={{ display:'flex', gap:8 }}>
+        <div className="zfoot-bottom" style={{ borderTop:'1px solid rgba(255,255,255,.1)', paddingTop:20, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:12 }}>
+          <p style={{ fontSize:12, color:'#64748b', margin:0 }}>© 2026 Zoptavi Technologies Pvt. Ltd. All rights reserved.</p>
+          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
             {['Visa','MC','UPI','RuPay','GPay','BHIM'].map(p => (
-              <span key={p} style={{ background:'#fff', color:'var(--navy)', fontWeight:700, fontFamily:'Poppins', fontSize:11, padding:'5px 10px', borderRadius:6 }}>{p}</span>
+              <span key={p} style={{ background:'#fff', color:'var(--navy)', fontWeight:700, fontFamily:'Poppins', fontSize:10, padding:'4px 8px', borderRadius:6 }}>{p}</span>
             ))}
           </div>
         </div>
