@@ -4,11 +4,22 @@ import { Star, ShoppingBag, ShieldCheck, Truck, RotateCcw, Plus, Minus, ArrowLef
 import { getProductById } from '../data/products';
 import { useCartStore } from '../store/cartStore';
 
+// Simple in-page toast
+function useToast() {
+  const [toast, setToast] = useState<string | null>(null);
+  const show = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2500);
+  };
+  return { toast, show };
+}
+
 export const Product: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addItem } = useCartStore();
-  
+  const { toast, show: showToast } = useToast();
+
   const product = id ? getProductById(id) : undefined;
 
   const [quantity, setQuantity] = useState(1);
@@ -43,14 +54,13 @@ export const Product: React.FC = () => {
       // Mock check: deliverable to any PIN starting with 1, 2, 4, 5, 6, 7
       setPincodeDeliverable(parseInt(pincode.charAt(0)) !== 9 && parseInt(pincode.charAt(0)) !== 3);
     } else {
-      alert("Please enter a valid 6-digit Indian PIN code.");
+      showToast('Please enter a valid 6-digit PIN code.');
     }
   };
 
   const handleAddToCart = () => {
     addItem(product, quantity, selectedColor || undefined);
-    // Simple toast indicator
-    alert(`${product.name} added to cart!`);
+    showToast('✓ Added to cart!');
   };
 
   const handleBuyNow = () => {
@@ -60,6 +70,12 @@ export const Product: React.FC = () => {
 
   return (
     <div className="font-sans min-h-screen bg-brand-bg py-8">
+      {/* Toast */}
+      {toast && (
+        <div className="toast" style={{position:'fixed',bottom:80,right:20,background:'#0f172a',color:'#fff',padding:'12px 20px',borderRadius:12,fontSize:13,fontWeight:700,zIndex:9999,boxShadow:'0 8px 32px rgba(0,0,0,.18)'}}>
+          {toast}
+        </div>
+      )}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb Navigation */}

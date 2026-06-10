@@ -5,30 +5,30 @@ import { useCartStore } from '../store/cartStore';
 
 export const Cart: React.FC = () => {
   const navigate = useNavigate();
-  const { 
-    cartItems, 
-    subtotal, 
-    discount, 
-    deliveryCharges, 
-    totalAmount, 
-    updateQuantity, 
-    removeItem 
+  const {
+    cartItems,
+    subtotal,
+    discount,
+    deliveryCharges,
+    totalAmount,
+    updateQuantity,
+    removeItem
   } = useCartStore();
 
   const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponError, setCouponError] = useState('');
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate simple discount coupon: ZOPTAVI10
+    setCouponError('');
     if (couponCode.toUpperCase() === 'ZOPTAVI10') {
       setCouponApplied(true);
       const actualSubtotal = subtotal - discount;
       setCouponDiscount(Math.round(actualSubtotal * 0.1));
-      alert("Promo code ZOPTAVI10 applied! You get 10% extra discount.");
     } else {
-      alert("Invalid coupon code. Try 'ZOPTAVI10' for 10% off.");
+      setCouponError("Invalid code. Try 'ZOPTAVI10' for 10% off.");
     }
   };
 
@@ -157,6 +157,9 @@ export const Cart: React.FC = () => {
               </form>
               {couponApplied && (
                 <p className="text-[10px] text-emerald-500 font-bold">✓ Coupon 'ZOPTAVI10' active! Saved additional ₹{couponDiscount.toLocaleString('en-IN')}.</p>
+              )}
+              {couponError && (
+                <p className="text-[10px] text-rose-500 font-bold">{couponError}</p>
               )}
             </div>
 

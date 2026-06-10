@@ -29,25 +29,28 @@ export const Checkout: React.FC = () => {
   const [cardName, setCardName] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvv, setCardCvv] = useState('');
+  const [formError, setFormError] = useState('');
 
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!address.fullName || !address.phone || !address.pincode || !address.addressLine1 || !address.city || !address.state) {
-      alert('Please fill in all required fields.');
+      setFormError('Please fill in all required fields.');
       return;
     }
+    setFormError('');
     setStep('payment');
   };
 
   const handlePlaceOrder = () => {
     if (paymentMethod === 'upi' && !upiId) {
-      alert('Please enter your UPI ID.');
+      setFormError('Please enter your UPI ID.');
       return;
     }
     if (paymentMethod === 'card' && (!cardNumber || !cardName || !cardExpiry || !cardCvv)) {
-      alert('Please fill in all card details.');
+      setFormError('Please fill in all card details.');
       return;
     }
+    setFormError('');
     clearCart();
     setOrderPlaced(true);
   };
@@ -232,6 +235,7 @@ export const Checkout: React.FC = () => {
                   </div>
                 </div>
 
+                {formError && <p className="text-xs text-rose-500 font-bold">{formError}</p>}
                 <button
                   type="submit"
                   className="w-full h-12 rounded-xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-colors"
@@ -391,6 +395,7 @@ export const Checkout: React.FC = () => {
                   256-bit SSL Encrypted Secure Payment. We do not store any card details.
                 </div>
 
+                {formError && <p className="text-xs text-rose-500 font-bold">{formError}</p>}
                 <div className="flex gap-3 pt-1">
                   <button
                     onClick={() => setStep('address')}
