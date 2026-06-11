@@ -2,8 +2,29 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer style={{ background:'var(--navy)', color:'#cbd5e1', padding:'60px 0 24px' }}>
-      <div style={{ maxWidth:'1400px', margin:'0 auto', padding:'0 24px' }}>
+    <footer style={{ background:'var(--navy)', color:'#cbd5e1', padding:'0 0 24px' }}>
+      {/* Trust strip */}
+      <div style={{ borderBottom:'1px solid rgba(255,255,255,.08)', background:'rgba(255,255,255,.02)' }}>
+        <div className="trust-strip" style={{ maxWidth:'1400px', margin:'0 auto', padding:'26px 24px', display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:18 }}>
+          {[
+            { t:'Free & Fast Delivery', s:'On orders above ₹499', icon:<path d="M5 18H3V6h13v12H8m13 0h-3v-7h-4M5.5 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/> },
+            { t:'100% Secure Payments', s:'UPI · Cards · Netbanking', icon:<path d="M12 2 4 5v6c0 5.5 3.8 10 8 11 4.2-1 8-5.5 8-11V5l-8-3zM9 12l2 2 4-4"/> },
+            { t:'Easy 7-Day Returns', s:'No questions asked', icon:<path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5"/> },
+            { t:'24×7 Support', s:'We are always here', icon:<path d="M3 18v-6a9 9 0 0 1 18 0v6M3 18a2 2 0 0 0 2 2h2v-7H5a2 2 0 0 0-2 2zm18 0a2 2 0 0 1-2 2h-2v-7h2a2 2 0 0 1 2 2z"/> },
+          ].map(f => (
+            <div key={f.t} style={{ display:'flex', alignItems:'center', gap:13 }}>
+              <div style={{ width:44, height:44, borderRadius:12, background:'linear-gradient(135deg,rgba(0,201,200,.16),rgba(0,122,118,.1))', display:'grid', placeItems:'center', color:'#00C9C8', flexShrink:0 }}>
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">{f.icon}</svg>
+              </div>
+              <div>
+                <p style={{ color:'#fff', fontFamily:'Poppins', fontWeight:700, fontSize:13.5, margin:0 }}>{f.t}</p>
+                <p style={{ color:'#94a3b8', fontSize:12, margin:0 }}>{f.s}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ maxWidth:'1400px', margin:'0 auto', padding:'52px 24px 0' }}>
         <div className="zfoot-cols" style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr 1fr 1fr', gap:40, marginBottom:40 }}>
           <div>
             <div style={{ background:'#fff', borderRadius:14, padding:'12px 16px', display:'inline-block', boxShadow:'0 6px 24px rgba(0,0,0,.2)', marginBottom:18 }}>

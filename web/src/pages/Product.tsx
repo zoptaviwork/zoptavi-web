@@ -329,6 +329,24 @@ export const Product: React.FC = () => {
         </section>
 
       </div>
+
+      {/* Mobile sticky CTA bar (sits above the bottom nav) */}
+      <div className="lg:hidden fixed bottom-[60px] left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 px-3 py-2.5 flex gap-3" style={{boxShadow:'0 -6px 20px rgba(15,23,42,.08)'}}>
+        <button
+          onClick={handleAddToCart}
+          disabled={!product.inStock}
+          className="flex-1 h-12 rounded-xl border-2 border-brand-teal bg-white text-brand-teal font-display font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50 active:scale-[.98] transition-transform"
+        >
+          <ShoppingBag className="w-4 h-4" /> Add to Cart
+        </button>
+        <button
+          onClick={handleBuyNow}
+          disabled={!product.inStock}
+          className="flex-1 h-12 rounded-xl bg-brand-orange text-white font-display font-bold text-sm flex items-center justify-center disabled:opacity-50 active:scale-[.98] transition-transform shadow-lg shadow-brand-orange/20"
+        >
+          Buy Now
+        </button>
+      </div>
     </div>
   );
 };

@@ -50,24 +50,39 @@ export default function Navbar() {
 
   return (
     <>
-    <header style={{ position:'sticky', top:0, zIndex:100, background:'#fff', boxShadow:'0 1px 6px rgba(0,0,0,.1)' }}>
+    <header style={{ position:'sticky', top:0, zIndex:100, background:'#fff', boxShadow: compact ? '0 4px 20px rgba(15,23,42,.1)' : '0 1px 4px rgba(15,23,42,.06)', transition:'box-shadow .25s' }}>
+
+      {/* Announcement strip */}
+      <div className="mob-hide" style={{ background:'linear-gradient(90deg,#0F172A,#1E3A5F 55%,#0F172A)', color:'#cbd5e1', fontSize:12, fontFamily:'Poppins', fontWeight:500 }}>
+        <div style={{ maxWidth:1300, margin:'0 auto', padding:'6px 12px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16 }}>
+          <span style={{ display:'flex', alignItems:'center', gap:6 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00C9C8" strokeWidth="2"><path d="M5 12h13M3 6h18M7 18h13"/></svg>
+            Free delivery on orders above ₹499
+          </span>
+          <span style={{ display:'flex', gap:18 }}>
+            <Link to="/order/track" style={{ color:'#cbd5e1' }} onMouseEnter={e=>(e.currentTarget.style.color='#00C9C8')} onMouseLeave={e=>(e.currentTarget.style.color='#cbd5e1')}>Track Order</Link>
+            <Link to="/contact" style={{ color:'#cbd5e1' }} onMouseEnter={e=>(e.currentTarget.style.color='#00C9C8')} onMouseLeave={e=>(e.currentTarget.style.color='#cbd5e1')}>Help Center</Link>
+            <Link to="/about" style={{ color:'#FFA31A', fontWeight:600 }}>Become a Seller</Link>
+          </span>
+        </div>
+      </div>
 
       {/* Top bar */}
       <div style={{ borderBottom:'1px solid #f0f0f0' }}>
         <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 12px', display:'grid', gridTemplateColumns:'auto 1fr auto', alignItems:'center', gap:12, minHeight:60 }}>
           {/* Logo */}
-          <Link to="/" style={{ flexShrink:0, textDecoration:'none' }}>
-            <img src="/zoptavi-logo-clean.png" alt="Zoptavi" style={{ height:54, width:'auto' }} />
+          <Link to="/" className="nav-logo" style={{ flexShrink:0, textDecoration:'none' }}>
+            <img className="nav-logo-img" src="/zoptavi-logo-clean.png" alt="Zoptavi" style={{ height:54, width:'auto' }} />
           </Link>
 
           {/* Search */}
           <form onSubmit={handleSearch} style={{ width:'100%', minWidth:0 }}>
-            <div style={{ display:'flex', alignItems:'center', height:44, border:`2px solid ${focused?'var(--teal)':'#e0e0e0'}`, borderRadius:8, overflow:'hidden', background: focused?'#fff':'#f5f5f5', transition:'border-color .15s, box-shadow .15s', boxShadow: focused?'0 0 0 3px rgba(0,201,200,.15)':'none' }}>
+            <div style={{ display:'flex', alignItems:'center', height:46, border:`1.6px solid ${focused?'var(--teal)':'#e2e8f0'}`, borderRadius:12, overflow:'hidden', background: focused?'#fff':'#f5f7fa', transition:'border-color .2s, box-shadow .2s, background .2s', boxShadow: focused?'0 0 0 4px rgba(0,201,200,.13), 0 6px 20px rgba(0,201,200,.1)':'none' }}>
               <span style={{ padding:'0 10px', color:'#999', display:'flex', alignItems:'center', flexShrink:0 }}>
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
               </span>
               <input type="text" value={search} onChange={e=>setSearch(e.target.value)} onFocus={()=>setFocused(true)} onBlur={()=>setFocused(false)} placeholder="Search for Products, Brands and More" style={{ flex:1, border:'none', background:'transparent', outline:'none', fontSize:14, fontFamily:'Inter', color:'#212121', minWidth:0 }}/>
-              <button type="submit" className="zhead-search-btn" style={{ height:'100%', padding:'0 20px', background:'var(--grad-teal)', color:'#fff', border:'none', cursor:'pointer', fontFamily:'Poppins', fontWeight:700, fontSize:14, display:'flex', alignItems:'center', gap:6, flexShrink:0 }}>
+              <button type="submit" className="zhead-search-btn search-btn-pines" style={{ height:'100%', padding:'0 22px', fontSize:14, flexShrink:0 }}>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
                 <span>Search</span>
               </button>

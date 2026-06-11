@@ -54,8 +54,8 @@ export default function ProductCard({ product: p, tint = 'teal' }: Props) {
             </button>
             {/* Quick badge */}
             {p.rating >= 4.5 && (
-              <span style={{ position:'absolute', bottom:10, left:10, background:'rgba(0,201,200,.9)', color:'#fff', fontSize:10, fontFamily:'Poppins', fontWeight:700, padding:'3px 8px', borderRadius:6, backdropFilter:'blur(4px)' }}>
-                ⭐ Top Rated
+              <span style={{ position:'absolute', bottom:10, left:10, background:'linear-gradient(120deg,rgba(0,122,118,.92),rgba(0,201,200,.88))', color:'#fff', fontSize:10, fontFamily:'Poppins', fontWeight:700, padding:'4px 9px', borderRadius:7, backdropFilter:'blur(4px)', boxShadow:'0 3px 10px rgba(0,122,118,.3)', letterSpacing:'.03em' }}>
+                ✦ TOP RATED
               </span>
             )}
           </div>
@@ -69,7 +69,7 @@ export default function ProductCard({ product: p, tint = 'teal' }: Props) {
 
             {/* Stars */}
             <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-              <div style={{ display:'flex', alignItems:'center', gap:2, background:'#f59e0b', color:'#fff', padding:'2px 7px', borderRadius:4, fontSize:12, fontWeight:700, fontFamily:'Poppins' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:2, background:'#16a34a', color:'#fff', padding:'2px 7px', borderRadius:5, fontSize:12, fontWeight:700, fontFamily:'Poppins' }}>
                 {p.rating.toFixed(1)} ★
               </div>
               <span style={{ fontSize:12, color:'var(--text-3)' }}>({p.ratingCount.toLocaleString('en-IN')})</span>

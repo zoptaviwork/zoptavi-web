@@ -29,10 +29,13 @@ const quickLinks = [
 function HScroll({ title, color, prods }: { title:string, color:string, prods:any[] }) {
   const ref = useRef<HTMLDivElement>(null);
   return (
-    <div style={{background:'#fff',borderRadius:16,border:'1px solid var(--border)',overflow:'hidden',marginBottom:12}}>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:'1px solid var(--border)'}}>
-        <h2 style={{fontSize:18,fontFamily:'Poppins',fontWeight:800,color:'var(--navy)',margin:0}}>{title}</h2>
-        <Link to="/category" style={{display:'flex',alignItems:'center',gap:5,background:color,color:'#fff',padding:'7px 14px',borderRadius:20,fontSize:12,fontFamily:'Poppins',fontWeight:600,textDecoration:'none'}}>
+    <div className="surface" style={{marginBottom:12}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 18px',borderBottom:'1px solid #f1f5f9'}}>
+        <h2 style={{fontSize:18,fontFamily:'Poppins',fontWeight:800,color:'var(--navy)',margin:0,display:'flex',alignItems:'center',gap:10}}>
+          <span style={{display:'inline-block',width:4,height:20,borderRadius:2,background:color}}/>
+          {title}
+        </h2>
+        <Link to="/category" className="seeall-pill" style={{display:'flex',alignItems:'center',gap:5,background:color,color:'#fff',padding:'7px 15px',borderRadius:20,fontSize:12,fontFamily:'Poppins',fontWeight:600,textDecoration:'none'}}>
           See All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </Link>
       </div>
@@ -41,7 +44,7 @@ function HScroll({ title, color, prods }: { title:string, color:string, prods:an
           style={{position:'absolute',left:0,top:'50%',transform:'translateY(-50%)',zIndex:2,width:34,height:34,borderRadius:'50%',background:'#fff',border:'1px solid var(--border)',boxShadow:'0 4px 12px rgba(0,0,0,.15)',placeItems:'center',cursor:'pointer'}}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <div ref={ref} style={{display:'flex',gap:10,padding:'14px 16px',overflowX:'auto',scrollbarWidth:'none',WebkitOverflowScrolling:'touch' as any}}>
+        <div ref={ref} className="hscroll-rail" style={{display:'flex',gap:10,padding:'14px 16px',overflowX:'auto',scrollbarWidth:'none',WebkitOverflowScrolling:'touch' as any}}>
           {prods.map((p,i)=>(
             <div key={p.id+i} className="hscroll-item" style={{minWidth:200,maxWidth:200,flexShrink:0}}>
               <ProductCard product={p} tint={tints[i%2]}/>
@@ -84,33 +87,34 @@ export default function Home() {
         {/* 3-Banner Hero Grid */}
         <div className="home-banner-grid" style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:8,marginBottom:10,borderRadius:8,overflow:'hidden'}}>
           {/* Main banner */}
-          <div className="home-main-banner" style={{position:'relative',borderRadius:8,overflow:'hidden',minHeight:260,background:banners[slide].bg,transition:'background .6s',cursor:'pointer'}}>
+          <div className="home-main-banner" style={{position:'relative',borderRadius:14,overflow:'hidden',minHeight:280,background:banners[slide].bg,transition:'background .6s',cursor:'pointer',boxShadow:'0 8px 28px rgba(15,23,42,.12)'}}>
+            <div style={{position:'absolute',inset:0,background:'radial-gradient(680px 340px at 85% -20%,rgba(255,255,255,.16),transparent 60%)',pointerEvents:'none'}}/>
             <div className="home-main-banner-content" style={{position:'absolute',inset:0,padding:'36px 40px',display:'flex',flexDirection:'column',justifyContent:'center'}}>
               <span style={{display:'inline-block',background:'rgba(255,255,255,.2)',color:'#fff',fontSize:10,fontWeight:700,fontFamily:'Poppins',padding:'4px 10px',borderRadius:20,marginBottom:10,width:'fit-content',letterSpacing:'.1em'}}>{banners[slide].badge}</span>
               <h2 className="home-main-banner-title" style={{color:'#fff',fontSize:'clamp(20px,3vw,36px)',fontWeight:900,fontFamily:'Poppins',margin:'0 0 8px',lineHeight:1.15,maxWidth:400}}>{banners[slide].title}</h2>
               <p style={{color:'rgba(255,255,255,.85)',fontSize:14,margin:'0 0 20px'}}>{banners[slide].sub}</p>
               <Link to={banners[slide].link}>
-                <button style={{background:banners[slide].accent,color:banners[slide].accent==='#fff'?'var(--navy)':'#fff',border:'none',padding:'10px 24px',borderRadius:8,fontFamily:'Poppins',fontWeight:700,fontSize:13,cursor:'pointer'}}>
+                <button className="seeall-pill shimmer" style={{background:banners[slide].accent,color:banners[slide].accent==='#fff'?'var(--navy)':'#fff',border:'none',padding:'11px 26px',borderRadius:10,fontFamily:'Poppins',fontWeight:700,fontSize:13,cursor:'pointer',boxShadow:'0 6px 18px rgba(0,0,0,.18)'}}>
                   {banners[slide].btn} →
                 </button>
               </Link>
             </div>
             <div style={{position:'absolute',bottom:12,left:'50%',transform:'translateX(-50%)',display:'flex',gap:5}}>
               {banners.map((_,i)=>(
-                <button key={i} onClick={()=>setSlide(i)} style={{width:i===slide?18:5,height:5,borderRadius:3,background:i===slide?'#fff':'rgba(255,255,255,.5)',border:'none',cursor:'pointer',transition:'width .3s',padding:0}}/>
+                <button key={i} className="hero-dot" onClick={()=>setSlide(i)} style={{width:i===slide?22:6,height:6,borderRadius:3,background:i===slide?'#fff':'rgba(255,255,255,.5)',border:'none',cursor:'pointer',padding:0}}/>
               ))}
             </div>
           </div>
           {/* Right promo cards — hidden on mobile */}
           <div className="home-banner-right" style={{display:'flex',flexDirection:'column',gap:8}}>
-            <Link to="/category/beauty" style={{flex:1,borderRadius:8,overflow:'hidden',background:'linear-gradient(135deg,#FF6A00,#FFA31A)',padding:'18px 20px',display:'flex',flexDirection:'column',justifyContent:'space-between',textDecoration:'none',minHeight:120}}>
+            <Link to="/category/beauty" className="promo-tile" style={{flex:1,borderRadius:14,overflow:'hidden',background:'linear-gradient(135deg,#FF6A00,#FFA31A)',padding:'18px 20px',display:'flex',flexDirection:'column',justifyContent:'space-between',textDecoration:'none',minHeight:120}}>
               <div>
                 <p style={{color:'rgba(255,255,255,.8)',fontSize:11,fontFamily:'Poppins',margin:'0 0 4px'}}>TRENDING NOW</p>
                 <h3 style={{color:'#fff',fontSize:18,fontWeight:800,fontFamily:'Poppins',margin:0,lineHeight:1.2}}>Grooming Essentials</h3>
               </div>
               <span style={{color:'#fff',fontSize:12,fontWeight:700,fontFamily:'Poppins'}}>Shop now →</span>
             </Link>
-            <Link to="/category/fashion" style={{flex:1,borderRadius:8,overflow:'hidden',background:'linear-gradient(135deg,#0F172A,#1e3a5f)',padding:'18px 20px',display:'flex',flexDirection:'column',justifyContent:'space-between',textDecoration:'none',minHeight:120}}>
+            <Link to="/category/fashion" className="promo-tile" style={{flex:1,borderRadius:14,overflow:'hidden',background:'linear-gradient(135deg,#0F172A,#1e3a5f)',padding:'18px 20px',display:'flex',flexDirection:'column',justifyContent:'space-between',textDecoration:'none',minHeight:120}}>
               <div>
                 <p style={{color:'rgba(255,255,255,.6)',fontSize:11,fontFamily:'Poppins',margin:'0 0 4px'}}>PREMIUM PICKS</p>
                 <h3 style={{color:'#fff',fontSize:18,fontWeight:800,fontFamily:'Poppins',margin:0,lineHeight:1.2}}>Travel in Style</h3>
@@ -121,7 +125,7 @@ export default function Home() {
         </div>
 
         {/* Flash Sale strip */}
-        <div className="flash-strip" style={{background:'var(--navy)',borderRadius:12,padding:'14px 18px',display:'flex',alignItems:'center',gap:16,marginBottom:10,flexWrap:'wrap'}}>
+        <div className="flash-strip" style={{background:'linear-gradient(100deg,#0F172A 30%,#13283f 70%,#0F172A)',borderRadius:14,padding:'14px 18px',display:'flex',alignItems:'center',gap:16,marginBottom:10,flexWrap:'wrap',boxShadow:'0 6px 22px rgba(15,23,42,.18)',border:'1px solid rgba(255,255,255,.06)'}}>
           <div style={{display:'flex',alignItems:'center',gap:10,flexShrink:0}}>
             <div style={{width:34,height:34,borderRadius:10,background:'var(--grad-orange)',display:'grid',placeItems:'center',color:'#fff',flexShrink:0}}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>
@@ -141,7 +145,7 @@ export default function Home() {
           </div>
           <div className="flash-quicklinks" style={{display:'flex',gap:8,marginLeft:'auto',flexWrap:'wrap'}}>
             {quickLinks.map(q=>(
-              <Link key={q.label} to={`/category/${q.slug}`} style={{background:q.color,color:'#fff',padding:'7px 12px',borderRadius:10,textDecoration:'none',textAlign:'center',minWidth:92,flexShrink:0}}>
+              <Link key={q.label} to={`/category/${q.slug}`} className="promo-tile" style={{background:q.color,color:'#fff',padding:'8px 12px',borderRadius:10,textDecoration:'none',textAlign:'center',minWidth:92,flexShrink:0}}>
                 <p style={{fontFamily:'Poppins',fontWeight:800,fontSize:13,margin:0}}>{q.label}</p>
                 <p style={{fontSize:10,opacity:.8,margin:0}}>{q.sub}</p>
               </Link>
@@ -150,10 +154,13 @@ export default function Home() {
         </div>
 
         {/* Interesting Finds */}
-        <div style={{background:'#fff',borderRadius:16,border:'1px solid var(--border)',overflow:'hidden',marginBottom:12}}>
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:'1px solid var(--border)'}}>
-            <h2 style={{fontSize:18,fontFamily:'Poppins',fontWeight:800,color:'var(--navy)',margin:0}}>Interesting Finds</h2>
-            <Link to="/category" style={{display:'flex',alignItems:'center',gap:5,background:'var(--grad-teal)',color:'#fff',padding:'7px 14px',borderRadius:20,fontSize:12,fontFamily:'Poppins',fontWeight:600,textDecoration:'none'}}>
+        <div className="surface" style={{marginBottom:12}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 18px',borderBottom:'1px solid #f1f5f9'}}>
+            <h2 style={{fontSize:18,fontFamily:'Poppins',fontWeight:800,color:'var(--navy)',margin:0,display:'flex',alignItems:'center',gap:10}}>
+              <span style={{display:'inline-block',width:4,height:20,borderRadius:2,background:'var(--grad-teal)'}}/>
+              Interesting Finds
+            </h2>
+            <Link to="/category" className="seeall-pill" style={{display:'flex',alignItems:'center',gap:5,background:'var(--grad-teal)',color:'#fff',padding:'7px 15px',borderRadius:20,fontSize:12,fontFamily:'Poppins',fontWeight:600,textDecoration:'none'}}>
               See All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </Link>
           </div>
@@ -186,7 +193,7 @@ export default function Home() {
             {title:'Shop for a Cool Summer',color:'#FF5E00',slug:'fashion'},
             {title:'Top Electronics Deals',color:'#00A2A5',slug:'electronics'},
           ].map(b=>(
-            <Link key={b.title} to={`/category/${b.slug}`} style={{background:b.color,borderRadius:14,padding:'18px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',textDecoration:'none'}}>
+            <Link key={b.title} to={`/category/${b.slug}`} className="promo-tile" style={{background:b.color,borderRadius:14,padding:'20px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',textDecoration:'none'}}>
               <h3 style={{color:'#fff',fontFamily:'Poppins',fontWeight:800,fontSize:17,margin:0,maxWidth:180,lineHeight:1.2}}>{b.title}</h3>
               <div style={{width:36,height:36,borderRadius:'50%',background:'rgba(255,255,255,.2)',display:'grid',placeItems:'center',color:'#fff',flexShrink:0}}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
