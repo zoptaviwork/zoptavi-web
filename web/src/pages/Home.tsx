@@ -42,7 +42,7 @@ const MARQUEE_ITEMS = [
   { icon:'⚡', text:'1,247 orders delivered today in Hyderabad' },
   { icon:'\u{1F3EA}', text:'389 local shops live right now' },
   { icon:'⏱', text:'Average delivery: 9 minutes' },
-  { icon:'\u{1F4B0}', text:'Save ₹15–30 per order vs Swiggy' },
+  { icon:'\u{1F4B0}', text:'Save ₹15–30 per order vs other apps' },
   { icon:'\u{1F6B2}', text:'100% electric delivery fleet' },
   { icon:'\u{1F193}', text:'Zero commission for local shops' },
   { icon:'⭐', text:'4.8 rating — 12,000+ happy customers' },
@@ -461,7 +461,7 @@ export default function Home() {
                 💰 Why Zoptavi Saves You Money
               </h3>
               <p style={{ color:'rgba(255,255,255,.5)', fontSize:14, fontFamily:'Inter' }}>
-                Swiggy adds 18–30% commission. We don&apos;t. Your shop keeps all the profit.
+                Other apps add 18–30% commission. We don&apos;t. Your shop keeps all the profit.
               </p>
             </div>
             <div className="price-compare-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
@@ -523,7 +523,7 @@ export default function Home() {
           <div className="trust-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
             {[
               { icon:'⚡',    title:'10-Minute Delivery', sub:'2km grid guarantee' },
-              { icon:'\u{1F4B0}', title:'Real Shop Prices',   sub:'Zero Swiggy markup' },
+              { icon:'\u{1F4B0}', title:'Real Shop Prices',   sub:'Zero app markup' },
               { icon:'\u{1F33F}', title:'100% EV Fleet',      sub:'Green last-mile delivery' },
               { icon:'\u{1F3EA}', title:'389 Local Shops',    sub:'Support your neighbourhood' },
             ].map(t => (
