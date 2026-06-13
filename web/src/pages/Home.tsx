@@ -136,7 +136,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [slide, setSlide] = useState(0);
   const [cd, setCd] = useState({ h:5, m:23, s:47 });
-  const [search, setSearch] = useState('');
   const pad = (n: number) => String(n).padStart(2, '0');
   useReveal();
 
@@ -155,78 +154,85 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (search.trim()) navigate('/category?search=' + encodeURIComponent(search));
-  };
-
   const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
+
+  const scrollToHyperlocal = () => {
+    document.getElementById('hyperlocal-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div style={{ background:'#f1f3f6', minHeight:'100vh' }}>
 
-      {/* 1. HERO */}
-      <section className="hero-mesh" style={{ position:'relative', overflow:'hidden', padding:'60px 0 52px' }}>
-        <div className="orb orb-1" style={{ width:500, height:500, background:'rgba(0,201,200,.18)', top:-140, right:-100 }}/>
-        <div className="orb orb-2" style={{ width:380, height:380, background:'rgba(255,106,0,.13)', bottom:-100, left:-70 }}/>
-        <div className="orb orb-3" style={{ width:280, height:280, background:'rgba(255,163,26,.09)', top:'40%', left:'32%' }}/>
+      {/* 1. HERO — photo background */}
+      <section style={{ position:'relative', overflow:'hidden', minHeight:'88vh', display:'flex', alignItems:'center' }}>
+        {/* Real photo BG */}
+        <img
+          src="/hero-bg.jpg"
+          alt=""
+          aria-hidden
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center right' }}
+        />
+        {/* Dark gradient overlay — left heavy so text is readable */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(100deg,rgba(10,18,38,.88) 42%,rgba(10,18,38,.45) 70%,rgba(10,18,38,.18) 100%)' }}/>
+        {/* Subtle teal tint at bottom */}
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, height:180, background:'linear-gradient(to top,rgba(0,122,118,.35),transparent)', pointerEvents:'none' }}/>
 
-        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px', position:'relative', zIndex:2 }}>
-          <div className="hero-inner-grid" style={{ display:'grid', gridTemplateColumns:'1fr auto', gap:40, alignItems:'center' }}>
-            <div>
-              <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16, flexWrap:'wrap' }}>
-                <LiveDot/>
-                <span style={{ background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.18)', color:'rgba(255,255,255,.8)', fontSize:12, fontFamily:'Poppins', fontWeight:600, padding:'4px 12px', borderRadius:20 }}>
-                  Hyderabad&apos;s Hyperlocal Quick Commerce
-                </span>
-              </div>
-              <h1 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(26px,4.5vw,58px)', lineHeight:1.08, margin:'0 0 16px', letterSpacing:'-.02em' }}>
-                <span className="gradient-text">Your Neighbourhood,</span><br/>
-                <span style={{ color:'#fff' }}>Live &amp; Delivered</span><br/>
-                <span style={{ color:'rgba(255,255,255,.65)' }}>in </span>
-                <span style={{ color:'#FFA31A' }}>10 Minutes</span>
-              </h1>
-              <p style={{ color:'rgba(255,255,255,.6)', fontSize:15, fontFamily:'Inter', margin:'0 0 24px', maxWidth:520, lineHeight:1.65 }}>
-                Real prices from local shops. Zero commission. 100% electric delivery. Save {inr(15)}&ndash;{inr(30)} on every order.
-              </p>
-              <form onSubmit={handleSearch} style={{ display:'flex', gap:0, maxWidth:540, marginBottom:24 }}>
-                <div style={{ flex:1, display:'flex', alignItems:'center', background:'rgba(255,255,255,.12)', border:'1.5px solid rgba(255,255,255,.25)', borderRight:'none', borderRadius:'14px 0 0 14px', backdropFilter:'blur(10px)', padding:'0 16px' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-                  <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search groceries, medicines, fashion…"
-                    style={{ flex:1, border:'none', background:'transparent', outline:'none', color:'#fff', fontFamily:'Inter', fontSize:14, padding:'13px 12px' }}/>
-                </div>
-                <button type="submit" className="glow-btn" style={{ padding:'0 24px', borderRadius:'0 14px 14px 0', fontSize:14, whiteSpace:'nowrap' }}>
-                  Search →
-                </button>
-              </form>
-              <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                {['Milk','Bread','Eggs','Paracetamol','Onions'].map(q => (
-                  <button key={q} onClick={() => navigate('/category?search=' + q)}
-                    style={{ background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.18)', color:'rgba(255,255,255,.8)', fontFamily:'Poppins', fontWeight:600, fontSize:12, padding:'6px 14px', borderRadius:20, cursor:'pointer', backdropFilter:'blur(6px)' }}>
-                    {q}
-                  </button>
-                ))}
-              </div>
+        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 32px', position:'relative', zIndex:2, width:'100%' }}>
+          <div style={{ maxWidth:600 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20, flexWrap:'wrap' }}>
+              <LiveDot/>
+              <span style={{ background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.2)', color:'rgba(255,255,255,.85)', fontSize:12, fontFamily:'Poppins', fontWeight:600, padding:'5px 14px', borderRadius:20, backdropFilter:'blur(8px)' }}>
+                Hyderabad&apos;s Hyperlocal Quick Commerce
+              </span>
             </div>
 
-            <div className="mob-hide" style={{ display:'flex', flexDirection:'column', gap:10, flexShrink:0 }}>
+            <h1 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(28px,5vw,62px)', lineHeight:1.06, margin:'0 0 18px', letterSpacing:'-.02em' }}>
+              <span style={{ color:'#fff' }}>Your Local Shop,</span><br/>
+              <span style={{ color:'#fff' }}>Always Here for</span><br/>
+              <span style={{ color:'#FFA31A' }}>Our Neighbours</span>
+            </h1>
+
+            <p style={{ color:'rgba(255,255,255,.7)', fontSize:16, fontFamily:'Inter', margin:'0 0 36px', lineHeight:1.7, maxWidth:480 }}>
+              Real prices from your neighbourhood kirana. Zero markup. 100% electric delivery in under 10 minutes.
+            </p>
+
+            <div style={{ display:'flex', gap:14, flexWrap:'wrap', alignItems:'center' }}>
+              <button
+                onClick={scrollToHyperlocal}
+                className="glow-btn"
+                style={{ padding:'15px 36px', fontSize:15, fontWeight:700, borderRadius:12, display:'flex', alignItems:'center', gap:10 }}
+              >
+                Shop Your Market
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+              </button>
+              <Link to="/category" style={{ background:'rgba(255,255,255,.12)', border:'1.5px solid rgba(255,255,255,.3)', color:'#fff', padding:'14px 28px', borderRadius:12, fontFamily:'Poppins', fontWeight:600, fontSize:15, textDecoration:'none', backdropFilter:'blur(8px)' }}>
+                Browse All →
+              </Link>
+            </div>
+
+            {/* Stat row */}
+            <div style={{ display:'flex', gap:28, marginTop:44, flexWrap:'wrap' }}>
               {[
-                { val:1247, lbl:'Orders today',     sfx:'',    icon:'\u{1F4E6}' },
-                { val:389,  lbl:'Shops live',       sfx:'',    icon:'\u{1F3EA}' },
-                { val:9,    lbl:'Min avg delivery', sfx:' min', icon:'⚡' },
-                { val:100,  lbl:'EV fleet',         sfx:'%',   icon:'\u{1F33F}' },
+                { icon:'⚡', val:'~9 min', lbl:'Avg delivery' },
+                { icon:'🏪', val:'389+',   lbl:'Local shops' },
+                { icon:'💰', val:'₹15–30', lbl:'Saved per order' },
               ].map(s => (
-                <div key={s.lbl} className="stat-chip" style={{ flexDirection:'row', gap:14 }}>
-                  <span style={{ fontSize:26 }}>{s.icon}</span>
+                <div key={s.lbl} style={{ display:'flex', alignItems:'center', gap:10 }}>
+                  <span style={{ fontSize:22 }}>{s.icon}</span>
                   <div>
-                    <div className="val"><LiveCounter target={s.val} suffix={s.sfx}/></div>
-                    <div className="lbl">{s.lbl}</div>
+                    <p style={{ color:'#fff', fontFamily:'Poppins', fontWeight:800, fontSize:17, margin:0, lineHeight:1 }}>{s.val}</p>
+                    <p style={{ color:'rgba(255,255,255,.55)', fontFamily:'Inter', fontSize:11, margin:0 }}>{s.lbl}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <button onClick={scrollToHyperlocal} style={{ position:'absolute', bottom:24, left:'50%', transform:'translateX(-50%)', background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.2)', borderRadius:'50%', width:40, height:40, display:'grid', placeItems:'center', cursor:'pointer', backdropFilter:'blur(8px)', animation:'orb-float 2.4s ease-in-out infinite' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </button>
       </section>
 
       {/* 2. TICKER */}
@@ -338,7 +344,7 @@ export default function Home() {
         </div>
 
         {/* HYPERLOCAL MARKET SECTION */}
-        <div className="surface reveal" style={{ marginBottom:12 }}>
+        <div id="hyperlocal-section" className="surface reveal" style={{ marginBottom:12 }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 18px 12px' }}>
             <div>
               <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
