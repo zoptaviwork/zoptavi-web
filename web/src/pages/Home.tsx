@@ -23,6 +23,15 @@ const CATEGORIES = [
   { label:'Sports',      slug:'sports',      grad:'linear-gradient(135deg,#14b8a6,#0f766e)', emoji:'⚽' },
 ];
 
+const HYPERLOCAL = [
+  { label:'Grocery',       slug:'grocery',     grad:'linear-gradient(135deg,#bbf7d0,#4ade80)',  emoji:'\u{1F966}', time:'~9 min' },
+  { label:'Medicines',     slug:'pharma',      grad:'linear-gradient(135deg,#c4b5fd,#8b5cf6)',  emoji:'\u{1F48A}', time:'~10 min' },
+  { label:'Fresh Food',    slug:'grocery',     grad:'linear-gradient(135deg,#fdba74,#f97316)',  emoji:'\u{1F957}', time:'~9 min' },
+  { label:'Dairy',         slug:'grocery',     grad:'linear-gradient(135deg,#bfdbfe,#60a5fa)',  emoji:'\u{1F95B}', time:'~8 min' },
+  { label:'Kirana',        slug:'grocery',     grad:'linear-gradient(135deg,#fde68a,#facc15)',  emoji:'\u{1F6D2}', time:'~10 min' },
+  { label:'Snacks',        slug:'grocery',     grad:'linear-gradient(135deg,#fca5a5,#f87171)',  emoji:'\u{1F36D}', time:'~9 min' },
+];
+
 const DEAL_SECTIONS = [
   { title:'Suggested For You',        color:'#00A2A5', prods: products.slice(0,8) },
   { title:'Top Deals on Electronics', color:'#FF5E00', prods: products.slice(2,10) },
@@ -156,15 +165,14 @@ export default function Home() {
   return (
     <div style={{ background:'#f1f3f6', minHeight:'100vh' }}>
 
-      {/* 1. ANIMATED GRADIENT HERO */}
+      {/* 1. HERO */}
       <section className="hero-mesh" style={{ position:'relative', overflow:'hidden', padding:'60px 0 52px' }}>
         <div className="orb orb-1" style={{ width:500, height:500, background:'rgba(0,201,200,.18)', top:-140, right:-100 }}/>
         <div className="orb orb-2" style={{ width:380, height:380, background:'rgba(255,106,0,.13)', bottom:-100, left:-70 }}/>
         <div className="orb orb-3" style={{ width:280, height:280, background:'rgba(255,163,26,.09)', top:'40%', left:'32%' }}/>
 
         <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px', position:'relative', zIndex:2 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr auto', gap:40, alignItems:'center' }}>
-
+          <div className="hero-inner-grid" style={{ display:'grid', gridTemplateColumns:'1fr auto', gap:40, alignItems:'center' }}>
             <div>
               <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:16, flexWrap:'wrap' }}>
                 <LiveDot/>
@@ -172,30 +180,25 @@ export default function Home() {
                   Hyderabad&apos;s Hyperlocal Quick Commerce
                 </span>
               </div>
-
-              <h1 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(28px,4.5vw,58px)', lineHeight:1.08, margin:'0 0 16px', letterSpacing:'-.02em' }}>
+              <h1 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(26px,4.5vw,58px)', lineHeight:1.08, margin:'0 0 16px', letterSpacing:'-.02em' }}>
                 <span className="gradient-text">Your Neighbourhood,</span><br/>
                 <span style={{ color:'#fff' }}>Live &amp; Delivered</span><br/>
                 <span style={{ color:'rgba(255,255,255,.65)' }}>in </span>
                 <span style={{ color:'#FFA31A' }}>10 Minutes</span>
               </h1>
-
-              <p style={{ color:'rgba(255,255,255,.6)', fontSize:16, fontFamily:'Inter', margin:'0 0 28px', maxWidth:520, lineHeight:1.65 }}>
-                Real prices from local shops. Zero commission. 100% electric delivery.
-                Save {inr(15)}&ndash;{inr(30)} on every order.
+              <p style={{ color:'rgba(255,255,255,.6)', fontSize:15, fontFamily:'Inter', margin:'0 0 24px', maxWidth:520, lineHeight:1.65 }}>
+                Real prices from local shops. Zero commission. 100% electric delivery. Save {inr(15)}&ndash;{inr(30)} on every order.
               </p>
-
-              <form onSubmit={handleSearch} style={{ display:'flex', gap:0, maxWidth:540, marginBottom:28 }}>
+              <form onSubmit={handleSearch} style={{ display:'flex', gap:0, maxWidth:540, marginBottom:24 }}>
                 <div style={{ flex:1, display:'flex', alignItems:'center', background:'rgba(255,255,255,.12)', border:'1.5px solid rgba(255,255,255,.25)', borderRight:'none', borderRadius:'14px 0 0 14px', backdropFilter:'blur(10px)', padding:'0 16px' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
                   <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search groceries, medicines, fashion…"
-                    style={{ flex:1, border:'none', background:'transparent', outline:'none', color:'#fff', fontFamily:'Inter', fontSize:14, padding:'14px 12px' }}/>
+                    style={{ flex:1, border:'none', background:'transparent', outline:'none', color:'#fff', fontFamily:'Inter', fontSize:14, padding:'13px 12px' }}/>
                 </div>
                 <button type="submit" className="glow-btn" style={{ padding:'0 24px', borderRadius:'0 14px 14px 0', fontSize:14, whiteSpace:'nowrap' }}>
                   Search →
                 </button>
               </form>
-
               <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
                 {['Milk','Bread','Eggs','Paracetamol','Onions'].map(q => (
                   <button key={q} onClick={() => navigate('/category?search=' + q)}
@@ -322,13 +325,52 @@ export default function Home() {
             </h2>
             <Link to="/category" style={{ fontSize:13, fontFamily:'Poppins', fontWeight:600, color:'var(--teal-deep)', textDecoration:'none' }}>View all →</Link>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(8,1fr)', gap:8, padding:'0 12px 16px' }}>
+          <div className="cat-grid-8" style={{ display:'grid', gridTemplateColumns:'repeat(8,1fr)', gap:8, padding:'0 12px 16px' }}>
             {CATEGORIES.map(c => (
               <Link key={c.slug} to={'/category/' + c.slug} className="cat-icon-card">
                 <div className="icon-ring" style={{ background:c.grad }}>
                   <span style={{ fontSize:26 }}>{c.emoji}</span>
                 </div>
                 <span className="cat-name">{c.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* HYPERLOCAL MARKET SECTION */}
+        <div className="surface reveal" style={{ marginBottom:12 }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 18px 12px' }}>
+            <div>
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+                <span className="hl-loc-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                  Hyderabad · Delivering in ~9 min
+                </span>
+                <span style={{ background:'rgba(255,106,0,.1)', color:'#c25400', fontSize:10, fontFamily:'Poppins', fontWeight:700, padding:'2px 8px', borderRadius:20 }}>NEW</span>
+              </div>
+              <h2 style={{ fontFamily:'Poppins', fontWeight:800, fontSize:18, color:'var(--navy)', margin:0, display:'flex', alignItems:'center', gap:10 }}>
+                <span style={{ width:4, height:20, borderRadius:2, background:'var(--teal)', display:'inline-block' }}/>
+                Shop Your Hyperlocal Market
+              </h2>
+            </div>
+            <Link to="/category" style={{ display:'flex', alignItems:'center', gap:5, background:'var(--teal)', color:'#fff', padding:'7px 15px', borderRadius:20, fontSize:12, fontFamily:'Poppins', fontWeight:600, textDecoration:'none', flexShrink:0 }}>
+              Explore All
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </Link>
+          </div>
+          <div className="hl-grid" style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:12, padding:'0 14px 18px' }}>
+            {HYPERLOCAL.map(c => (
+              <Link key={c.label} to={'/category/' + c.slug} style={{ textDecoration:'none' }}>
+                <div className="hl-tile">
+                  <div className="hl-tile-img" style={{ background:c.grad }}>
+                    <span style={{ position:'relative', zIndex:1 }}>{c.emoji}</span>
+                  </div>
+                  <p className="hl-tile-name">{c.label}</p>
+                  <p className="hl-tile-time">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    {c.time}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
@@ -355,14 +397,14 @@ export default function Home() {
         </div>
 
         {/* Newsletter */}
-        <div className="reveal" style={{ background:'var(--grad-teal)', borderRadius:16, padding:'32px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:24, flexWrap:'wrap', marginBottom:16, position:'relative', overflow:'hidden' }}>
+        <div className="reveal newsletter-wrap" style={{ background:'var(--grad-teal)', borderRadius:16, padding:'32px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:24, flexWrap:'wrap', marginBottom:16, position:'relative', overflow:'hidden' }}>
           <div style={{ position:'absolute', inset:0, background:'radial-gradient(600px 300px at 80% 120%,rgba(255,163,26,.3),transparent 60%)', pointerEvents:'none' }}/>
           <div style={{ position:'relative' }}>
             <h2 style={{ color:'#fff', fontSize:'clamp(18px,3vw,24px)', fontFamily:'Poppins', margin:'0 0 4px' }}>Get Exclusive Deals</h2>
             <p style={{ color:'rgba(255,255,255,.85)', fontSize:14, margin:0 }}>Subscribe and save up to 40% on your next order</p>
           </div>
-          <form style={{ display:'flex', gap:8, position:'relative', flexWrap:'wrap' }} onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email…" style={{ padding:'12px 18px', borderRadius:10, border:'none', fontSize:14, fontFamily:'Inter', outline:'none', minWidth:220, flex:1 }}/>
+          <form className="newsletter-form" style={{ display:'flex', gap:8, position:'relative', flexWrap:'wrap', flex:1, maxWidth:480 }} onSubmit={e => e.preventDefault()}>
+            <input type="email" placeholder="Enter your email…" style={{ padding:'12px 18px', borderRadius:10, border:'none', fontSize:14, fontFamily:'Inter', outline:'none', flex:1, minWidth:180 }}/>
             <button type="submit" className="btn btn-cta" style={{ flexShrink:0 }}>Subscribe</button>
           </form>
         </div>
@@ -387,7 +429,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:40 }}>
+          <div className="live-store-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:40 }}>
             {LIVE_STORES.map(s => (
               <Link key={s.label} to="/category" style={{ textDecoration:'none' }}>
                 <div className="live-card reveal">
@@ -416,7 +458,7 @@ export default function Home() {
                 Swiggy adds 18–30% commission. We don&apos;t. Your shop keeps all the profit.
               </p>
             </div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
+            <div className="price-compare-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
               {[
                 { item:'Tata Salt 1kg',   us:24, them:34 },
                 { item:'Amul Milk 500ml', us:28, them:41 },
@@ -449,7 +491,7 @@ export default function Home() {
             <h2 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(22px,3.5vw,36px)', color:'var(--navy)', margin:'0 0 8px' }}>How Zoptavi Works</h2>
             <p style={{ color:'var(--text-2)', fontSize:15, fontFamily:'Inter' }}>Three steps. Ten minutes. Real shop prices.</p>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
+          <div className="how-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
             {[
               { step:'1', icon:'\u{1F4CD}', title:'Enter your area',  desc:'Type your pincode. See all live shops within 2km of you.' },
               { step:'2', icon:'\u{1F6D2}', title:'Pick your items',  desc:'Browse real-time stock. No fake "Out of Stock".' },
@@ -472,7 +514,7 @@ export default function Home() {
       {/* 6. TRUST STRIP */}
       <div style={{ background:'#f8fafc', borderTop:'1px solid #eef0f4', borderBottom:'1px solid #eef0f4', padding:'20px 0' }}>
         <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
+          <div className="trust-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
             {[
               { icon:'⚡',    title:'10-Minute Delivery', sub:'2km grid guarantee' },
               { icon:'\u{1F4B0}', title:'Real Shop Prices',   sub:'Zero Swiggy markup' },
