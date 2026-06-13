@@ -2,13 +2,15 @@ import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../data/products';
 import { useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
 
 interface Props { product: Product; tint?: string; }
 
 export default function ProductCard({ product: p, tint = 'teal' }: Props) {
   const { addItem } = useCartStore();
-  const [wishlisted, setWishlisted] = useState(false);
-  const [added, setAdded] = useState(false);
+  const { toggleItem, isWishlisted } = useWishlistStore();
+  const wishlisted = isWishlisted(p.id);
+  const [added, setAdded] = useState(false); // cart animation
   const [toast, setToast] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -47,7 +49,7 @@ export default function ProductCard({ product: p, tint = 'teal' }: Props) {
             {discount > 0 && <span className="disc-badge">{discount}% OFF</span>}
             {/* Wishlist */}
             <button className={`heart-btn ${wishlisted ? 'active' : ''}`}
-              onClick={e => { e.preventDefault(); setWishlisted(!wishlisted); }}>
+              onClick={e => { e.preventDefault(); toggleItem(p); }}>
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={wishlisted ? '#ef4444' : '#999'} strokeWidth="2">
                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" fill={wishlisted ? '#ef4444' : 'none'}/>
               </svg>
