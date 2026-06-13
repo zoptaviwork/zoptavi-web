@@ -820,35 +820,265 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
 
 /* Reusable white surface card (Flipkart-style section block) */
 .surface{
-  background:#fff;border-radius:16px;border:1px solid #ecf0f4;
-  box-shadow:0 1px 3px rgba(15,23,42,.04);overflow:hidden;
+  background:#fff;border-radius:16px;b  background:#fff;border-radius:16px;border:1px solid #f0f2f5;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.04);
+}
+/* ═══════════════════════════════════════════════════════════════
+   MOTIONSITES.AI + 21ST.DEV INSPIRED UPGRADES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Animated gradient mesh hero background ── */
+@keyframes gradient-mesh {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-mesh {
+  background: linear-gradient(-45deg, #0F172A, #007A76, #0F172A, #1e3a5f, #00443F);
+  background-size: 400% 400%;
+  animation: gradient-mesh 12s ease infinite;
 }
 
-/* Horizontal product rails — snap scrolling */
-.hscroll-rail{scroll-snap-type:x proximity;scroll-padding-left:16px}
-.hscroll-item{scroll-snap-align:start}
+/* ── Floating orbs ── */
+@keyframes orb-float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(30px,-20px) scale(1.08); }
+  66%      { transform: translate(-20px,15px) scale(.95); }
+}
+@keyframes orb-float-2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(-25px,20px) scale(1.06); }
+  66%      { transform: translate(20px,-15px) scale(.96); }
+}
+.orb { position:absolute; border-radius:50%; pointer-events:none; filter:blur(60px); }
+.orb-1 { animation: orb-float  18s ease-in-out infinite; }
+.orb-2 { animation: orb-float-2 22s ease-in-out infinite; }
+.orb-3 { animation: orb-float  14s ease-in-out infinite 4s; }
 
-/* Hero carousel dots */
-.hero-dot{transition:width .3s var(--ease),background .3s;box-shadow:0 1px 4px rgba(0,0,0,.25)}
-
-/* Promo banner hover lift */
-.promo-tile{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
-.promo-tile:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(15,23,42,.16)}
-.promo-tile:active{transform:translateY(-1px)}
-
-/* See-all pill */
-.seeall-pill{transition:transform .2s,box-shadow .2s,filter .2s}
-.seeall-pill:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 6px 16px rgba(15,23,42,.18)}
-
-/* Touch devices: disable lift effects, keep things steady */
-@media(hover:none){
-  .zcard:hover{transform:none;box-shadow:0 1px 3px rgba(15,23,42,.04)}
-  .promo-tile:hover{transform:none}
+/* ── Marquee / ticker ── */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-wrap {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 28px; white-space: nowrap;
+  font-family: 'Poppins'; font-size: 13px; font-weight: 600;
 }
 
-/* Larger tap targets + tighter type on small screens */
-@media(max-width:600px){
-  body{font-size:15px}
-  .surface{border-radius:14px}
-  .toast{bottom:74px}
+/* ── Shimmer gradient text ── */
+@keyframes shimmer-text {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.gradient-text {
+  background: linear-gradient(90deg, #00C9C8, #FFA31A, #00C9C8, #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-text 4s linear infinite;
+}
+
+/* ── Scroll-reveal via IntersectionObserver class hook ── */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.08s; }
+.reveal-delay-2 { transition-delay:.16s; }
+.reveal-delay-3 { transition-delay:.24s; }
+.reveal-delay-4 { transition-delay:.32s; }
+
+/* ── Live indicator ── */
+@keyframes live-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(239,68,68,.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+.live-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(239,68,68,.12); color: #ef4444;
+  font-family: 'Poppins'; font-weight: 700; font-size: 11px;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid rgba(239,68,68,.25);
+}
+.live-badge .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #ef4444;
+  animation: live-ring 1.4s ease infinite;
+}
+
+/* ── Live Store card ── */
+.live-card {
+  position: relative;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  padding: 22px 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform .3s cubic-bezier(.4,0,.2,1), background .3s, border-color .3s, box-shadow .3s;
+  cursor: pointer;
+  overflow: hidden;
+}
+.live-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: rgba(255,255,255,.14);
+  border-color: rgba(0,201,200,.5);
+  box-shadow: 0 20px 48px rgba(0,0,0,.35), 0 0 0 1px rgba(0,201,200,.2);
+}
+.live-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top left, rgba(0,201,200,.18), transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.live-card:hover::before { opacity: 1; }
+
+/* ── Glow button ── */
+.glow-btn {
+  position: relative;
+  background: linear-gradient(120deg,#00C9C8,#007A76);
+  color: #fff;
+  border: none; cursor: pointer;
+  font-family: 'Poppins'; font-weight: 700;
+  border-radius: 12px;
+  transition: transform .2s, box-shadow .2s;
+}
+.glow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,201,200,.5);
+}
+.glow-btn::after {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(120deg,#00C9C8,#007A76);
+  z-index: -1; filter: blur(12px); opacity: 0;
+  transition: opacity .3s;
+}
+.glow-btn:hover::after { opacity: .6; }
+
+/* ── Category icon card (21st.dev style) ── */
+.cat-icon-card {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 18px 12px;
+  background: #fff;
+  border: 1px solid #eef0f4;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform .28s cubic-bezier(.4,0,.2,1), box-shadow .28s, border-color .28s;
+  text-align: center;
+}
+.cat-icon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(15,23,42,.1);
+  border-color: rgba(0,201,200,.3);
+}
+.cat-icon-card .icon-ring {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center; color: #fff;
+  transition: transform .28s cubic-bezier(.34,1.56,.64,1);
+}
+.cat-icon-card:hover .icon-ring { transform: scale(1.12) rotate(-4deg); }
+.cat-icon-card .cat-name {
+  font-family: 'Poppins'; font-weight: 600; font-size: 12px;
+  color: #0F172A; line-height: 1.2;
+}
+
+/* ── Stats counter chip ── */
+.stat-chip {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 20px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  min-width: 96px;
+  transition: background .2s;
+}
+.stat-chip:hover { background: rgba(255,255,255,.1); }
+.stat-chip .val {
+  font-family: 'Poppins'; font-weight: 800; font-size: 22px; color: #fff;
+  line-height: 1;
+}
+.stat-chip .lbl {
+  font-size: 11px; color: rgba(255,255,255,.6);
+  font-family: 'Poppins'; font-weight: 500; margin-top: 3px;
+}
+
+/* ── Price compare pill ── */
+.price-compare {
+  display: inline-flex; align-items: center; gap: 0;
+  border-radius: 8px; overflow: hidden;
+  font-family: 'Poppins'; font-size: 11px; font-weight: 700;
+}
+.price-compare .us  { background: rgba(0,201,200,.18); color: #00736F; padding: 3px 8px; }
+.price-compare .them{ background: rgba(255,106,0,.14); color: #c25400; padding: 3px 8px; text-decoration: line-through; }
+
+/* ── Announcement ticker ── */
+.ticker-wrap {
+  overflow: hidden;
+  background: linear-gradient(90deg,#0F172A,#0e2a3a 50%,#0F172A);
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 22s linear infinite;
+}
+
+/* ── Number counter animation ── */
+@keyframes count-up {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.count-up { animation: count-up .4s ease both; }
+
+/* ── Hover scale on section images ── */
+.hover-zoom { transition: transform .5s cubic-bezier(.4,0,.2,1); overflow: hidden; }
+.hover-zoom:hover > * { transform: scale(1.06); }
+
+/* ── Glass nav pill ── */
+.glass-pill {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  padding: 6px 16px;
+  font-family: 'Poppins'; font-size: 12px; font-weight: 600; color: #fff;
+  transition: background .2s;
+}
+.glass-pill:hover { background: rgba(255,255,255,.22); }
+
+/* ── Zoptavi specific Live Store section ── */
+.live-store-section {
+  background: linear-gradient(160deg,#0a1628 0%,#002e2c 55%,#0a1628 100%);
+  position: relative; overflow: hidden;
+  padding: 56px 0;
+}
+
+/* ── Floating number animation for live counters ── */
+@keyframes tick-up {
+  0%  { transform: translateY(100%); opacity:0; }
+  20% { transform: translateY(0);   opacity:1; }
+  80% { transform: translateY(0);   opacity:1; }
+  100%{ transform: translateY(-100%); opacity:0; }
+}
+
+/* ── Mobile responsive for new elements ── */
+@media(max-width:768px){
+  .live-store-section { padding:32px 0; }
+  .stat-chip { min-width:76px; padding:9px 14px; }
+  .stat-chip .val { font-size:18px; }
+  .live-card { padding:16px 14px; }
+  .marquee-item { font-size:12px; padding:0 18px; }
 }
