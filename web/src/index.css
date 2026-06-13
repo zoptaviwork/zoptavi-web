@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
 @import "tailwindcss";
 
-/* ── Tailwind v4 brand tokens (powers bg-brand-*, text-brand-*, font-display etc.) ── */
+/* ── Tailwind v4 brand tokens ── */
 @theme {
   --color-brand-teal: #008C87;
   --color-brand-teal-hover: #00736F;
@@ -14,6 +14,21 @@
   --font-display: "Poppins", sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
 }
+
+/* ── Explicit brand utility classes (fallback for Tailwind v4 @theme resolution) ── */
+.bg-brand-teal{background-color:#008C87!important}.hover\:bg-brand-teal-hover:hover{background-color:#00736F!important}
+.bg-brand-orange{background-color:#FF6A00!important}.hover\:bg-brand-orange-hover:hover{background-color:#E55F00!important}
+.bg-brand-navy{background-color:#0F172A!important}.hover\:bg-slate-800:hover{background-color:#1e293b!important}
+.bg-brand-bg{background-color:#F1F3F6!important}
+.text-brand-teal{color:#008C87!important}.hover\:text-brand-teal:hover{color:#008C87!important}
+.text-brand-navy{color:#0F172A!important}.text-brand-orange{color:#FF6A00!important}
+.border-brand-teal{border-color:#008C87!important}.focus\:border-brand-teal:focus{border-color:#008C87!important}
+.ring-brand-teal\/10{--tw-ring-color:rgba(0,140,135,.1)!important}
+.shadow-brand-teal\/5{--tw-shadow-color:rgba(0,140,135,.05)!important}
+.shadow-brand-orange\/10{--tw-shadow-color:rgba(255,106,0,.1)!important}
+.font-display{font-family:'Poppins',sans-serif!important}
+.bg-teal-50{background-color:#f0fdfc!important}.text-brand-teal-hover{color:#00736F!important}
+.accent-brand-teal{accent-color:#008C87!important}
 
 :root{
   --teal:#00C9C8;--teal-deep:#007A76;--orange:#FF6A00;--orange-bright:#FFA31A;--navy:#0F172A;
