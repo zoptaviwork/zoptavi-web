@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Star, ShoppingBag, SlidersHorizontal, Check, X } from 'lucide-react';
 import { products, categoriesList } from '../data/products';
 import { useCartStore } from '../store/cartStore';
+import ProductCard from '../components/ProductCard';
 
 export const Category: React.FC = () => {
   const navigate = useNavigate();
@@ -268,63 +269,8 @@ export const Category: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredProducts.map((prod) => (
-                <div 
-                  key={prod.id} 
-                  className="group border border-gray-100 shadow-sm hover:shadow-md rounded-xl p-4 bg-white flex flex-col justify-between transition-all duration-300 relative overflow-hidden"
-                >
-                  {prod.discount > 0 && (
-                    <span className="absolute top-3 left-3 bg-brand-orange text-white text-[10px] font-extrabold px-2 py-0.5 rounded">
-                      {prod.discount}% OFF
-                    </span>
-                  )}
-                  
-                  {/* Image Viewport */}
-                  <div 
-                    className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-50 cursor-pointer"
-                    onClick={() => navigate(`/product/${prod.id}`)}
-                  >
-                    <img 
-                      src={prod.image} 
-                      alt={prod.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-550"
-                    />
-                  </div>
-
-                  {/* Info details */}
-                  <div className="mt-4 flex-grow flex flex-col justify-between">
-                    <div>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase">{prod.brand}</span>
-                      <h3 
-                        className="text-xs sm:text-sm font-semibold text-brand-navy mt-1 truncate hover:text-brand-teal cursor-pointer"
-                        onClick={() => navigate(`/product/${prod.id}`)}
-                      >
-                        {prod.name}
-                      </h3>
-                      <div className="flex items-center gap-1 mt-1.5">
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="text-xs font-bold text-slate-700">{prod.rating}</span>
-                        <span className="text-[10px] text-slate-400">({prod.ratingCount})</span>
-                      </div>
-                    </div>
-
-                    {/* Price and Cart Buttons */}
-                    <div className="mt-4 flex items-center justify-between border-t border-slate-50 pt-3">
-                      <div>
-                        <span className="text-sm font-extrabold text-brand-navy">₹{prod.price.toLocaleString('en-IN')}</span>
-                        {prod.originalPrice > prod.price && (
-                          <span className="text-[10px] text-slate-400 line-through ml-1.5">₹{prod.originalPrice.toLocaleString('en-IN')}</span>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => addItem(prod, 1, prod.colors?.[0])}
-                        className="h-11 px-3.5 rounded-lg bg-brand-teal hover:bg-brand-teal-hover text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" /> Add
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              {filteredProducts.map((prod, idx) => (
+                <ProductCard key={prod.id} product={prod} tint={idx % 2 === 0 ? 'teal' : 'orange'} />
               ))}
             </div>
           )}

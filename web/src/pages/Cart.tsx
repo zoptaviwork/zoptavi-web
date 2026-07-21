@@ -55,6 +55,24 @@ export const Cart: React.FC = () => {
   return (
     <div className="font-sans min-h-screen bg-brand-bg py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Checkout Progress Stepper */}
+        <div className="max-w-md mx-auto mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-brand-teal font-extrabold text-xs">
+            <span className="w-6 h-6 rounded-full bg-brand-teal text-white flex items-center justify-center text-[11px]">1</span>
+            <span>Cart</span>
+          </div>
+          <div className="flex-1 h-0.5 bg-slate-200 mx-3" />
+          <div className="flex items-center gap-2 text-slate-400 font-bold text-xs">
+            <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[11px]">2</span>
+            <span>Delivery</span>
+          </div>
+          <div className="flex-1 h-0.5 bg-slate-200 mx-3" />
+          <div className="flex items-center gap-2 text-slate-400 font-bold text-xs">
+            <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-[11px]">3</span>
+            <span>Payment</span>
+          </div>
+        </div>
+
         <h1 className="font-display font-extrabold text-2xl sm:text-3xl text-brand-navy tracking-tight mb-8">Shopping Cart</h1>
 
         {/* Split Grid */}

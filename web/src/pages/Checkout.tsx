@@ -105,22 +105,23 @@ export const Checkout: React.FC = () => {
     <div className="font-sans min-h-screen bg-brand-bg py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Progress Bar */}
-        <div className="flex items-center gap-3 mb-8">
-          <Link to="/cart" className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-brand-navy transition-colors">
-            <ArrowLeft className="w-4 h-4" />
+        {/* Progress Bar Stepper */}
+        <div className="max-w-md mx-auto mb-8 flex items-center justify-between">
+          <Link to="/cart" className="flex items-center gap-2 text-emerald-600 font-extrabold text-xs">
+            <span className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[11px]">✓</span>
+            <span>Cart</span>
           </Link>
-          <div className="flex items-center gap-2 flex-grow">
-            {/* Step 1: Address */}
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors ${step === 'address' || step === 'payment' ? 'bg-brand-teal text-white' : 'bg-slate-100 text-slate-400'}`}>
-              {step === 'payment' ? <Check className="w-3.5 h-3.5" /> : <span>1</span>}
-              Shipping Address
-            </div>
-            <div className="flex-grow h-px bg-slate-200" />
-            {/* Step 2: Payment */}
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors ${step === 'payment' ? 'bg-brand-teal text-white' : 'bg-slate-100 text-slate-400'}`}>
-              <span>2</span> Payment
-            </div>
+          <div className="flex-1 h-0.5 bg-brand-teal mx-3" />
+          <div className={`flex items-center gap-2 font-bold text-xs ${step === 'address' ? 'text-brand-teal font-extrabold' : 'text-emerald-600 font-extrabold'}`}>
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] ${step === 'address' ? 'bg-brand-teal text-white' : 'bg-emerald-500 text-white'}`}>
+              {step === 'payment' ? '✓' : '2'}
+            </span>
+            <span>Delivery</span>
+          </div>
+          <div className={`flex-1 h-0.5 mx-3 ${step === 'payment' ? 'bg-brand-teal' : 'bg-slate-200'}`} />
+          <div className={`flex items-center gap-2 font-bold text-xs ${step === 'payment' ? 'text-brand-teal font-extrabold' : 'text-slate-400'}`}>
+            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] ${step === 'payment' ? 'bg-brand-teal text-white' : 'bg-slate-200 text-slate-500'}`}>3</span>
+            <span>Payment</span>
           </div>
         </div>
 
