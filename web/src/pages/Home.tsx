@@ -13,93 +13,73 @@ const serviceIcons: Record<string, ReactElement> = {
 export default function Home() {
   return (
     <div style={{ background: '#fff' }}>
-      {/* Hero */}
-      <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 55%,#0F172A 100%)', position: 'relative', overflow: 'hidden', padding: '72px 0 90px' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(700px 380px at 85% -10%,rgba(0,201,200,.18),transparent 60%),radial-gradient(600px 320px at 5% 110%,rgba(255,106,0,.14),transparent 60%)', pointerEvents: 'none' }} />
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px', position: 'relative' }}>
-          <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr .85fr', gap: 40, alignItems: 'center' }}>
-            <div className="fade-up">
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,201,200,.12)', border: '1px solid rgba(0,201,200,.3)', color: '#00C9C8', fontFamily: 'Poppins', fontWeight: 700, fontSize: 12, padding: '6px 14px', borderRadius: 20, marginBottom: 22 }}>
-                <span className="live-dot" /> HYDERABAD · SINCE 2026
-              </span>
-              <h1 className="hero-h1" style={{ color: '#fff', fontSize: 'clamp(32px,4.4vw,54px)', fontFamily: 'Poppins', fontWeight: 900, lineHeight: 1.12, margin: '0 0 20px', maxWidth: 620 }}>
-                You run the business.<br />We handle <span className="gradient-text">everything online.</span>
-              </h1>
-              <p style={{ color: 'rgba(255,255,255,.78)', fontSize: 16.5, lineHeight: 1.7, maxWidth: 540, margin: '0 0 30px' }}>
-                Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
-              </p>
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">
-                  Get a Free Quote →
-                </a>
-                <Link to="/services" className="btn btn-ghost-light">
-                  See Pricing
-                </Link>
-              </div>
-            </div>
-
-            {/* Proof of scale card */}
-            <div className="hero-right fade-up-2">
-              <div className="glass-card" style={{ padding: 22, background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.14)' }}>
-                <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', margin: '0 0 14px' }}>
-                  Not our first store
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {portfolio.map(p => (
-                    <a key={p.key} href={p.url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderRadius: 12, background: 'rgba(255,255,255,.06)', textDecoration: 'none', transition: '.2s' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,201,200,.12)')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,.06)')}>
-                      <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--grad-teal)', display: 'grid', placeItems: 'center', color: '#fff', fontFamily: 'Poppins', fontWeight: 800, flexShrink: 0 }}>{p.name[0]}</div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ color: '#fff', fontFamily: 'Poppins', fontWeight: 700, fontSize: 13.5, margin: 0 }}>{p.name}</p>
-                        <p style={{ color: 'rgba(255,255,255,.55)', fontSize: 11.5, margin: 0 }}>{p.category}</p>
-                      </div>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C9C8" strokeWidth="2.5" style={{ flexShrink: 0 }}><path d="M7 17 17 7M7 7h10v10" /></svg>
-                    </a>
-                  ))}
-                </div>
-                <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginTop: 16, lineHeight: 1.6 }}>
-                  Two live platforms already run on the Zoptavi stack — you're not client number one, you're client number three.
-                </p>
-              </div>
-            </div>
+      {/* Hero — black, giant type */}
+      <section className="section-black" style={{ padding: '84px 0 60px' }}>
+        <div className="orb orb-1" style={{ width: 460, height: 460, background: 'rgba(0,201,200,.14)', top: -160, right: -120 }} />
+        <div className="orb orb-3" style={{ width: 320, height: 320, background: 'rgba(255,106,0,.1)', bottom: -100, left: -80 }} />
+        <div className="wrap" style={{ position: 'relative' }}>
+          <span className="eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <span className="live-dot" /> HYDERABAD · SINCE 2026
+          </span>
+          <h1 className="giant-h1 fade-up" style={{ margin: '22px 0 26px', maxWidth: 920 }}>
+            You run the business.<br />We handle <span className="gradient-text">everything online.</span>
+          </h1>
+          <p className="fade-up-1" style={{ color: 'rgba(255,255,255,.65)', fontSize: 17, lineHeight: 1.7, maxWidth: 560, margin: '0 0 36px' }}>
+            Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
+          </p>
+          <div className="fade-up-2" style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">
+              Get a Free Quote →
+            </a>
+            <Link to="/services" className="pill-outline">See Pricing</Link>
           </div>
         </div>
       </section>
 
-      {/* Trust marquee */}
-      <div style={{ background: '#0a1628', padding: '20px 0', borderBottom: '1px solid rgba(255,255,255,.08)' }}>
-        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,.4)', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 14 }}>
-          Built on tools your customers already trust
-        </p>
-        <div className="marquee-wrap">
-          <div className="marquee-track">
-            {[...['Razorpay', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram', 'UPI', 'Cashfree'], ...['Razorpay', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram', 'UPI', 'Cashfree']].map((t, i) => (
-              <span key={i} className="marquee-item" style={{ color: 'rgba(255,255,255,.55)' }}>
-                <span className="live-dot" style={{ background: '#00C9C8', boxShadow: 'none' }} />
-                {t}
-              </span>
+      {/* Stat band — continuous black */}
+      <section className="section-black" style={{ padding: '10px 0 64px' }}>
+        <div className="wrap">
+          <div className="msh-stat-grid">
+            {[
+              { val: '5', lbl: 'Core Services, One Bill' },
+              { val: '2', lbl: 'Live Client Stores' },
+              { val: '10', lbl: 'Orders/Mo Minimum' },
+              { val: '1', lbl: 'WhatsApp Number' },
+            ].map((s, i) => (
+              <div key={i} className="msh-stat">
+                <span className="num">{s.val}</span>
+                <span className="lbl">{s.lbl}</span>
+              </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Stat band */}
-      <div style={{ background: 'linear-gradient(135deg,#0a1628,#00201e)', padding: '38px 0' }}>
-        <div className="wrap" style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-          {[
-            { val: '5', lbl: 'Core Services' },
-            { val: '2', lbl: 'Live Client Stores' },
-            { val: '10', lbl: 'Orders/Mo Minimum' },
-            { val: '1', lbl: 'Team, One Bill' },
-          ].map((s, i) => (
-            <div key={i} className="stat-chip reveal reveal-delay-1" style={{ opacity: 1, transform: 'none' }}>
-              <span className="val">{s.val}</span>
-              <span className="lbl">{s.lbl}</span>
-            </div>
-          ))}
+      {/* Proof of scale — portfolio cards */}
+      <section className="section-black" style={{ padding: '0 0 90px' }}>
+        <div className="wrap">
+          <span className="eyebrow">NOT OUR FIRST STORE</span>
+          <h2 className="giant-h2" style={{ margin: '14px 0 30px' }}>Already live on the Zoptavi stack</h2>
+          <div className="biz-grid-2">
+            {portfolio.map((p, i) => (
+              <a key={p.key} href={p.url} target="_blank" rel="noreferrer" className="msh-portfolio-card">
+                <div className="bg" style={{ background: i === 0 ? 'linear-gradient(135deg,#1a0f1f,#3a1530 60%,#5c1f2e)' : 'linear-gradient(135deg,#0f1a1f,#153035 60%,#1f5c4e)' }} />
+                <div className="cap">
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#00C9C8', flexShrink: 0 }} />
+                  {p.name} <span style={{ color: 'rgba(255,255,255,.5)', fontWeight: 500 }}>· {p.category}</span>
+                </div>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', padding: 22 }}>
+                  <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 13, lineHeight: 1.6, maxWidth: '80%', margin: 0 }}>{p.blurb}</p>
+                </div>
+                <span className="visit">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M7 7h10v10" /></svg>
+                </span>
+              </a>
+            ))}
+          </div>
+          <p style={{ color: 'rgba(255,255,255,.4)', fontSize: 12.5, marginTop: 18 }}>Two live platforms already run on the Zoptavi stack — you're not client number one, you're client number three.</p>
         </div>
-      </div>
+      </section>
 
       {/* 5 services */}
       <section className="sec">
@@ -205,32 +185,32 @@ export default function Home() {
       </section>
 
       {/* Manifesto */}
-      <section className="sec" style={{ background: 'linear-gradient(160deg,#0F172A 0%,#0a1628 100%)', position: 'relative', overflow: 'hidden' }}>
+      <section className="section-black" style={{ padding: '80px 0' }}>
         <div className="orb orb-1" style={{ width: 320, height: 320, background: 'rgba(0,201,200,.16)', top: -80, left: -80 }} />
         <div className="orb orb-2" style={{ width: 260, height: 260, background: 'rgba(255,106,0,.12)', bottom: -60, right: -60 }} />
-        <div className="wrap" style={{ position: 'relative', maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
-          <span className="badge-teal">WHY ZOPTAVI</span>
-          <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3.2vw,32px)', margin: '16px 0 18px', lineHeight: 1.3 }}>
-            We're not a website vendor. We're <span className="gradient-text">the team that keeps you online.</span>
+        <div className="wrap" style={{ position: 'relative', maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
+          <span className="eyebrow">WHY ZOPTAVI</span>
+          <h2 className="giant-h2" style={{ margin: '18px 0 20px' }}>
+            We're not a website vendor. <span className="gradient-text">We're the team that keeps you online.</span>
           </h2>
-          <p style={{ color: 'rgba(255,255,255,.7)', fontSize: 15, lineHeight: 1.75, margin: '0 auto 26px', maxWidth: 620 }}>
+          <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 15.5, lineHeight: 1.8, margin: '0 auto 30px', maxWidth: 620 }}>
             No freelancer disappearing after launch. No juggling five vendors for a website, a biller, a designer and an ads guy.
             One team, on WhatsApp, that builds it, bills it, posts it, promotes it, and ships it — and sticks around after you pay.
           </p>
-          <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-ghost-light">Talk to us, we won't oversell →</a>
+          <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="pill-outline">Talk to us, we won't oversell →</a>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="sec tight">
+      <section className="section-black" style={{ padding: '0 0 90px' }}>
         <div className="wrap">
-          <div style={{ background: 'var(--grad-teal)', borderRadius: 20, padding: '44px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--grad-teal)', borderRadius: 28, padding: '48px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(600px 300px at 85% 120%,rgba(255,163,26,.3),transparent 60%)' }} />
             <div style={{ position: 'relative', maxWidth: 480 }}>
               <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3vw,28px)' }}>One paying client this week beats a perfect plan this month.</h2>
               <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 14.5, margin: '10px 0 0' }}>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
             </div>
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0 }}>
+            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0, background: '#fff', color: 'var(--teal-deep)' }}>
               Message Us on WhatsApp →
             </a>
           </div>
