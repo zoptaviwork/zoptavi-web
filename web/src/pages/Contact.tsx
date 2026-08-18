@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Check } from 'lucide-react';
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', business: '', category: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.business || !formData.message) {
       alert('Please fill in all required fields.');
       return;
     }
     setLoading(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1200));
     setSubmitted(true);
     setLoading(false);
@@ -23,51 +22,24 @@ export const Contact: React.FC = () => {
     <div className="font-sans min-h-screen bg-brand-bg py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Page Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-teal/10 text-brand-teal text-xs font-bold uppercase tracking-wider mb-4">
-            <MessageSquare className="w-3.5 h-3.5" /> Get in Touch
+            <MessageSquare className="w-3.5 h-3.5" /> Let's Talk
           </span>
-          <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-brand-navy tracking-tight">We're Here to Help</h1>
+          <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-brand-navy tracking-tight">Get a Free Sample Built</h1>
           <p className="text-slate-500 text-sm mt-4 leading-relaxed">
-            Whether you have questions about your order, need product support, or just want to say hello — our team is always ready to assist you.
+            Tell us your business type and we'll show you a sample built for you — free, no obligation, usually within a day.
           </p>
         </div>
 
-        {/* Main Split Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-          {/* Left Column — Support Info Cards */}
           <div className="lg:col-span-5 space-y-4">
             {[
-              {
-                icon: Phone,
-                title: 'Call Us',
-                primary: '+91 80 4976 2110',
-                secondary: 'Mon–Sat, 9 AM to 9 PM IST',
-                color: 'bg-teal-50 border-teal-100 text-brand-teal',
-              },
-              {
-                icon: Mail,
-                title: 'Email Support',
-                primary: 'support@zoptavi.com',
-                secondary: 'We reply within 4 business hours',
-                color: 'bg-indigo-50 border-indigo-100 text-indigo-500',
-              },
-              {
-                icon: MapPin,
-                title: 'Corporate Office',
-                primary: 'Zoptavi Technologies Pvt. Ltd.',
-                secondary: 'Outer Ring Road, Bengaluru, Karnataka — 560103',
-                color: 'bg-rose-50 border-rose-100 text-rose-500',
-              },
-              {
-                icon: Clock,
-                title: 'Support Hours',
-                primary: 'Monday — Saturday',
-                secondary: '9:00 AM to 9:00 PM IST',
-                color: 'bg-amber-50 border-amber-100 text-amber-600',
-              },
+              { icon: Phone, title: 'Call or WhatsApp', primary: '+91 78426 46888', secondary: 'Mon–Sat, 9 AM to 8 PM IST', color: 'bg-teal-50 border-teal-100 text-brand-teal' },
+              { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours', color: 'bg-indigo-50 border-indigo-100 text-indigo-500' },
+              { icon: MapPin, title: 'Based In', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana', color: 'bg-rose-50 border-rose-100 text-rose-500' },
+              { icon: Clock, title: 'Response Time', primary: 'Usually same day', secondary: 'A homepage sample often within 24 hours', color: 'bg-amber-50 border-amber-100 text-amber-600' },
             ].map((info, idx) => (
               <div key={idx} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-start gap-4">
                 <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${info.color}`}>
@@ -81,24 +53,11 @@ export const Contact: React.FC = () => {
               </div>
             ))}
 
-            {/* Map Visual Placeholder */}
-            <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm h-52 relative">
-              <img 
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
-                alt="Bengaluru Map Area"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-brand-navy/20 flex items-center justify-center">
-                <div className="bg-white rounded-xl shadow-xl px-5 py-3 text-center">
-                  <MapPin className="w-5 h-5 text-brand-orange mx-auto mb-1" />
-                  <p className="text-xs font-extrabold text-brand-navy">Zoptavi HQ</p>
-                  <p className="text-[10px] text-slate-500">Bengaluru, Karnataka</p>
-                </div>
-              </div>
-            </div>
+            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 h-14 rounded-2xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md transition-colors">
+              <MessageSquare className="w-4 h-4" /> Message us on WhatsApp directly
+            </a>
           </div>
 
-          {/* Right Column — Contact Form */}
           <div className="lg:col-span-7">
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8">
               {submitted ? (
@@ -106,68 +65,68 @@ export const Contact: React.FC = () => {
                   <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto">
                     <Check className="w-8 h-8 text-emerald-500" />
                   </div>
-                  <h3 className="font-display font-extrabold text-xl text-brand-navy">Message Sent!</h3>
+                  <h3 className="font-display font-extrabold text-xl text-brand-navy">Got it, {formData.name}!</h3>
                   <p className="text-sm text-slate-500 max-w-sm mx-auto">
-                    Thank you for reaching out, {formData.name}! Our support team will get back to you at <strong>{formData.email}</strong> within 4 business hours.
+                    We'll take a look at <strong>{formData.business}</strong> and get back to you with a sample and a quote — usually within a day.
                   </p>
                   <button
-                    onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
+                    onClick={() => { setSubmitted(false); setFormData({ name: '', business: '', category: '', message: '' }); }}
                     className="h-10 px-6 rounded-lg bg-brand-teal hover:bg-brand-teal-hover text-white text-xs font-bold transition-colors"
                   >
-                    Send Another Message
+                    Send Another
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="border-b border-slate-50 pb-4 mb-2">
-                    <h2 className="font-display font-extrabold text-xl text-brand-navy">Send a Message</h2>
+                    <h2 className="font-display font-extrabold text-xl text-brand-navy">Tell us about your business</h2>
                     <p className="text-xs text-slate-400 mt-1">All fields marked * are required.</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Full Name *</label>
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Your Name *</label>
                       <input
                         type="text" placeholder="Priya Sharma" required
                         value={formData.name}
-                        onChange={e => setFormData(f => ({...f, name: e.target.value}))}
+                        onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
                         className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Email Address *</label>
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Business Name *</label>
                       <input
-                        type="email" placeholder="priya@email.com" required
-                        value={formData.email}
-                        onChange={e => setFormData(f => ({...f, email: e.target.value}))}
+                        type="text" placeholder="e.g. Priya's Boutique" required
+                        value={formData.business}
+                        onChange={e => setFormData(f => ({ ...f, business: e.target.value }))}
                         className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Subject</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">What kind of business?</label>
                     <select
-                      value={formData.subject}
-                      onChange={e => setFormData(f => ({...f, subject: e.target.value}))}
+                      value={formData.category}
+                      onChange={e => setFormData(f => ({ ...f, category: e.target.value }))}
                       className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal text-slate-700 cursor-pointer"
                     >
-                      <option value="">Select a subject</option>
-                      <option>Order Tracking & Status</option>
-                      <option>Returns & Refunds</option>
-                      <option>Product Enquiry</option>
-                      <option>Payment Issue</option>
-                      <option>Delivery Feedback</option>
+                      <option value="">Select a category</option>
+                      <option>Dental clinic or healthcare</option>
+                      <option>Gym or fitness studio</option>
+                      <option>Boutique or clothing brand</option>
+                      <option>Restaurant or café</option>
+                      <option>D2C Instagram brand</option>
                       <option>Other</option>
                     </select>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Your Message *</label>
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">What do you need? *</label>
                     <textarea
-                      rows={6} placeholder="Please describe your query in as much detail as possible. Include your order number if relevant..." required
+                      rows={6} placeholder="e.g. I run a boutique taking orders over Instagram DM and want a proper website with billing..." required
                       value={formData.message}
-                      onChange={e => setFormData(f => ({...f, message: e.target.value}))}
+                      onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
                       className="w-full px-3 py-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors resize-none"
                     />
                   </div>
@@ -184,7 +143,7 @@ export const Contact: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <Send className="w-4 h-4" /> Send Message
+                        <Send className="w-4 h-4" /> Send &amp; Get a Free Sample
                       </>
                     )}
                   </button>

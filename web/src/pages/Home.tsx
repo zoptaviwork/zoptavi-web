@@ -1,543 +1,190 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
-import ProductCard from '../components/ProductCard';
+import type { ReactElement } from 'react';
+import { Link } from 'react-router-dom';
+import { bundles, coreServices, portfolio, marketFacts } from '../data/business';
 
-const LIVE_STORES = [
-  { emoji:'⚡', label:'10 Min\nDelivery',    color:'#00C9C8', desc:'Grocery & daily needs at real store price', tag:'2km grid',  stat:'1,247 today' },
-  { emoji:'\u{1F6D2}', label:'Grocery\nEssentials', color:'#16a34a', desc:'Fresh veggies, milk, eggs from local shops', tag:'Open now', stat:'312 shops live' },
-  { emoji:'\u{1F48A}', label:'Pharma\n& Health',  color:'#7c3aed', desc:'OTC medicines, vitamins, baby essentials',  tag:'24/7',     stat:'98 shops' },
-  { emoji:'\u{1F957}', label:'Fresh\nFood',        color:'#FF6A00', desc:'Farm-fresh produce delivered in 10 min',   tag:'Daily',    stat:'42 farms' },
-  { emoji:'\u{1F3EA}', label:'Local\nShops',       color:'#0ea5e9', desc:'Your neighbourhood kirana, live on Zoptavi', tag:'LIVE',   stat:'389 stores' },
-  { emoji:'\u{1F457}', label:'Fashion\n& More',    color:'#ec4899', desc:'Trending looks from boutiques near you',   tag:'New drops', stat:'215 sellers' },
-];
-
-const CATEGORIES = [
-  { label:'Fashion',     slug:'fashion',     grad:'linear-gradient(135deg,#ec4899,#be185d)', emoji:'\u{1F457}' },
-  { label:'Mobiles',     slug:'mobiles',     grad:'linear-gradient(135deg,#3b82f6,#1d4ed8)', emoji:'\u{1F4F1}' },
-  { label:'Grocery',     slug:'grocery',     grad:'linear-gradient(135deg,#16a34a,#15803d)', emoji:'\u{1F966}' },
-  { label:'Electronics', slug:'electronics', grad:'linear-gradient(135deg,#f59e0b,#b45309)', emoji:'\u{1F4BB}' },
-  { label:'Beauty',      slug:'beauty',      grad:'linear-gradient(135deg,#a855f7,#7c3aed)', emoji:'\u{1F484}' },
-  { label:'Pharma',      slug:'pharma',      grad:'linear-gradient(135deg,#06b6d4,#0e7490)', emoji:'\u{1F48A}' },
-  { label:'Home',        slug:'home',        grad:'linear-gradient(135deg,#ef4444,#b91c1c)', emoji:'\u{1F3E0}' },
-  { label:'Sports',      slug:'sports',      grad:'linear-gradient(135deg,#14b8a6,#0f766e)', emoji:'⚽' },
-];
-
-const HYPERLOCAL = [
-  { label:'Grocery',       slug:'grocery',     grad:'linear-gradient(135deg,#bbf7d0,#4ade80)',  emoji:'\u{1F966}', time:'~9 min' },
-  { label:'Medicines',     slug:'pharma',      grad:'linear-gradient(135deg,#c4b5fd,#8b5cf6)',  emoji:'\u{1F48A}', time:'~10 min' },
-  { label:'Fresh Food',    slug:'grocery',     grad:'linear-gradient(135deg,#fdba74,#f97316)',  emoji:'\u{1F957}', time:'~9 min' },
-  { label:'Dairy',         slug:'grocery',     grad:'linear-gradient(135deg,#bfdbfe,#60a5fa)',  emoji:'\u{1F95B}', time:'~8 min' },
-  { label:'Kirana',        slug:'grocery',     grad:'linear-gradient(135deg,#fde68a,#facc15)',  emoji:'\u{1F6D2}', time:'~10 min' },
-  { label:'Snacks',        slug:'grocery',     grad:'linear-gradient(135deg,#fca5a5,#f87171)',  emoji:'\u{1F36D}', time:'~9 min' },
-];
-
-const DEAL_SECTIONS = [
-  { title:'Suggested For You',        color:'#00A2A5', prods: products.slice(0,8) },
-  { title:'Top Deals on Electronics', color:'#FF5E00', prods: products.slice(2,10) },
-  { title:'Fashion Picks',            color:'#007A76', prods: products.slice(1,9) },
-];
-
-const MARQUEE_ITEMS = [
-  { icon:'⚡', text:'1,247 orders delivered today in Hyderabad' },
-  { icon:'\u{1F3EA}', text:'389 local shops live right now' },
-  { icon:'⏱', text:'Average delivery: 9 minutes' },
-  { icon:'\u{1F4B0}', text:'Save ₹15–30 per order vs other apps' },
-  { icon:'\u{1F6B2}', text:'100% electric delivery fleet' },
-  { icon:'\u{1F193}', text:'Zero commission for local shops' },
-  { icon:'⭐', text:'4.8 rating — 12,000+ happy customers' },
-  { icon:'\u{1F33F}', text:'Farm-fresh vegetables in 10 min' },
-];
-
-const BANNERS = [
-  { bg:'linear-gradient(135deg,#00C9C8 0%,#007A76 100%)', badge:'SEASON SALE',    title:'Fashion that moves with you',   sub:'Starting from ₹499',           btn:'Explore Fashion', link:'/category/fashion',     accent:'#FFA31A' },
-  { bg:'linear-gradient(135deg,#FF6A00 0%,#FFA31A 100%)', badge:'FLASH SALE LIVE',title:'Big Tech Days Up to 60% Off',   sub:'Smartphones · Laptops · Audio', btn:'Shop Now', link:'/category/electronics', accent:'#fff' },
-  { bg:'linear-gradient(135deg,#0F172A 0%,#1e3a5f 100%)', badge:'NEW ARRIVALS',   title:'Premium Brands At Best Prices', sub:'Exclusive collections',              btn:'Browse All',      link:'/category',             accent:'#00C9C8' },
-];
-
-function LiveDot() {
-  return (
-    <span style={{ display:'inline-flex', alignItems:'center', gap:5 }}>
-      <span style={{ width:8, height:8, borderRadius:'50%', background:'#ef4444', display:'inline-block', animation:'live-ring 1.4s ease infinite' }}/>
-      <span style={{ fontFamily:'Poppins', fontWeight:700, fontSize:11, color:'#ef4444', letterSpacing:'.04em' }}>LIVE</span>
-    </span>
-  );
-}
-
-function LiveCounter({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [val, setVal] = useState(0);
-  const done = useRef(false);
-  const elRef = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !done.current) {
-        done.current = true;
-        let cur = 0;
-        const step = target / 60;
-        const t = setInterval(() => {
-          cur += step;
-          if (cur >= target) { setVal(target); clearInterval(t); }
-          else setVal(Math.floor(cur));
-        }, 16);
-      }
-    }, { threshold: 0.3 });
-    if (elRef.current) observer.observe(elRef.current);
-    return () => observer.disconnect();
-  }, [target]);
-  return <span ref={elRef}>{val.toLocaleString('en-IN')}{suffix}</span>;
-}
-
-function useReveal() {
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) (e.target as HTMLElement).classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-}
-
-function HScroll({ title, color, prods }: { title:string; color:string; prods:any[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  return (
-    <div className="surface reveal" style={{ marginBottom:12 }}>
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 18px', borderBottom:'1px solid #f1f5f9' }}>
-        <h2 style={{ fontSize:18, fontFamily:'Poppins', fontWeight:800, color:'var(--navy)', margin:0, display:'flex', alignItems:'center', gap:10 }}>
-          <span style={{ display:'inline-block', width:4, height:20, borderRadius:2, background:color }}/>
-          {title}
-        </h2>
-        <Link to="/category" style={{ display:'flex', alignItems:'center', gap:5, background:color, color:'#fff', padding:'7px 15px', borderRadius:20, fontSize:12, fontFamily:'Poppins', fontWeight:600, textDecoration:'none' }}>
-          See All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </Link>
-      </div>
-      <div style={{ position:'relative' }}>
-        <button className="hscroll-arrows" onClick={() => ref.current?.scrollBy({ left:-700, behavior:'smooth' })}
-          style={{ position:'absolute', left:0, top:'50%', transform:'translateY(-50%)', zIndex:2, width:34, height:34, borderRadius:'50%', background:'#fff', border:'1px solid var(--border)', boxShadow:'0 4px 12px rgba(0,0,0,.15)', display:'grid', placeItems:'center', cursor:'pointer' }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div ref={ref} style={{ display:'flex', gap:10, padding:'14px 16px', overflowX:'auto', scrollbarWidth:'none' }}>
-          {prods.map((p, i) => (
-            <div key={p.id + i} style={{ minWidth:200, maxWidth:200, flexShrink:0 }}>
-              <ProductCard product={p} tint={i % 2 === 0 ? 'teal' : 'orange'}/>
-            </div>
-          ))}
-        </div>
-        <button className="hscroll-arrows" onClick={() => ref.current?.scrollBy({ left:700, behavior:'smooth' })}
-          style={{ position:'absolute', right:0, top:'50%', transform:'translateY(-50%)', zIndex:2, width:34, height:34, borderRadius:'50%', background:'#fff', border:'1px solid var(--border)', boxShadow:'0 4px 12px rgba(0,0,0,.15)', display:'grid', placeItems:'center', cursor:'pointer' }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
-    </div>
-  );
-}
+const serviceIcons: Record<string, ReactElement> = {
+  build: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 9l9-6 9 6-9 6-9-6z" /><path d="M3 9v6l9 6 9-6V9" /></svg>,
+  bill: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>,
+  studio: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="6" width="14" height="12" rx="2" /><path d="M16 10l6-4v12l-6-4" /></svg>,
+  reach: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" /></svg>,
+  fulfill: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 8l-9-5-9 5 9 5 9-5z" /><path d="M3 8v8l9 5 9-5V8" /><path d="M12 13v8" /></svg>,
+};
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [slide, setSlide] = useState(0);
-  const [cd, setCd] = useState({ h:5, m:23, s:47 });
-  const pad = (n: number) => String(n).padStart(2, '0');
-  useReveal();
-
-  useEffect(() => {
-    const t = setInterval(() => setSlide(s => (s + 1) % BANNERS.length), 4500);
-    return () => clearInterval(t);
-  }, []);
-
-  useEffect(() => {
-    const t = setInterval(() => setCd(c => {
-      if (c.s > 0) return { ...c, s:c.s - 1 };
-      if (c.m > 0) return { ...c, m:c.m - 1, s:59 };
-      if (c.h > 0) return { h:c.h - 1, m:59, s:59 };
-      return { h:5, m:59, s:59 };
-    }), 1000);
-    return () => clearInterval(t);
-  }, []);
-
-  const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
-
-  const scrollToHyperlocal = () => {
-    document.getElementById('hyperlocal-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   return (
-    <div style={{ background:'#f1f3f6', minHeight:'100vh' }}>
-
-      {/* 1. HERO — photo background */}
-      <section style={{ position:'relative', overflow:'hidden', minHeight:'88vh', display:'flex', alignItems:'center' }}>
-        {/* Real photo BG */}
-        <img
-          src="/hero-bg.jpg"
-          alt=""
-          aria-hidden
-          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center right' }}
-        />
-        {/* Dark gradient overlay — left heavy so text is readable */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(100deg,rgba(10,18,38,.88) 42%,rgba(10,18,38,.45) 70%,rgba(10,18,38,.18) 100%)' }}/>
-        {/* Subtle teal tint at bottom */}
-        <div style={{ position:'absolute', bottom:0, left:0, right:0, height:180, background:'linear-gradient(to top,rgba(0,122,118,.35),transparent)', pointerEvents:'none' }}/>
-
-        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 32px', position:'relative', zIndex:2, width:'100%' }}>
-          <div style={{ maxWidth:600 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20, flexWrap:'wrap' }}>
-              <LiveDot/>
-              <span style={{ background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.2)', color:'rgba(255,255,255,.85)', fontSize:12, fontFamily:'Poppins', fontWeight:600, padding:'5px 14px', borderRadius:20, backdropFilter:'blur(8px)' }}>
-                Hyderabad&apos;s Hyperlocal Quick Commerce
+    <div style={{ background: '#fff' }}>
+      {/* Hero */}
+      <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 55%,#0F172A 100%)', position: 'relative', overflow: 'hidden', padding: '72px 0 90px' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(700px 380px at 85% -10%,rgba(0,201,200,.18),transparent 60%),radial-gradient(600px 320px at 5% 110%,rgba(255,106,0,.14),transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 20px', position: 'relative' }}>
+          <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.15fr .85fr', gap: 40, alignItems: 'center' }}>
+            <div className="fade-up">
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(0,201,200,.12)', border: '1px solid rgba(0,201,200,.3)', color: '#00C9C8', fontFamily: 'Poppins', fontWeight: 700, fontSize: 12, padding: '6px 14px', borderRadius: 20, marginBottom: 22 }}>
+                <span className="live-dot" /> HYDERABAD · SINCE 2026
               </span>
-            </div>
-
-            <h1 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(28px,5vw,62px)', lineHeight:1.06, margin:'0 0 18px', letterSpacing:'-.02em' }}>
-              <span style={{ color:'#fff' }}>Your Local Shop,</span><br/>
-              <span style={{ color:'#fff' }}>Always Here for</span><br/>
-              <span style={{ color:'#FFA31A' }}>Our Neighbours</span>
-            </h1>
-
-            <p style={{ color:'rgba(255,255,255,.7)', fontSize:16, fontFamily:'Inter', margin:'0 0 36px', lineHeight:1.7, maxWidth:480 }}>
-              Real prices from your neighbourhood kirana. Zero markup. 100% electric delivery in under 10 minutes.
-            </p>
-
-            <div style={{ display:'flex', gap:14, flexWrap:'wrap', alignItems:'center' }}>
-              <button
-                onClick={scrollToHyperlocal}
-                className="glow-btn"
-                style={{ padding:'15px 36px', fontSize:15, fontWeight:700, borderRadius:12, display:'flex', alignItems:'center', gap:10 }}
-              >
-                Shop Your Market
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-              </button>
-              <Link to="/category" style={{ background:'rgba(255,255,255,.12)', border:'1.5px solid rgba(255,255,255,.3)', color:'#fff', padding:'14px 28px', borderRadius:12, fontFamily:'Poppins', fontWeight:600, fontSize:15, textDecoration:'none', backdropFilter:'blur(8px)' }}>
-                Browse All →
-              </Link>
-            </div>
-
-            {/* Stat row */}
-            <div style={{ display:'flex', gap:28, marginTop:44, flexWrap:'wrap' }}>
-              {[
-                { icon:'⚡', val:'~9 min', lbl:'Avg delivery' },
-                { icon:'🏪', val:'389+',   lbl:'Local shops' },
-                { icon:'💰', val:'₹15–30', lbl:'Saved per order' },
-              ].map(s => (
-                <div key={s.lbl} style={{ display:'flex', alignItems:'center', gap:10 }}>
-                  <span style={{ fontSize:22 }}>{s.icon}</span>
-                  <div>
-                    <p style={{ color:'#fff', fontFamily:'Poppins', fontWeight:800, fontSize:17, margin:0, lineHeight:1 }}>{s.val}</p>
-                    <p style={{ color:'rgba(255,255,255,.55)', fontFamily:'Inter', fontSize:11, margin:0 }}>{s.lbl}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <button onClick={scrollToHyperlocal} style={{ position:'absolute', bottom:24, left:'50%', transform:'translateX(-50%)', background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.2)', borderRadius:'50%', width:40, height:40, display:'grid', placeItems:'center', cursor:'pointer', backdropFilter:'blur(8px)', animation:'orb-float 2.4s ease-in-out infinite' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-        </button>
-      </section>
-
-      {/* 2. TICKER */}
-      <div className="ticker-wrap" style={{ padding:'10px 0' }}>
-        <div className="ticker-track">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <div key={i} className="marquee-item" style={{ color:'rgba(255,255,255,.7)', borderRight:'1px solid rgba(255,255,255,.08)' }}>
-              <span style={{ fontSize:14 }}>{item.icon}</span>
-              <span style={{ fontFamily:'Poppins', fontWeight:600 }}>{item.text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 3. MAIN BODY */}
-      <div style={{ maxWidth:1300, margin:'0 auto', padding:'12px 12px', boxSizing:'border-box' }}>
-
-        {/* Banner grid */}
-        <div className="home-banner-grid reveal" style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gap:8, marginBottom:10, borderRadius:8, overflow:'hidden' }}>
-          <div className="home-main-banner" style={{ position:'relative', borderRadius:14, overflow:'hidden', minHeight:280, background:BANNERS[slide].bg, transition:'background .6s', boxShadow:'0 8px 28px rgba(15,23,42,.12)' }}>
-            <div style={{ position:'absolute', inset:0, background:'radial-gradient(680px 340px at 85% -20%,rgba(255,255,255,.16),transparent 60%)', pointerEvents:'none' }}/>
-            <div className="home-main-banner-content" style={{ position:'absolute', inset:0, padding:'36px 40px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-              <span style={{ display:'inline-block', background:'rgba(255,255,255,.2)', color:'#fff', fontSize:10, fontWeight:700, fontFamily:'Poppins', padding:'4px 10px', borderRadius:20, marginBottom:10, width:'fit-content', letterSpacing:'.1em' }}>{BANNERS[slide].badge}</span>
-              <h2 className="home-main-banner-title" style={{ color:'#fff', fontSize:'clamp(20px,3vw,36px)', fontWeight:900, fontFamily:'Poppins', margin:'0 0 8px', lineHeight:1.15, maxWidth:400 }}>{BANNERS[slide].title}</h2>
-              <p style={{ color:'rgba(255,255,255,.85)', fontSize:14, margin:'0 0 20px' }}>{BANNERS[slide].sub}</p>
-              <Link to={BANNERS[slide].link}>
-                <button className="shimmer" style={{ background:BANNERS[slide].accent, color:BANNERS[slide].accent === '#fff' ? 'var(--navy)' : '#fff', border:'none', padding:'11px 26px', borderRadius:10, fontFamily:'Poppins', fontWeight:700, fontSize:13, cursor:'pointer', position:'relative', overflow:'hidden' }}>
-                  {BANNERS[slide].btn} →
-                </button>
-              </Link>
-            </div>
-            <div style={{ position:'absolute', bottom:12, left:'50%', transform:'translateX(-50%)', display:'flex', gap:5 }}>
-              {BANNERS.map((_, i) => (
-                <button key={i} onClick={() => setSlide(i)} style={{ width:i === slide ? 22 : 6, height:6, borderRadius:3, background:i === slide ? '#fff' : 'rgba(255,255,255,.5)', border:'none', cursor:'pointer', padding:0, transition:'width .3s' }}/>
-              ))}
-            </div>
-          </div>
-          <div className="home-banner-right" style={{ display:'flex', flexDirection:'column', gap:8 }}>
-            <Link to="/category/beauty" style={{ flex:1, borderRadius:14, background:'linear-gradient(135deg,#FF6A00,#FFA31A)', padding:'18px 20px', display:'flex', flexDirection:'column', justifyContent:'space-between', textDecoration:'none', minHeight:120 }}>
-              <div>
-                <p style={{ color:'rgba(255,255,255,.8)', fontSize:11, fontFamily:'Poppins', margin:'0 0 4px' }}>TRENDING NOW</p>
-                <h3 style={{ color:'#fff', fontSize:18, fontWeight:800, fontFamily:'Poppins', margin:0, lineHeight:1.2 }}>Grooming Essentials</h3>
-              </div>
-              <span style={{ color:'#fff', fontSize:12, fontWeight:700, fontFamily:'Poppins' }}>Shop now →</span>
-            </Link>
-            <Link to="/category/fashion" style={{ flex:1, borderRadius:14, background:'linear-gradient(135deg,#0F172A,#1e3a5f)', padding:'18px 20px', display:'flex', flexDirection:'column', justifyContent:'space-between', textDecoration:'none', minHeight:120 }}>
-              <div>
-                <p style={{ color:'rgba(255,255,255,.6)', fontSize:11, fontFamily:'Poppins', margin:'0 0 4px' }}>PREMIUM PICKS</p>
-                <h3 style={{ color:'#fff', fontSize:18, fontWeight:800, fontFamily:'Poppins', margin:0, lineHeight:1.2 }}>Travel in Style</h3>
-              </div>
-              <span style={{ color:'var(--teal)', fontSize:12, fontWeight:700, fontFamily:'Poppins' }}>Shop now →</span>
-            </Link>
-          </div>
-        </div>
-
-        {/* Flash sale strip */}
-        <div className="flash-strip reveal" style={{ background:'linear-gradient(100deg,#0F172A 30%,#13283f 70%,#0F172A)', borderRadius:14, padding:'14px 18px', display:'flex', alignItems:'center', gap:16, marginBottom:10, flexWrap:'wrap', boxShadow:'0 6px 22px rgba(15,23,42,.18)', border:'1px solid rgba(255,255,255,.06)' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
-            <div style={{ width:34, height:34, borderRadius:10, background:'var(--grad-orange)', display:'grid', placeItems:'center', color:'#fff' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>
-            </div>
-            <div>
-              <p style={{ color:'#fff', fontFamily:'Poppins', fontWeight:800, fontSize:16, margin:0 }}>Flash Sale</p>
-              <p style={{ color:'rgba(255,255,255,.6)', fontSize:11, margin:0 }}>Hurry, ends soon!</p>
-            </div>
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:5, flexShrink:0 }}>
-            {[pad(cd.h), pad(cd.m), pad(cd.s)].map((t, i) => (
-              <span key={i} style={{ display:'flex', alignItems:'center', gap:5 }}>
-                <span className="flip-unit">{t}</span>
-                {i < 2 && <span style={{ color:'var(--orange-bright)', fontWeight:800, fontSize:16 }}>:</span>}
-              </span>
-            ))}
-          </div>
-          <div className="flash-quicklinks" style={{ display:'flex', gap:8, marginLeft:'auto', flexWrap:'wrap' }}>
-            {[
-              { label:'Min. 70% Off', sub:'Best Deals',  color:'#00A2A5', slug:'deals' },
-              { label:'Just ₹799', sub:'Payday Sale', color:'#FF5E00', slug:'payday' },
-              { label:'Just ₹499', sub:'Deal of Day', color:'#007A76', slug:'dotd' },
-              { label:'Up to 80%',   sub:'Price Drop',  color:'#0F172A', slug:'pricedrop' },
-            ].map(q => (
-              <Link key={q.label} to={'/category/' + q.slug} style={{ background:q.color, color:'#fff', padding:'8px 12px', borderRadius:10, textDecoration:'none', textAlign:'center', minWidth:92, flexShrink:0 }}>
-                <p style={{ fontFamily:'Poppins', fontWeight:800, fontSize:13, margin:0 }}>{q.label}</p>
-                <p style={{ fontSize:10, opacity:.8, margin:0 }}>{q.sub}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Category grid */}
-        <div className="surface reveal" style={{ marginBottom:12 }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 18px 12px' }}>
-            <h2 style={{ fontFamily:'Poppins', fontWeight:800, fontSize:18, color:'var(--navy)', margin:0, display:'flex', alignItems:'center', gap:10 }}>
-              <span style={{ width:4, height:20, borderRadius:2, background:'var(--grad-orange)', display:'inline-block' }}/>
-              Shop by Category
-            </h2>
-            <Link to="/category" style={{ fontSize:13, fontFamily:'Poppins', fontWeight:600, color:'var(--teal-deep)', textDecoration:'none' }}>View all →</Link>
-          </div>
-          <div className="cat-grid-8" style={{ display:'grid', gridTemplateColumns:'repeat(8,1fr)', gap:8, padding:'0 12px 16px' }}>
-            {CATEGORIES.map(c => (
-              <Link key={c.slug} to={'/category/' + c.slug} className="cat-icon-card">
-                <div className="icon-ring" style={{ background:c.grad }}>
-                  <span style={{ fontSize:26 }}>{c.emoji}</span>
-                </div>
-                <span className="cat-name">{c.label}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* HYPERLOCAL MARKET SECTION */}
-        <div id="hyperlocal-section" className="surface reveal" style={{ marginBottom:12 }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 18px 12px' }}>
-            <div>
-              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
-                <span className="hl-loc-badge">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                  Hyderabad · Delivering in ~9 min
-                </span>
-                <span style={{ background:'rgba(255,106,0,.1)', color:'#c25400', fontSize:10, fontFamily:'Poppins', fontWeight:700, padding:'2px 8px', borderRadius:20 }}>NEW</span>
-              </div>
-              <h2 style={{ fontFamily:'Poppins', fontWeight:800, fontSize:18, color:'var(--navy)', margin:0, display:'flex', alignItems:'center', gap:10 }}>
-                <span style={{ width:4, height:20, borderRadius:2, background:'var(--teal)', display:'inline-block' }}/>
-                Shop Your Hyperlocal Market
-              </h2>
-            </div>
-            <Link to="/category" style={{ display:'flex', alignItems:'center', gap:5, background:'var(--teal)', color:'#fff', padding:'7px 15px', borderRadius:20, fontSize:12, fontFamily:'Poppins', fontWeight:600, textDecoration:'none', flexShrink:0 }}>
-              Explore All
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </Link>
-          </div>
-          <div className="hl-grid" style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:12, padding:'0 14px 18px' }}>
-            {HYPERLOCAL.map(c => (
-              <Link key={c.label} to={'/category/' + c.slug} style={{ textDecoration:'none' }}>
-                <div className="hl-tile">
-                  <div className="hl-tile-img" style={{ background:c.grad }}>
-                    <span style={{ position:'relative', zIndex:1 }}>{c.emoji}</span>
-                  </div>
-                  <p className="hl-tile-name">{c.label}</p>
-                  <p className="hl-tile-time">
-                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    {c.time}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Horizontal product sections */}
-        {DEAL_SECTIONS.map(s => (
-          <HScroll key={s.title} title={s.title} color={s.color} prods={s.prods}/>
-        ))}
-
-        {/* Deal banners */}
-        <div className="home-deal-banners reveal" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:12 }}>
-          {[
-            { title:'Shop for a Cool Summer', color:'#FF5E00', slug:'fashion' },
-            { title:'Top Electronics Deals',  color:'#00A2A5', slug:'electronics' },
-          ].map(b => (
-            <Link key={b.title} to={'/category/' + b.slug} className="shimmer" style={{ background:b.color, borderRadius:14, padding:'20px 22px', display:'flex', alignItems:'center', justifyContent:'space-between', textDecoration:'none', position:'relative', overflow:'hidden' }}>
-              <h3 style={{ color:'#fff', fontFamily:'Poppins', fontWeight:800, fontSize:17, margin:0, maxWidth:180, lineHeight:1.2 }}>{b.title}</h3>
-              <div style={{ width:36, height:36, borderRadius:'50%', background:'rgba(255,255,255,.2)', display:'grid', placeItems:'center', color:'#fff' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Newsletter */}
-        <div className="reveal newsletter-wrap" style={{ background:'var(--grad-teal)', borderRadius:16, padding:'32px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:24, flexWrap:'wrap', marginBottom:16, position:'relative', overflow:'hidden' }}>
-          <div style={{ position:'absolute', inset:0, background:'radial-gradient(600px 300px at 80% 120%,rgba(255,163,26,.3),transparent 60%)', pointerEvents:'none' }}/>
-          <div style={{ position:'relative' }}>
-            <h2 style={{ color:'#fff', fontSize:'clamp(18px,3vw,24px)', fontFamily:'Poppins', margin:'0 0 4px' }}>Get Exclusive Deals</h2>
-            <p style={{ color:'rgba(255,255,255,.85)', fontSize:14, margin:0 }}>Subscribe and save up to 40% on your next order</p>
-          </div>
-          <form className="newsletter-form" style={{ display:'flex', gap:8, position:'relative', flexWrap:'wrap', flex:1, maxWidth:480 }} onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email…" style={{ padding:'12px 18px', borderRadius:10, border:'none', fontSize:14, fontFamily:'Inter', outline:'none', flex:1, minWidth:180 }}/>
-            <button type="submit" className="btn btn-cta" style={{ flexShrink:0 }}>Subscribe</button>
-          </form>
-        </div>
-      </div>
-
-      {/* 4. LIVE STORE SECTION */}
-      <section className="live-store-section">
-        <div className="orb orb-1" style={{ width:500, height:500, background:'rgba(0,201,200,.12)', top:-100, right:-120 }}/>
-        <div className="orb orb-2" style={{ width:350, height:350, background:'rgba(255,106,0,.1)', bottom:-80, left:-80 }}/>
-
-        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px', position:'relative', zIndex:2 }}>
-          <div className="reveal" style={{ textAlign:'center', marginBottom:40 }}>
-            <div style={{ display:'inline-flex', alignItems:'center', gap:10, background:'rgba(0,201,200,.15)', border:'1px solid rgba(0,201,200,.3)', borderRadius:999, padding:'6px 18px', marginBottom:16 }}>
-              <LiveDot/>
-              <span style={{ fontFamily:'Poppins', fontWeight:700, fontSize:13, color:'rgba(255,255,255,.85)' }}>389 shops live right now in Hyderabad</span>
-            </div>
-            <h2 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(26px,4vw,44px)', color:'#fff', margin:'0 0 12px', lineHeight:1.1 }}>
-              Zoptavi <span style={{ color:'#00C9C8' }}>Live Store</span>
-            </h2>
-            <p style={{ color:'rgba(255,255,255,.55)', fontSize:16, fontFamily:'Inter', maxWidth:540, margin:'0 auto' }}>
-              Your neighbourhood shops, live. Real prices. No markup. Delivered in 10 minutes.
-            </p>
-          </div>
-
-          <div className="live-store-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:40 }}>
-            {LIVE_STORES.map(s => (
-              <Link key={s.label} to="/category" style={{ textDecoration:'none' }}>
-                <div className="live-card reveal">
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:14 }}>
-                    <span style={{ fontSize:36 }}>{s.emoji}</span>
-                    <span style={{ background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.18)', color:'rgba(255,255,255,.8)', fontSize:11, fontFamily:'Poppins', fontWeight:700, padding:'3px 10px', borderRadius:20 }}>{s.tag}</span>
-                  </div>
-                  <h3 style={{ fontFamily:'Poppins', fontWeight:800, fontSize:18, color:'#fff', margin:'0 0 6px', whiteSpace:'pre-line', lineHeight:1.2 }}>{s.label}</h3>
-                  <p style={{ color:'rgba(255,255,255,.5)', fontSize:13, fontFamily:'Inter', margin:'0 0 14px', lineHeight:1.55 }}>{s.desc}</p>
-                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                    <span style={{ fontFamily:'Poppins', fontWeight:700, fontSize:12, color:s.color }}>{s.stat}</span>
-                    <span style={{ background:'rgba(255,255,255,.1)', border:'1px solid rgba(255,255,255,.18)', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:12, padding:'5px 14px', borderRadius:20 }}>Order →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Price compare */}
-          <div className="reveal" style={{ background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.1)', borderRadius:20, padding:'28px 32px' }}>
-            <div style={{ textAlign:'center', marginBottom:24 }}>
-              <h3 style={{ fontFamily:'Poppins', fontWeight:800, fontSize:22, color:'#fff', margin:'0 0 6px' }}>
-                💰 Why Zoptavi Saves You Money
-              </h3>
-              <p style={{ color:'rgba(255,255,255,.5)', fontSize:14, fontFamily:'Inter' }}>
-                Other apps add 18–30% commission. We don&apos;t. Your shop keeps all the profit.
+              <h1 className="hero-h1" style={{ color: '#fff', fontSize: 'clamp(32px,4.4vw,54px)', fontFamily: 'Poppins', fontWeight: 900, lineHeight: 1.12, margin: '0 0 20px', maxWidth: 620 }}>
+                You run the business.<br />We handle everything online.
+              </h1>
+              <p style={{ color: 'rgba(255,255,255,.78)', fontSize: 16.5, lineHeight: 1.7, maxWidth: 540, margin: '0 0 30px' }}>
+                Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
               </p>
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">
+                  Get a Free Quote →
+                </a>
+                <Link to="/services" className="btn btn-ghost-light">
+                  See Pricing
+                </Link>
+              </div>
             </div>
-            <div className="price-compare-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
-              {[
-                { item:'Tata Salt 1kg',   us:24, them:34 },
-                { item:'Amul Milk 500ml', us:28, them:41 },
-                { item:'Bread loaf',      us:35, them:52 },
-                { item:'Paracetamol 10s', us:18, them:28 },
-              ].map(p => (
-                <div key={p.item} style={{ background:'rgba(255,255,255,.05)', border:'1px solid rgba(255,255,255,.08)', borderRadius:14, padding:'16px 14px', textAlign:'center' }}>
-                  <p style={{ color:'rgba(255,255,255,.6)', fontSize:12, fontFamily:'Poppins', fontWeight:600, margin:'0 0 10px' }}>{p.item}</p>
-                  <div style={{ display:'flex', gap:6, justifyContent:'center', marginBottom:8 }}>
-                    <span style={{ background:'rgba(0,201,200,.2)', color:'#00C9C8', fontFamily:'Poppins', fontWeight:800, fontSize:15, padding:'4px 10px', borderRadius:8 }}>{inr(p.us)}</span>
-                    <span style={{ background:'rgba(255,106,0,.15)', color:'#ff8040', fontFamily:'Poppins', fontWeight:700, fontSize:13, padding:'4px 10px', borderRadius:8, textDecoration:'line-through', opacity:.8 }}>{inr(p.them)}</span>
+
+            {/* Proof of scale card */}
+            <div className="hero-right fade-up-2">
+              <div className="glass-card" style={{ padding: 22, background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.14)' }}>
+                <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', margin: '0 0 14px' }}>
+                  Not our first store
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {portfolio.map(p => (
+                    <a key={p.key} href={p.url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderRadius: 12, background: 'rgba(255,255,255,.06)', textDecoration: 'none', transition: '.2s' }}
+                      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,201,200,.12)')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,.06)')}>
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: 'var(--grad-teal)', display: 'grid', placeItems: 'center', color: '#fff', fontFamily: 'Poppins', fontWeight: 800, flexShrink: 0 }}>{p.name[0]}</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ color: '#fff', fontFamily: 'Poppins', fontWeight: 700, fontSize: 13.5, margin: 0 }}>{p.name}</p>
+                        <p style={{ color: 'rgba(255,255,255,.55)', fontSize: 11.5, margin: 0 }}>{p.category}</p>
+                      </div>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C9C8" strokeWidth="2.5" style={{ flexShrink: 0 }}><path d="M7 17 17 7M7 7h10v10" /></svg>
+                    </a>
+                  ))}
+                </div>
+                <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 12, marginTop: 16, lineHeight: 1.6 }}>
+                  Two live platforms already run on the Zoptavi stack — you're not client number one, you're client number three.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5 services */}
+      <section className="sec">
+        <div className="wrap">
+          <div className="sec-head">
+            <div>
+              <span className="badge-teal">WHAT WE DO</span>
+              <h2 style={{ marginTop: 10 }}>Five services. One relationship.</h2>
+            </div>
+            <p className="muted" style={{ maxWidth: 380, fontSize: 14.5 }}>Competitors sell one piece — a website, or software, or reels. Zoptavi sells the whole chain.</p>
+          </div>
+          <div className="grid-5">
+            {coreServices.map((s, i) => (
+              <div key={s.key} className={`pines-card fade-up-${(i % 3) + 1}`} style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div className="titlebar tl" style={{ gap: 0 }}>
+                  <div className="ic" style={{ width: 42, height: 42 }}>
+                    <div style={{ width: 22, height: 22 }}>{serviceIcons[s.icon]}</div>
                   </div>
-                  <p style={{ color:'#4ade80', fontFamily:'Poppins', fontWeight:700, fontSize:12, margin:0 }}>You save {inr(p.them - p.us)}</p>
                 </div>
-              ))}
-            </div>
-            <div style={{ textAlign:'center', marginTop:24 }}>
-              <Link to="/category">
-                <button className="glow-btn" style={{ padding:'13px 32px', fontSize:15 }}>Start Saving Now →</button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. HOW IT WORKS */}
-      <section style={{ background:'#fff', padding:'56px 0' }}>
-        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px' }}>
-          <div className="reveal" style={{ textAlign:'center', marginBottom:36 }}>
-            <h2 style={{ fontFamily:'Poppins', fontWeight:900, fontSize:'clamp(22px,3.5vw,36px)', color:'var(--navy)', margin:'0 0 8px' }}>How Zoptavi Works</h2>
-            <p style={{ color:'var(--text-2)', fontSize:15, fontFamily:'Inter' }}>Three steps. Ten minutes. Real shop prices.</p>
-          </div>
-          <div className="how-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:20 }}>
-            {[
-              { step:'1', icon:'\u{1F4CD}', title:'Enter your area',  desc:'Type your pincode. See all live shops within 2km of you.' },
-              { step:'2', icon:'\u{1F6D2}', title:'Pick your items',  desc:'Browse real-time stock. No fake "Out of Stock".' },
-              { step:'3', icon:'⚡',    title:'Order in seconds', desc:'Place order via app or WhatsApp. Pay on delivery or UPI.' },
-              { step:'4', icon:'\u{1F6B2}', title:'10-min delivery',  desc:'Our EV rider picks up from the shop and brings it to your door.' },
-            ].map((s, i) => (
-              <div key={s.step} className="reveal" style={{ textAlign:'center', padding:'24px 16px', transitionDelay: (i * 0.1) + 's' }}>
-                <div style={{ width:72, height:72, borderRadius:'50%', background:'linear-gradient(135deg,#E6FAFA,#f0f8ff)', border:'2px solid rgba(0,201,200,.25)', display:'grid', placeItems:'center', margin:'0 auto 6px', fontSize:32 }}>
-                  {s.icon}
-                </div>
-                <div style={{ width:22, height:22, borderRadius:'50%', background:'var(--grad-teal)', color:'#fff', fontFamily:'Poppins', fontWeight:800, fontSize:11, display:'grid', placeItems:'center', margin:'-8px auto 14px' }}>{s.step}</div>
-                <h3 style={{ fontFamily:'Poppins', fontWeight:700, fontSize:16, color:'var(--navy)', margin:'0 0 8px' }}>{s.title}</h3>
-                <p style={{ color:'var(--text-2)', fontSize:13, fontFamily:'Inter', lineHeight:1.6 }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. TRUST STRIP */}
-      <div style={{ background:'#f8fafc', borderTop:'1px solid #eef0f4', borderBottom:'1px solid #eef0f4', padding:'20px 0' }}>
-        <div style={{ maxWidth:1300, margin:'0 auto', padding:'0 20px' }}>
-          <div className="trust-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:16 }}>
-            {[
-              { icon:'⚡',    title:'10-Minute Delivery', sub:'2km grid guarantee' },
-              { icon:'\u{1F4B0}', title:'Real Shop Prices',   sub:'Zero app markup' },
-              { icon:'\u{1F33F}', title:'100% EV Fleet',      sub:'Green last-mile delivery' },
-              { icon:'\u{1F3EA}', title:'389 Local Shops',    sub:'Support your neighbourhood' },
-            ].map(t => (
-              <div key={t.title} className="reveal" style={{ display:'flex', alignItems:'center', gap:12 }}>
-                <span style={{ fontSize:28, flexShrink:0 }}>{t.icon}</span>
                 <div>
-                  <p style={{ fontFamily:'Poppins', fontWeight:700, fontSize:14, color:'var(--navy)', margin:0 }}>{t.title}</p>
-                  <p style={{ fontSize:12, color:'var(--text-2)', margin:0 }}>{t.sub}</p>
+                  <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 16, color: 'var(--navy)', margin: '0 0 6px' }}>{s.name}</h3>
+                  <p style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.55, margin: 0 }}>{s.what}</p>
                 </div>
+                <span className="badge-green" style={{ width: 'fit-content' }}>{s.revenueType}</span>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Bundle teaser */}
+      <section className="sec tight" style={{ background: 'var(--gray-light)' }}>
+        <div className="wrap">
+          <div className="sec-head">
+            <div>
+              <span className="badge-orange">THE ZOPTAVI BUNDLE</span>
+              <h2 style={{ marginTop: 10 }}>One price. Everything included.</h2>
+            </div>
+            <Link to="/services" className="vall">Full pricing breakdown →</Link>
+          </div>
+          <div className="biz-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
+            {bundles.map(b => (
+              <div key={b.key} className="surface" style={{ padding: 26, position: 'relative', border: b.key === 'growth' ? '2px solid var(--teal)' : undefined }}>
+                {b.key === 'growth' && <span style={{ position: 'absolute', top: -12, left: 24, background: 'var(--grad-teal)', color: '#fff', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, padding: '4px 12px', borderRadius: 20 }}>MOST POPULAR</span>}
+                <p style={{ fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 4px' }}>{b.tagline}</p>
+                <h3 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 22, color: 'var(--navy)', margin: '0 0 16px' }}>{b.name}</h3>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
+                  <span style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 28, color: 'var(--navy)' }}>₹{b.monthlyFee.toLocaleString('en-IN')}</span>
+                  <span style={{ fontSize: 13, color: 'var(--text-2)' }}>/month</span>
+                </div>
+                <p style={{ fontSize: 12.5, color: 'var(--text-2)', margin: '0 0 20px' }}>+ ₹{b.setupFee.toLocaleString('en-IN')} one-time setup</p>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 22 }}>
+                  {[b.website, b.billing, b.content !== '—' ? b.content : null, b.ads !== '—' ? b.ads : null].filter(Boolean).map((f, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#334155' }}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal-deep)" strokeWidth="3" style={{ flexShrink: 0, marginTop: 2 }}><path d="M20 6 9 17l-5-5" /></svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className={b.key === 'growth' ? 'pines-btn pines-btn-primary' : 'pines-btn pines-btn-orange'} style={{ width: '100%', justifyContent: 'center' }}>
+                  Choose {b.name}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Market stats */}
+      <section className="sec">
+        <div className="wrap">
+          <div className="sec-head">
+            <div>
+              <span className="badge-teal">THE OPPORTUNITY</span>
+              <h2 style={{ marginTop: 10 }}>The gap nobody fills</h2>
+            </div>
+          </div>
+          <div className="trust" style={{ marginBottom: 26 }}>
+            {marketFacts.slice(0, 4).map((m, i) => (
+              <div key={i} className="t float-anim">
+                <div className="ic">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 3v18h18" /><path d="M7 14l4-4 4 4 5-6" /></svg>
+                </div>
+                <div>
+                  <b>{m.figure}</b>
+                  <small>{m.fact}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flash-head" style={{ background: 'linear-gradient(120deg,#E6FAFA,#FFFCF7)', border: '1px solid #B8E3E1' }}>
+            <div className="lt">
+              <div className="ic" style={{ background: 'var(--grad-teal)' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 8v4l3 3" /></svg>
+              </div>
+              <div>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 16, color: 'var(--navy)', margin: 0 }}>Shiprocket & WareIQ need 200+ orders/month to onboard a seller</p>
+                <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '2px 0 0' }}>Zoptavi starts at 10 orders. That segment — roughly 80% of Instagram sellers — has effectively zero competition.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="sec tight">
+        <div className="wrap">
+          <div style={{ background: 'var(--grad-teal)', borderRadius: 20, padding: '44px 36px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(600px 300px at 85% 120%,rgba(255,163,26,.3),transparent 60%)' }} />
+            <div style={{ position: 'relative', maxWidth: 480 }}>
+              <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3vw,28px)' }}>One paying client this week beats a perfect plan this month.</h2>
+              <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 14.5, margin: '10px 0 0' }}>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
+            </div>
+            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0 }}>
+              Message Us on WhatsApp →
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
