@@ -5,33 +5,32 @@ export default function About() {
   return (
     <div style={{ background: '#fff' }}>
       {/* Hero */}
-      <section className="sec">
-        <div className="wrap">
+      <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 55%,#0F172A 100%)', position: 'relative', overflow: 'hidden', padding: '64px 0 56px' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(700px 380px at 85% -10%,rgba(0,201,200,.18),transparent 60%),radial-gradient(600px 320px at 5% 110%,rgba(255,106,0,.14),transparent 60%)', pointerEvents: 'none' }} />
+        <div className="wrap" style={{ position: 'relative' }}>
           <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 40, alignItems: 'center' }}>
             <div>
               <span className="badge-teal">THE BUSINESS</span>
-              <h1 style={{ fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 16px' }}>What Zoptavi is</h1>
-              <p style={{ fontSize: 15, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 14 }}>
+              <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 16px' }}>What <span className="gradient-text">Zoptavi</span> is</h1>
+              <p style={{ fontSize: 15, color: 'rgba(255,255,255,.75)', lineHeight: 1.75, marginBottom: 14 }}>
                 Zoptavi takes a small business fully online and keeps it running. Competitors sell one piece — a website, or software, or reels.
                 Zoptavi sells the whole chain: one relationship, one invoice, and recurring revenue from every client.
               </p>
-              <div className="flash-head" style={{ background: 'linear-gradient(120deg,#FFF1E6,#FFFCF7)', border: '1px solid #FFE0C2', marginTop: 20 }}>
-                <div className="lt">
-                  <div className="ic" style={{ background: 'var(--grad-orange)' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M8 12h8M12 8v8" /></svg>
-                  </div>
-                  <div>
-                    <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 15, color: 'var(--navy)', margin: 0 }}>The pitch, in one line</p>
-                    <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: '2px 0 0' }}>"You run the business. We handle the website, the billing, the content, the ads and the shipping. One team, one bill, one WhatsApp number."</p>
-                  </div>
+              <div className="glass-card" style={{ padding: '20px 24px', background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.14)', marginTop: 20, display: 'flex', gap: 16, alignItems: 'center' }}>
+                <div style={{ width: 46, height: 46, borderRadius: 13, background: 'var(--grad-orange)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M8 12h8M12 8v8" /></svg>
+                </div>
+                <div>
+                  <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 15, color: '#fff', margin: 0 }}>The pitch, in one line</p>
+                  <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,.65)', margin: '2px 0 0' }}>"You run the business. We handle the website, the billing, the content, the ads and the shipping. One team, one bill, one WhatsApp number."</p>
                 </div>
               </div>
             </div>
-            <div>
+            <div className="glass-card" style={{ padding: '8px 20px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.12)' }}>
               {coreServices.map(s => (
-                <div key={s.key} style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '13px 4px', borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 13.5, color: 'var(--navy)' }}>{s.name}</span>
-                  <span style={{ fontSize: 12, color: 'var(--text-2)', textAlign: 'right' }}>{s.revenueType}</span>
+                <div key={s.key} style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '13px 4px', borderBottom: '1px solid rgba(255,255,255,.1)' }}>
+                  <span style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 13.5, color: '#fff' }}>{s.name}</span>
+                  <span style={{ fontSize: 12, color: 'rgba(255,255,255,.55)', textAlign: 'right' }}>{s.revenueType}</span>
                 </div>
               ))}
             </div>

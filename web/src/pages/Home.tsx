@@ -23,7 +23,7 @@ export default function Home() {
                 <span className="live-dot" /> HYDERABAD · SINCE 2026
               </span>
               <h1 className="hero-h1" style={{ color: '#fff', fontSize: 'clamp(32px,4.4vw,54px)', fontFamily: 'Poppins', fontWeight: 900, lineHeight: 1.12, margin: '0 0 20px', maxWidth: 620 }}>
-                You run the business.<br />We handle everything online.
+                You run the business.<br />We handle <span className="gradient-text">everything online.</span>
               </h1>
               <p style={{ color: 'rgba(255,255,255,.78)', fontSize: 16.5, lineHeight: 1.7, maxWidth: 540, margin: '0 0 30px' }}>
                 Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
@@ -66,6 +66,40 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Trust marquee */}
+      <div style={{ background: '#0a1628', padding: '20px 0', borderBottom: '1px solid rgba(255,255,255,.08)' }}>
+        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,.4)', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 14 }}>
+          Built on tools your customers already trust
+        </p>
+        <div className="marquee-wrap">
+          <div className="marquee-track">
+            {[...['Razorpay', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram', 'UPI', 'Cashfree'], ...['Razorpay', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram', 'UPI', 'Cashfree']].map((t, i) => (
+              <span key={i} className="marquee-item" style={{ color: 'rgba(255,255,255,.55)' }}>
+                <span className="live-dot" style={{ background: '#00C9C8', boxShadow: 'none' }} />
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Stat band */}
+      <div style={{ background: 'linear-gradient(135deg,#0a1628,#00201e)', padding: '38px 0' }}>
+        <div className="wrap" style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+          {[
+            { val: '5', lbl: 'Core Services' },
+            { val: '2', lbl: 'Live Client Stores' },
+            { val: '10', lbl: 'Orders/Mo Minimum' },
+            { val: '1', lbl: 'Team, One Bill' },
+          ].map((s, i) => (
+            <div key={i} className="stat-chip reveal reveal-delay-1" style={{ opacity: 1, transform: 'none' }}>
+              <span className="val">{s.val}</span>
+              <span className="lbl">{s.lbl}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* 5 services */}
       <section className="sec">
@@ -167,6 +201,23 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Manifesto */}
+      <section className="sec" style={{ background: 'linear-gradient(160deg,#0F172A 0%,#0a1628 100%)', position: 'relative', overflow: 'hidden' }}>
+        <div className="orb orb-1" style={{ width: 320, height: 320, background: 'rgba(0,201,200,.16)', top: -80, left: -80 }} />
+        <div className="orb orb-2" style={{ width: 260, height: 260, background: 'rgba(255,106,0,.12)', bottom: -60, right: -60 }} />
+        <div className="wrap" style={{ position: 'relative', maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
+          <span className="badge-teal">WHY ZOPTAVI</span>
+          <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3.2vw,32px)', margin: '16px 0 18px', lineHeight: 1.3 }}>
+            We're not a website vendor. We're <span className="gradient-text">the team that keeps you online.</span>
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,.7)', fontSize: 15, lineHeight: 1.75, margin: '0 auto 26px', maxWidth: 620 }}>
+            No freelancer disappearing after launch. No juggling five vendors for a website, a biller, a designer and an ads guy.
+            One team, on WhatsApp, that builds it, bills it, posts it, promotes it, and ships it — and sticks around after you pay.
+          </p>
+          <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-ghost-light">Talk to us, we won't oversell →</a>
         </div>
       </section>
 
