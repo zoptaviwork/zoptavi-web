@@ -184,6 +184,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Results panel — exact gradient-stat treatment from Figma reference */}
+      <section className="section-black" style={{ padding: '0 0 90px' }}>
+        <div className="wrap">
+          <div className="msh-results">
+            <div className="msh-results-grid">
+              {[
+                { n: '10', l: 'Orders/Mo Minimum — Nobody Else Goes This Low' },
+                { n: '48H', l: 'Live Store to First Order, Typical Turnaround' },
+                { n: '5', l: 'Services Under One Bill — Site, Bill, Content, Ads, Ship' },
+                { n: '2', l: 'Live Client Stores Already Running on Zoptavi' },
+              ].map((s, i) => (
+                <div key={i} className="msh-results-stat">
+                  <span className="n">{s.n}</span>
+                  <span className="l">{s.l}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Manifesto */}
       <section className="section-black" style={{ padding: '80px 0' }}>
         <div className="orb orb-1" style={{ width: 320, height: 320, background: 'rgba(0,201,200,.16)', top: -80, left: -80 }} />

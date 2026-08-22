@@ -44,7 +44,7 @@ export default function Navbar() {
       <div>
         <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 72 }}>
           <Link to="/" className="nav-logo" style={{ flexShrink: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img className="nav-logo-img" src="/zoptavi-logo-cropped.jpg" alt="Zoptavi" style={{ height: 46, width: 'auto', borderRadius: 6 }} />
+            <img className="nav-logo-img" src="/zoptavi-logo-final.png" alt="Zoptavi" style={{ height: 34, width: 'auto' }} />
           </Link>
 
           {/* Desktop nav */}

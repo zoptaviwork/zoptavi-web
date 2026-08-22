@@ -1223,8 +1223,19 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
   transition:transform .25s,background .25s,border-color .25s;
 }
 .msh-stat:hover{transform:translateY(-4px);background:rgba(255,255,255,.075);border-color:rgba(0,201,200,.35)}
-.msh-stat .num{font-family:'Poppins';font-weight:900;font-size:clamp(24px,2.6vw,34px);color:#fff;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.msh-stat .num{font-family:'Raleway';font-weight:600;font-size:clamp(19px,1.8vw,22px);color:#fff;letter-spacing:0;display:flex;align-items:center;gap:8px}
 .msh-stat .lbl{font-family:'Raleway';font-weight:500;font-size:13px;color:rgba(255,255,255,.55)}
+
+/* Big gradient results panel — exact scale from Figma (64px Raleway SemiBold) */
+.msh-results{
+  border-radius:32px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,#0f1a3d 0%,#5b2a6e 45%,#8a3a5e 75%,#c2542f 100%);
+  padding:56px 44px;
+}
+.msh-results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative;z-index:1}
+.msh-results-stat .n{font-family:'Raleway';font-weight:600;font-size:clamp(34px,4.4vw,58px);line-height:1.2;color:#fff;letter-spacing:0;display:block}
+.msh-results-stat .l{font-family:'Raleway';font-weight:500;font-size:13.5px;color:rgba(255,255,255,.8);margin-top:4px;display:block}
+@media(max-width:900px){.msh-results-grid{grid-template-columns:repeat(2,1fr)}.msh-results{padding:36px 24px}}
 .msh-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:900px){.msh-stat-grid{grid-template-columns:repeat(2,1fr)}}
 
