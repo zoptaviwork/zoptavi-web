@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Raleway:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 /* ── Tailwind v4 brand tokens ── */
@@ -1181,16 +1181,17 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
 /* ============================================================
    MESSOLD-INSPIRED PREMIUM LAYER — bold black minimalism
    ============================================================ */
+/* Exact typography pulled from Figma (html.to.design capture of messold.com) */
 .giant-h1{
-  font-family:'Poppins',sans-serif;font-weight:900;
-  font-size:clamp(38px,6.4vw,84px);
-  line-height:.98;letter-spacing:-.035em;
+  font-family:'Raleway',sans-serif;font-weight:600;
+  font-size:clamp(30px,4.8vw,52px);
+  line-height:1.18;letter-spacing:.2px;
   color:#fff;margin:0;
 }
 .giant-h2{
-  font-family:'Poppins',sans-serif;font-weight:900;
-  font-size:clamp(30px,4.4vw,56px);
-  line-height:1;letter-spacing:-.03em;
+  font-family:'Raleway',sans-serif;font-weight:500;
+  font-size:clamp(32px,5.6vw,63px);
+  line-height:1.07;letter-spacing:0;
   color:#fff;margin:0;
 }
 .eyebrow{
@@ -1223,7 +1224,7 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
 }
 .msh-stat:hover{transform:translateY(-4px);background:rgba(255,255,255,.075);border-color:rgba(0,201,200,.35)}
 .msh-stat .num{font-family:'Poppins';font-weight:900;font-size:clamp(24px,2.6vw,34px);color:#fff;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
-.msh-stat .lbl{font-family:'Poppins';font-weight:600;font-size:12.5px;color:rgba(255,255,255,.55)}
+.msh-stat .lbl{font-family:'Raleway';font-weight:500;font-size:13px;color:rgba(255,255,255,.55)}
 .msh-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 @media(max-width:900px){.msh-stat-grid{grid-template-columns:repeat(2,1fr)}}
 
