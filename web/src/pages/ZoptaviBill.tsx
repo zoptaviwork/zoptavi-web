@@ -12,7 +12,7 @@ export default function ZoptaviBill() {
           <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15.5, maxWidth: 620, margin: '0 auto 26px' }}>
             Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch from the owner's phone. Free with every website, until you outgrow it.
           </p>
-          <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">Get Zoptavi Bill Free →</a>
+          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">Get Zoptavi Bill Free →</a>
         </div>
       </section>
 
@@ -135,7 +135,7 @@ export default function ZoptaviBill() {
               <h2 style={{ color: '#fff', fontSize: 22 }}>Every Zoptavi website comes with Zoptavi Bill, free.</h2>
               <p style={{ color: 'rgba(255,255,255,.9)', fontSize: 13.5, margin: '6px 0 0' }}>Install in 20 minutes. Upgrade only once you have more than one store.</p>
             </div>
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="pines-btn" style={{ background: '#fff', color: 'var(--orange)', flexShrink: 0 }}>Start Free →</a>
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="pines-btn" style={{ background: '#fff', color: 'var(--orange)', flexShrink: 0 }}>Start Free →</a>
           </div>
         </div>
       </section>

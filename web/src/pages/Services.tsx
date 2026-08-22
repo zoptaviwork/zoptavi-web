@@ -49,7 +49,7 @@ export default function Services() {
                     <span style={{ textDecoration: 'line-through', color: 'var(--text-3)' }}>₹{b.separateYear1.toLocaleString('en-IN')}</span>
                     <span style={{ color: '#16a34a', fontWeight: 700 }}> · You save ₹{b.savings.toLocaleString('en-IN')}/yr</span>
                   </div>
-                  <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className={b.key === 'growth' ? 'pines-btn pines-btn-primary' : 'pines-btn pines-btn-orange'} style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
+                  <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className={b.key === 'growth' ? 'pines-btn pines-btn-primary' : 'pines-btn pines-btn-orange'} style={{ width: '100%', justifyContent: 'center', marginTop: 16 }}>
                     Choose {b.name}
                   </a>
                 </div>

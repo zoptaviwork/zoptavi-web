@@ -28,7 +28,7 @@ export default function Home() {
             Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
           </p>
           <div className="fade-up-2" style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">
               Get a Free Quote →
             </a>
             <Link to="/services" className="pill-outline">See Pricing</Link>
@@ -139,7 +139,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className={b.key === 'growth' ? 'pines-btn pines-btn-primary' : 'pines-btn pines-btn-orange'} style={{ width: '100%', justifyContent: 'center' }}>
+                <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className={b.key === 'growth' ? 'pines-btn pines-btn-primary' : 'pines-btn pines-btn-orange'} style={{ width: '100%', justifyContent: 'center' }}>
                   Choose {b.name}
                 </a>
               </div>
@@ -218,7 +218,7 @@ export default function Home() {
             No freelancer disappearing after launch. No juggling five vendors for a website, a biller, a designer and an ads guy.
             One team, on WhatsApp, that builds it, bills it, posts it, promotes it, and ships it — and sticks around after you pay.
           </p>
-          <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="pill-outline">Talk to us, we won't oversell →</a>
+          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="pill-outline">Talk to us, we won't oversell →</a>
         </div>
       </section>
 
@@ -231,7 +231,7 @@ export default function Home() {
               <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3vw,28px)' }}>One paying client this week beats a perfect plan this month.</h2>
               <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 14.5, margin: '10px 0 0' }}>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
             </div>
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0, background: '#fff', color: 'var(--teal-deep)' }}>
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0, background: '#fff', color: 'var(--teal-deep)' }}>
               Message Us on WhatsApp →
             </a>
           </div>

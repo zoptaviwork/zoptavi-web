@@ -36,7 +36,7 @@ export const Contact: React.FC = () => {
 
           <div className="lg:col-span-5 space-y-4">
             {[
-              { icon: Phone, title: 'Call or WhatsApp', primary: '+91 78426 46888', secondary: 'Mon–Sat, 9 AM to 8 PM IST', color: 'bg-teal-50 border-teal-100 text-brand-teal' },
+              { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST', color: 'bg-teal-50 border-teal-100 text-brand-teal' },
               { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours', color: 'bg-indigo-50 border-indigo-100 text-indigo-500' },
               { icon: MapPin, title: 'Based In', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana', color: 'bg-rose-50 border-rose-100 text-rose-500' },
               { icon: Clock, title: 'Response Time', primary: 'Usually same day', secondary: 'A homepage sample often within 24 hours', color: 'bg-amber-50 border-amber-100 text-amber-600' },
@@ -53,7 +53,7 @@ export const Contact: React.FC = () => {
               </div>
             ))}
 
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 h-14 rounded-2xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md transition-colors">
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 h-14 rounded-2xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md transition-colors">
               <MessageSquare className="w-4 h-4" /> Message us on WhatsApp directly
             </a>
           </div>

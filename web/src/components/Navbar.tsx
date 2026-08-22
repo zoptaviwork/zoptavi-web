@@ -35,7 +35,7 @@ export default function Navbar() {
             One team, one bill — website, billing, content, ads &amp; shipping
           </span>
           <span style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
-            <a href="tel:+917842646888" style={{ color: 'rgba(255,255,255,.55)' }}>78426 46888</a>
+            <a href="tel:+918978605027" style={{ color: 'rgba(255,255,255,.55)' }}>89786 05027</a>
             <Link to="/contact" style={{ color: '#FFA31A', fontWeight: 600 }}>Get a Quote</Link>
           </span>
         </div>
@@ -44,7 +44,7 @@ export default function Navbar() {
       <div>
         <div style={{ maxWidth: 1300, margin: '0 auto', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, minHeight: 72 }}>
           <Link to="/" className="nav-logo" style={{ flexShrink: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img className="nav-logo-img" src="/zoptavi-logo-v3.png" alt="Zoptavi" style={{ height: 42, width: 'auto' }} />
+            <img className="nav-logo-img" src="/zoptavi-logo-v4.png" alt="Zoptavi" style={{ height: 42, width: 'auto' }} />
           </Link>
 
           {/* Desktop nav */}
@@ -65,7 +65,7 @@ export default function Navbar() {
           </nav>
 
           <div className="mob-hide" style={{ flexShrink: 0 }}>
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="pill-outline" style={{ padding: '10px 20px', fontSize: 13, textDecoration: 'none' }}>
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="pill-outline" style={{ padding: '10px 20px', fontSize: 13, textDecoration: 'none' }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.2-.7-2.7-1.1-4.4-3.9-4.6-4.1-.1-.2-1.1-1.4-1.1-2.7 0-1.3.7-1.9.9-2.2.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.2.3-.3.5-.2.2-.3.3-.5.5-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
               WhatsApp Us
             </a>
@@ -94,8 +94,8 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <a href="https://wa.me/917842646888" target="_blank" rel="noreferrer" className="pill-outline" style={{ marginTop: 8, padding: '13px 0', fontSize: 14, textDecoration: 'none', justifyContent: 'center', width: '100%' }}>
-              WhatsApp Us — 78426 46888
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="pill-outline" style={{ marginTop: 8, padding: '13px 0', fontSize: 14, textDecoration: 'none', justifyContent: 'center', width: '100%' }}>
+              WhatsApp Us — 89786 05027
             </a>
           </div>
         )}
