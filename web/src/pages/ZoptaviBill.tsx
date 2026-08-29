@@ -1,3 +1,5 @@
+import { motion } from 'motion/react';
+import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
 
 export default function ZoptaviBill() {
@@ -7,27 +9,29 @@ export default function ZoptaviBill() {
       <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 60%,#0F172A 100%)', padding: '60px 0 50px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(650px 340px at 90% 0%,rgba(0,201,200,.16),transparent 60%)' }} />
         <div className="wrap" style={{ position: 'relative', textAlign: 'center' }}>
-          <span className="badge-teal">ZOPTAVI BILL</span>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,44px)', margin: '16px 0 12px' }}>Billing software that never stops working</h1>
-          <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15.5, maxWidth: 620, margin: '0 auto 26px' }}>
-            Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch from the owner's phone. Free with every website, until you outgrow it.
-          </p>
-          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">Get Zoptavi Bill Free →</a>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+            <span className="badge-teal">ZOPTAVI BILL</span>
+            <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,44px)', margin: '16px 0 12px' }}>Billing software that never stops working</h1>
+            <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15.5, maxWidth: 620, margin: '0 auto 26px' }}>
+              Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch from the owner's phone. Free with every website, until you outgrow it.
+            </p>
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">Get Zoptavi Bill Free →</a>
+          </motion.div>
         </div>
       </section>
 
       {/* 3 pillars */}
       <section className="sec">
         <div className="wrap">
-          <div className="biz-grid-3">
+          <RevealStagger className="biz-grid-3" gap={0.1}>
             {billPillars.map((p, i) => (
-              <div key={p.title} className="pillar-card">
+              <motion.div key={p.title} variants={revealItem} whileHover={{ y: -5 }} className="pillar-card">
                 <div className="pillar-num">{String(i + 1).padStart(2, '0')}</div>
                 <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 17, color: 'var(--navy)', margin: '10px 0 8px' }}>{p.title}</h3>
                 <p style={{ fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, margin: 0 }}>{p.detail}</p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </RevealStagger>
         </div>
       </section>
 

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import Reveal from '../components/Reveal';
 import { marketFacts, coreServices } from '../data/business';
 
 export default function About() {
@@ -8,7 +10,7 @@ export default function About() {
       <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 55%,#0F172A 100%)', position: 'relative', overflow: 'hidden', padding: '64px 0 56px' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(700px 380px at 85% -10%,rgba(0,201,200,.18),transparent 60%),radial-gradient(600px 320px at 5% 110%,rgba(255,106,0,.14),transparent 60%)', pointerEvents: 'none' }} />
         <div className="wrap" style={{ position: 'relative' }}>
-          <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 40, alignItems: 'center' }}>
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 40, alignItems: 'center' }}>
             <div>
               <span className="badge-teal">THE BUSINESS</span>
               <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 16px' }}>What <span className="gradient-text">Zoptavi</span> is</h1>
@@ -34,14 +36,14 @@ export default function About() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Market data */}
       <section className="sec tight" style={{ background: 'var(--gray-light)' }}>
         <div className="wrap">
-          <div className="sec-head"><div><span className="badge-orange">THE MARKET</span><h2 style={{ marginTop: 10 }}>Verified market data</h2></div></div>
+          <Reveal><div className="sec-head"><div><span className="badge-orange">THE MARKET</span><h2 style={{ marginTop: 10 }}>Verified market data</h2></div></div></Reveal>
           <div className="table-scroll">
             <table className="data-table">
               <thead><tr><th>Fact</th><th>Figure</th><th>Source</th></tr></thead>

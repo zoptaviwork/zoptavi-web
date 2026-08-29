@@ -1,3 +1,5 @@
+import { motion } from 'motion/react';
+import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import { bundles, websiteTiers, carePlans, studioPlans, adsPlans } from '../data/business';
 
 export default function Services() {
@@ -6,20 +8,22 @@ export default function Services() {
       {/* Header */}
       <section style={{ background: 'var(--navy)', padding: '56px 0 44px' }}>
         <div className="wrap" style={{ textAlign: 'center' }}>
-          <span className="badge-orange">SERVICES & PRICING</span>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 12px' }}>The Zoptavi Bundle — one price, everything</h1>
-          <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15, maxWidth: 620, margin: '0 auto' }}>
-            Three packages, one price each, nothing else to explain. Website, billing software, content, ads and support — all included.
-          </p>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+            <span className="badge-orange">SERVICES & PRICING</span>
+            <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 12px' }}>The Zoptavi Bundle — one price, everything</h1>
+            <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15, maxWidth: 620, margin: '0 auto' }}>
+              Three packages, one price each, nothing else to explain. Website, billing software, content, ads and support — all included.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Bundle table */}
       <section className="sec">
         <div className="wrap">
-          <div className="biz-grid-3">
+          <RevealStagger className="biz-grid-3" gap={0.1}>
             {bundles.map(b => (
-              <div key={b.key} className="surface" style={{ padding: 0, overflow: 'hidden' }}>
+              <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className="surface" style={{ padding: 0, overflow: 'hidden' }}>
                 <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid var(--border)', background: b.key === 'growth' ? 'linear-gradient(135deg,#E6FAFA,#fff)' : '#fff' }}>
                   <p style={{ fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 4px' }}>{b.tagline}</p>
                   <h3 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 24, color: 'var(--navy)', margin: '0 0 14px' }}>{b.name}</h3>
@@ -53,9 +57,9 @@ export default function Services() {
                     Choose {b.name}
                   </a>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </RevealStagger>
           <p style={{ textAlign: 'center', color: 'var(--text-2)', fontSize: 13, marginTop: 22 }}>
             Two-year offer: pay year two upfront and take 15% off it.
           </p>
