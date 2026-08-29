@@ -6,12 +6,13 @@ export default function Services() {
   return (
     <div style={{ background: '#fff' }}>
       {/* Header */}
-      <section style={{ background: 'var(--navy)', padding: '56px 0 44px' }}>
-        <div className="wrap" style={{ textAlign: 'center' }}>
+      <section className="section-black" style={{ padding: 'var(--s-8) 0 var(--s-7)' }}>
+        <div className="orb orb-1" style={{ width: 380, height: 380, background: 'rgba(255,106,0,.1)', top: -140, right: -100 }} />
+        <div className="wrap" style={{ textAlign: 'center', position: 'relative' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
             <span className="badge-orange">SERVICES & PRICING</span>
-            <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '14px 0 12px' }}>The Zoptavi Bundle — one price, everything</h1>
-            <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15, maxWidth: 620, margin: '0 auto' }}>
+            <h1 className="giant-h1" style={{ fontSize: 'clamp(28px,4vw,42px)', margin: '16px auto 12px', maxWidth: 760 }}>The Zoptavi Bundle — one price, everything</h1>
+            <p style={{ color: 'var(--on-dark-2)', fontSize: 15, maxWidth: 620, margin: '0 auto' }}>
               Three packages, one price each, nothing else to explain. Website, billing software, content, ads and support — all included.
             </p>
           </motion.div>
@@ -23,17 +24,17 @@ export default function Services() {
         <div className="wrap">
           <RevealStagger className="biz-grid-3" gap={0.1}>
             {bundles.map(b => (
-              <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className="surface" style={{ padding: 0, overflow: 'hidden' }}>
-                <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid var(--border)', background: b.key === 'growth' ? 'linear-gradient(135deg,#E6FAFA,#fff)' : '#fff' }}>
+              <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className="surface" style={{ padding: 0, overflow: 'hidden', border: b.key === 'growth' ? '2px solid var(--teal-deep)' : undefined }}>
+                <div style={{ padding: 'var(--s-3)', borderBottom: '1px solid var(--border)', background: b.key === 'growth' ? 'linear-gradient(135deg,#E6FAFA,#fff)' : '#fff' }}>
                   <p style={{ fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 4px' }}>{b.tagline}</p>
                   <h3 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 24, color: 'var(--navy)', margin: '0 0 14px' }}>{b.name}</h3>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                     <span style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 30, color: 'var(--navy)' }}>₹{b.monthlyFee.toLocaleString('en-IN')}</span>
                     <span style={{ fontSize: 13, color: 'var(--text-2)' }}>/month</span>
                   </div>
-                  <p style={{ fontSize: 12.5, color: 'var(--text-2)', margin: '4px 0 0' }}>₹{b.setupFee.toLocaleString('en-IN')} setup, one-time</p>
+                  <p style={{ fontSize: 12, color: 'var(--text-2)', margin: '4px 0 0' }}>₹{b.setupFee.toLocaleString('en-IN')} setup, one-time</p>
                 </div>
-                <div style={{ padding: 22 }}>
+                <div style={{ padding: 'var(--s-3)' }}>
                   {[
                     ['Website', b.website],
                     ['Payments online', b.payments],
@@ -48,7 +49,7 @@ export default function Services() {
                       <span style={{ color: val === '—' ? 'var(--text-3)' : 'var(--navy)', fontWeight: 700, textAlign: 'right', maxWidth: '58%' }}>{val}</span>
                     </div>
                   ))}
-                  <div style={{ marginTop: 16, padding: '12px 14px', background: 'var(--gray-light)', borderRadius: 10, fontSize: 12 }}>
+                  <div style={{ marginTop: 'var(--s-2)', padding: '12px 14px', background: 'var(--gray-light)', borderRadius: 'var(--r-sm)', fontSize: 12 }}>
                     <span style={{ color: 'var(--text-2)' }}>Bought separately: </span>
                     <span style={{ textDecoration: 'line-through', color: 'var(--text-3)' }}>₹{b.separateYear1.toLocaleString('en-IN')}</span>
                     <span style={{ color: '#16a34a', fontWeight: 700 }}> · You save ₹{b.savings.toLocaleString('en-IN')}/yr</span>
@@ -72,7 +73,7 @@ export default function Services() {
           <div className="sec-head">
             <div>
               <span className="badge-teal">À LA CARTE</span>
-              <h2 style={{ marginTop: 10 }}>Buying individually? Here's every rate.</h2>
+              <h2 style={{ marginTop: 'var(--s-1)' }}>Buying individually? Here's every rate.</h2>
             </div>
           </div>
 
@@ -148,8 +149,8 @@ export default function Services() {
               { q: '"Why not just use Shopify?"', a: 'Shopify is ₹2,000–7,000 every month, forever, plus fees on each sale. Over three years that\'s roughly ₹1.5 lakh and you own nothing. Zoptavi is one payment plus a small yearly care fee.' },
               { q: "\"Can I pay only for the website, not the whole bundle?\"", a: 'Yes — every service on this page is available à la carte. The bundle just works out cheaper if you need more than one piece.' },
             ].map((o, i) => (
-              <div key={i} className="surface" style={{ padding: 20 }}>
-                <p style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 14.5, color: 'var(--navy)', margin: '0 0 6px' }}>{o.q}</p>
+              <div key={i} className="surface" style={{ padding: 'var(--s-3)' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 14, color: 'var(--navy)', margin: '0 0 6px' }}>{o.q}</p>
                 <p style={{ fontSize: 13.5, color: 'var(--text-2)', margin: 0, lineHeight: 1.6 }}>{o.a}</p>
               </div>
             ))}

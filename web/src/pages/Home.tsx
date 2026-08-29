@@ -16,17 +16,17 @@ export default function Home() {
   return (
     <div style={{ background: '#fff' }}>
       {/* Hero — black, giant type */}
-      <section className="section-black" style={{ padding: '84px 0 60px' }}>
+      <section className="section-black db-hero">
         <div className="orb orb-1" style={{ width: 460, height: 460, background: 'rgba(0,201,200,.14)', top: -160, right: -120 }} />
         <div className="orb orb-3" style={{ width: 320, height: 320, background: 'rgba(255,106,0,.1)', bottom: -100, left: -80 }} />
         <div className="wrap" style={{ position: 'relative' }}>
           <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
             <span className="live-dot" /> HYDERABAD · SINCE 2026
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} className="giant-h1" style={{ margin: '22px 0 26px', maxWidth: 920 }}>
+          <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} className="giant-h1" style={{ margin: '24px 0', maxWidth: 920 }}>
             You run the business.<br />We handle <span className="gradient-text">everything online.</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }} style={{ color: 'rgba(255,255,255,.65)', fontSize: 17, lineHeight: 1.7, maxWidth: 560, margin: '0 0 36px' }}>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }} style={{ color: 'var(--on-dark-2)', fontSize: 17, lineHeight: 1.7, maxWidth: 560, margin: '0 0 32px' }}>
             Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.28 }} style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
@@ -39,7 +39,7 @@ export default function Home() {
       </section>
 
       {/* Stat band — continuous black */}
-      <section className="section-black" style={{ padding: '10px 0 64px' }}>
+      <section className="section-black db-block">
         <div className="wrap">
           <RevealStagger className="msh-stat-grid">
             {[
@@ -58,21 +58,21 @@ export default function Home() {
       </section>
 
       {/* Proof of scale — portfolio cards */}
-      <section className="section-black" style={{ padding: '0 0 90px' }}>
+      <section className="section-black db-block">
         <div className="wrap">
           <Reveal><span className="eyebrow">NOT OUR FIRST STORE</span></Reveal>
-          <Reveal delay={0.06}><h2 className="giant-h2" style={{ margin: '14px 0 30px' }}>Already live on the Zoptavi stack</h2></Reveal>
+          <Reveal delay={0.06}><h2 className="giant-h2" style={{ margin: '16px 0 32px' }}>Already live on the Zoptavi stack</h2></Reveal>
           <RevealStagger className="biz-grid-2" gap={0.12}>
             {portfolio.map((p, i) => (
               <motion.a key={p.key} variants={revealItem} href={p.url} target="_blank" rel="noreferrer" className="msh-portfolio-card"
                 whileHover={{ y: -6 }} transition={{ duration: 0.3 }}>
                 <div className="bg" style={{ background: i === 0 ? 'linear-gradient(135deg,#1a0f1f,#3a1530 60%,#5c1f2e)' : 'linear-gradient(135deg,#0f1a1f,#153035 60%,#1f5c4e)' }} />
                 <div className="cap">
-                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#00C9C8', flexShrink: 0 }} />
-                  {p.name} <span style={{ color: 'rgba(255,255,255,.5)', fontWeight: 500 }}>· {p.category}</span>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--teal)', flexShrink: 0 }} />
+                  {p.name} <span style={{ color: 'var(--on-dark-3)', fontWeight: 500 }}>· {p.category}</span>
                 </div>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', padding: 22 }}>
-                  <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 13, lineHeight: 1.6, maxWidth: '80%', margin: 0 }}>{p.blurb}</p>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-end', padding: 'var(--s-3)' }}>
+                  <p style={{ color: 'var(--on-dark-2)', fontSize: 13, lineHeight: 1.6, maxWidth: '80%', margin: 0 }}>{p.blurb}</p>
                 </div>
                 <span className="visit">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M7 7h10v10" /></svg>
@@ -80,7 +80,7 @@ export default function Home() {
               </motion.a>
             ))}
           </RevealStagger>
-          <p style={{ color: 'rgba(255,255,255,.4)', fontSize: 12.5, marginTop: 18 }}>Two live platforms already run on the Zoptavi stack — you're not client number one, you're client number three.</p>
+          <p style={{ color: 'var(--on-dark-3)', fontSize: 13, marginTop: 'var(--s-2)' }}>Two live platforms already run on the Zoptavi stack — you're not client number one, you're client number three.</p>
         </div>
       </section>
 
@@ -91,14 +91,14 @@ export default function Home() {
             <div className="sec-head">
               <div>
                 <span className="badge-teal">WHAT WE DO</span>
-                <h2 style={{ marginTop: 10 }}>Five services. One relationship.</h2>
+                <h2 style={{ marginTop: 'var(--s-1)' }}>Five services. One relationship.</h2>
               </div>
-              <p className="muted" style={{ maxWidth: 380, fontSize: 14.5 }}>Competitors sell one piece — a website, or software, or reels. Zoptavi sells the whole chain.</p>
+              <p className="muted" style={{ maxWidth: 380, fontSize: 14 }}>Competitors sell one piece — a website, or software, or reels. Zoptavi sells the whole chain.</p>
             </div>
           </Reveal>
           <RevealStagger className="grid-5">
             {coreServices.map((s) => (
-              <motion.div key={s.key} variants={revealItem} whileHover={{ y: -5 }} className="pines-card" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <motion.div key={s.key} variants={revealItem} whileHover={{ y: -5 }} className="pines-card" style={{ padding: 'var(--s-3)', display: 'flex', flexDirection: 'column', gap: 'var(--s-2)' }}>
                 <div className="titlebar tl" style={{ gap: 0 }}>
                   <div className="ic" style={{ width: 42, height: 42 }}>
                     <div style={{ width: 22, height: 22 }}>{serviceIcons[s.icon]}</div>
@@ -122,23 +122,23 @@ export default function Home() {
             <div className="sec-head">
               <div>
                 <span className="badge-orange">THE ZOPTAVI BUNDLE</span>
-                <h2 style={{ marginTop: 10 }}>One price. Everything included.</h2>
+                <h2 style={{ marginTop: 'var(--s-1)' }}>One price. Everything included.</h2>
               </div>
               <Link to="/services" className="vall">Full pricing breakdown →</Link>
             </div>
           </Reveal>
-          <RevealStagger className="biz-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }} gap={0.1}>
+          <RevealStagger className="biz-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 'var(--s-3)' }} gap={0.1}>
             {bundles.map(b => (
-              <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className="surface" style={{ padding: 26, position: 'relative', border: b.key === 'growth' ? '2px solid var(--teal)' : undefined }}>
-                {b.key === 'growth' && <span style={{ position: 'absolute', top: -12, left: 24, background: 'var(--grad-teal)', color: '#fff', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, padding: '4px 12px', borderRadius: 20 }}>MOST POPULAR</span>}
+              <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className="surface" style={{ padding: 'var(--s-3)', position: 'relative', overflow: 'visible', border: b.key === 'growth' ? '2px solid var(--teal-deep)' : undefined }}>
+                {b.key === 'growth' && <span style={{ position: 'absolute', top: -11, left: 24, background: 'var(--grad-teal)', color: '#fff', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, padding: '4px 12px', borderRadius: 20 }}>MOST POPULAR</span>}
                 <p style={{ fontSize: 11, fontFamily: 'Poppins', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 4px' }}>{b.tagline}</p>
                 <h3 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 22, color: 'var(--navy)', margin: '0 0 16px' }}>{b.name}</h3>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
                   <span style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 28, color: 'var(--navy)' }}>₹{b.monthlyFee.toLocaleString('en-IN')}</span>
                   <span style={{ fontSize: 13, color: 'var(--text-2)' }}>/month</span>
                 </div>
-                <p style={{ fontSize: 12.5, color: 'var(--text-2)', margin: '0 0 20px' }}>+ ₹{b.setupFee.toLocaleString('en-IN')} one-time setup</p>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 22 }}>
+                <p style={{ fontSize: 13, color: 'var(--text-2)', margin: '0 0 20px' }}>+ ₹{b.setupFee.toLocaleString('en-IN')} one-time setup</p>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)', marginBottom: 'var(--s-3)' }}>
                   {[b.website, b.billing, b.content !== '—' ? b.content : null, b.ads !== '—' ? b.ads : null].filter(Boolean).map((f, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: '#334155' }}>
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--teal-deep)" strokeWidth="3" style={{ flexShrink: 0, marginTop: 2 }}><path d="M20 6 9 17l-5-5" /></svg>
@@ -162,11 +162,11 @@ export default function Home() {
             <div className="sec-head">
               <div>
                 <span className="badge-teal">THE OPPORTUNITY</span>
-                <h2 style={{ marginTop: 10 }}>The gap nobody fills</h2>
+                <h2 style={{ marginTop: 'var(--s-1)' }}>The gap nobody fills</h2>
               </div>
             </div>
           </Reveal>
-          <RevealStagger className="trust" style={{ marginBottom: 26 }}>
+          <RevealStagger className="trust" style={{ marginBottom: 'var(--s-3)' }}>
             {marketFacts.slice(0, 4).map((m, i) => (
               <motion.div key={i} variants={revealItem} className="t float-anim">
                 <div className="ic">
@@ -196,7 +196,7 @@ export default function Home() {
       </section>
 
       {/* Results panel — exact gradient-stat treatment from Figma reference */}
-      <section className="section-black" style={{ padding: '0 0 90px' }}>
+      <section className="section-black db-block">
         <div className="wrap">
           <Reveal>
             <div className="msh-results">
@@ -219,16 +219,16 @@ export default function Home() {
       </section>
 
       {/* Manifesto */}
-      <section className="section-black" style={{ padding: '80px 0' }}>
+      <section className="section-black db-band">
         <div className="orb orb-1" style={{ width: 320, height: 320, background: 'rgba(0,201,200,.16)', top: -80, left: -80 }} />
         <div className="orb orb-2" style={{ width: 260, height: 260, background: 'rgba(255,106,0,.12)', bottom: -60, right: -60 }} />
         <div className="wrap" style={{ position: 'relative', maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
           <Reveal>
             <span className="eyebrow">WHY ZOPTAVI</span>
-            <h2 className="giant-h2" style={{ margin: '18px 0 20px' }}>
+            <h2 className="giant-h2" style={{ margin: '16px 0 20px' }}>
               We're not a website vendor. <span className="gradient-text">We're the team that keeps you online.</span>
             </h2>
-            <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 15.5, lineHeight: 1.8, margin: '0 auto 30px', maxWidth: 620 }}>
+            <p style={{ color: 'var(--on-dark-2)', fontSize: 16, lineHeight: 1.8, margin: '0 auto 28px', maxWidth: 620 }}>
               No freelancer disappearing after launch. No juggling five vendors for a website, a biller, a designer and an ads guy.
               One team, on WhatsApp, that builds it, bills it, posts it, promotes it, and ships it — and sticks around after you pay.
             </p>
@@ -238,11 +238,11 @@ export default function Home() {
       </section>
 
       {/* Tools we build with */}
-      <section className="section-black" style={{ padding: '0 0 80px' }}>
+      <section className="section-black db-block">
         <div className="wrap" style={{ textAlign: 'center' }}>
           <Reveal>
             <span className="eyebrow">TOOLS THAT DRIVE RESULTS</span>
-            <h2 className="giant-h2" style={{ margin: '14px 0 34px', fontSize: 'clamp(24px,3.2vw,36px)' }}>What every Zoptavi store runs on</h2>
+            <h2 className="giant-h2" style={{ margin: '16px 0 32px', fontSize: 'clamp(24px,3.2vw,36px)' }}>What every Zoptavi store runs on</h2>
           </Reveal>
           <RevealStagger className="msh-stat-grid" style={{ gridTemplateColumns: 'repeat(6,1fr)' }}>
             {['Razorpay', 'Cashfree', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram'].map(t => (
@@ -253,13 +253,13 @@ export default function Home() {
       </section>
 
       {/* FAQs */}
-      <section className="section-black" style={{ padding: '0 0 90px' }}>
+      <section className="section-black db-block">
         <div className="wrap" style={{ maxWidth: 820, margin: '0 auto' }}>
           <Reveal>
             <span className="eyebrow">POPULAR QUERIES</span>
-            <h2 className="giant-h2" style={{ margin: '14px 0 30px', fontSize: 'clamp(24px,3.2vw,36px)' }}>FAQs</h2>
+            <h2 className="giant-h2" style={{ margin: '16px 0 32px', fontSize: 'clamp(24px,3.2vw,36px)' }}>FAQs</h2>
           </Reveal>
-          <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 12 }} gap={0.07}>
+          <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-1)' }} gap={0.07}>
             {[
               { q: 'What exactly is in the Zoptavi Bundle?', a: 'Website, billing software (Zoptavi Bill), branded checkout (Zoptavi Pay), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
               { q: 'Do I have to buy the whole bundle?', a: "No. Every service — website, billing, content, ads, fulfilment — is available à la carte. See full pricing on the Services page." },
@@ -267,8 +267,8 @@ export default function Home() {
               { q: "What if I'm doing very few orders a month?", a: "That's exactly who we built this for. Zoptavi starts at 10 orders/month — most shipping partners won't even onboard you below 200." },
             ].map((f, i) => (
               <motion.div key={i} variants={revealItem} className="live-card">
-                <p style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 14.5, color: '#fff', margin: '0 0 6px' }}>{f.q}</p>
-                <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,.6)', margin: 0, lineHeight: 1.6 }}>{f.a}</p>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 14, color: '#fff', margin: '0 0 6px' }}>{f.q}</p>
+                <p style={{ fontSize: 13, color: 'var(--on-dark-2)', margin: 0, lineHeight: 1.6 }}>{f.a}</p>
               </motion.div>
             ))}
           </RevealStagger>
@@ -276,14 +276,14 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="section-black" style={{ padding: '0 0 90px' }}>
+      <section className="section-black db-block">
         <div className="wrap">
           <Reveal>
-            <div style={{ background: 'var(--grad-teal)', borderRadius: 28, padding: '48px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--grad-teal)', borderRadius: 'var(--r-xl)', padding: 'var(--s-6) var(--s-5)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--s-3)', flexWrap: 'wrap', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(600px 300px at 85% 120%,rgba(255,163,26,.3),transparent 60%)' }} />
               <div style={{ position: 'relative', maxWidth: 480 }}>
                 <h2 style={{ color: '#fff', fontSize: 'clamp(22px,3vw,28px)' }}>One paying client this week beats a perfect plan this month.</h2>
-                <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 14.5, margin: '10px 0 0' }}>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
+                <p style={{ color: 'rgba(255,255,255,.9)', fontSize: 14, margin: '10px 0 0' }}>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
               </div>
               <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer" style={{ position: 'relative', flexShrink: 0, background: '#fff', color: 'var(--teal-deep)' }}>
                 Message Us on WhatsApp →

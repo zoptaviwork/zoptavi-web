@@ -5,12 +5,13 @@ import { portfolio, competitorComparison } from '../data/business';
 export default function Work() {
   return (
     <div style={{ background: '#fff' }}>
-      <section style={{ background: 'var(--navy)', padding: '56px 0 44px' }}>
-        <div className="wrap" style={{ textAlign: 'center' }}>
+      <section className="section-black" style={{ padding: 'var(--s-8) 0 var(--s-7)' }}>
+        <div className="orb orb-1" style={{ width: 360, height: 360, background: 'rgba(0,201,200,.12)', top: -130, left: -90 }} />
+        <div className="wrap" style={{ textAlign: 'center', position: 'relative' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
             <span className="live-badge"><span className="dot" /> LIVE STORES</span>
-            <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,42px)', margin: '16px 0 12px' }}>Not our first store, not our last</h1>
-            <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15, maxWidth: 600, margin: '0 auto' }}>
+            <h1 className="giant-h1" style={{ fontSize: 'clamp(28px,4vw,42px)', margin: '16px auto 12px', maxWidth: 640 }}>Not our first store, not our last</h1>
+            <p style={{ color: 'var(--on-dark-2)', fontSize: 15, maxWidth: 600, margin: '0 auto' }}>
               One team, one technology backbone, many platforms. Here's what's already running on Zoptavi.
             </p>
           </motion.div>
@@ -21,9 +22,9 @@ export default function Work() {
         <div className="wrap">
           <RevealStagger className="biz-grid-2" gap={0.12}>
             {portfolio.map(p => (
-              <motion.a key={p.key} variants={revealItem} whileHover={{ y: -5 }} href={p.url} target="_blank" rel="noreferrer" className="surface" style={{ padding: 28, textDecoration: 'none', display: 'block' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: 14, background: 'var(--grad-teal)', display: 'grid', placeItems: 'center', color: '#fff', fontFamily: 'Poppins', fontWeight: 800, fontSize: 22, flexShrink: 0 }}>{p.name[0]}</div>
+              <motion.a key={p.key} variants={revealItem} whileHover={{ y: -5 }} href={p.url} target="_blank" rel="noreferrer" className="surface" style={{ padding: 'var(--s-3)', textDecoration: 'none', display: 'block' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', marginBottom: 'var(--s-2)' }}>
+                  <div style={{ width: 56, height: 56, borderRadius: 'var(--r-sm)', background: 'var(--grad-teal)', display: 'grid', placeItems: 'center', color: '#fff', fontFamily: 'Poppins', fontWeight: 800, fontSize: 22, flexShrink: 0 }}>{p.name[0]}</div>
                   <div>
                     <h3 style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 20, color: 'var(--navy)', margin: 0 }}>{p.name}</h3>
                     <p style={{ fontSize: 12.5, color: 'var(--text-2)', margin: '2px 0 0' }}>{p.category}</p>
@@ -47,8 +48,8 @@ export default function Work() {
         <div className="wrap" style={{ textAlign: 'center', maxWidth: 720, margin: '0 auto' }}>
           <Reveal>
             <span className="badge-orange">ONE PLATFORM, MANY PLATFORMS</span>
-            <h2 style={{ marginTop: 12 }}>The Zoptavi Network</h2>
-            <p style={{ fontSize: 14.5, color: 'var(--text-2)', lineHeight: 1.7, marginTop: 12 }}>
+            <h2 style={{ marginTop: 'var(--s-1)' }}>The Zoptavi Network</h2>
+            <p style={{ fontSize: 14.5, color: 'var(--text-2)', lineHeight: 1.7, marginTop: 'var(--s-2)' }}>
               Every store above runs on the same backbone — Zoptavi Build for the storefront, Zoptavi Bill for stock and billing,
               and Zoptavi Pay for a single branded checkout across every one of them. Onboard with us and your store joins a
               network that's already live, not a first attempt.

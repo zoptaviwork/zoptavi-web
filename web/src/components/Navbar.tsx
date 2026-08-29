@@ -26,17 +26,17 @@ export default function Navbar() {
   const path = location.pathname;
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 100, background: '#050505', boxShadow: scrolled ? '0 8px 30px rgba(0,0,0,.4)' : 'none', transition: 'box-shadow .25s', borderBottom: '1px solid rgba(255,255,255,.08)' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 100, background: '#070b12', boxShadow: scrolled ? '0 8px 30px rgba(0,0,0,.4)' : 'none', transition: 'box-shadow .25s', borderBottom: '1px solid var(--hairline)' }}>
       {/* Top strip */}
-      <div className="mob-hide" style={{ color: 'rgba(255,255,255,.55)', fontSize: 11.5, fontFamily: 'Poppins', fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
-        <div style={{ maxWidth: 1300, margin: '0 auto', padding: '7px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '.02em' }}>
+      <div className="mob-hide" style={{ color: 'var(--on-dark-3)', fontSize: 12, fontFamily: 'Poppins', fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
+        <div style={{ maxWidth: 1300, margin: '0 auto', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '.02em' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C9C8" strokeWidth="2"><path d="M9 12l2 2 4-4M12 2 4 5v6c0 5.5 3.8 10 8 11 4.2-1 8-5.5 8-11V5l-8-3z" /></svg>
             One team, one bill — website, billing, content, ads &amp; shipping
           </span>
           <span style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
-            <a href="tel:+918978605027" style={{ color: 'rgba(255,255,255,.55)' }}>89786 05027</a>
-            <Link to="/contact" style={{ color: '#FFA31A', fontWeight: 600 }}>Get a Quote</Link>
+            <a href="tel:+918978605027" style={{ color: 'var(--on-dark-3)' }}>89786 05027</a>
+            <Link to="/contact" style={{ color: 'var(--orange-bright)', fontWeight: 600 }}>Get a Quote</Link>
           </span>
         </div>
       </div>
@@ -53,10 +53,11 @@ export default function Navbar() {
               const active = l.to === '/' ? path === '/' : path.startsWith(l.to);
               return (
                 <Link key={l.to} to={l.to} style={{
-                  fontFamily: 'Poppins', fontWeight: 600, fontSize: 12.5, padding: '10px 15px', borderRadius: 999,
+                  fontFamily: 'Poppins', fontWeight: 600, fontSize: 12.5, padding: '11px 15px', minHeight: 44,
+                  display: 'inline-flex', alignItems: 'center', borderRadius: 999,
                   textTransform: 'uppercase', letterSpacing: '.04em',
-                  color: active ? '#fff' : 'rgba(255,255,255,.55)', background: active ? 'rgba(255,255,255,.1)' : 'transparent',
-                  textDecoration: 'none', transition: '.2s', whiteSpace: 'nowrap',
+                  color: active ? '#fff' : 'var(--on-dark-3)', background: active ? 'rgba(255,255,255,.1)' : 'transparent',
+                  textDecoration: 'none', transition: 'color .2s, background .2s', whiteSpace: 'nowrap',
                 }}>
                   {l.label}
                 </Link>

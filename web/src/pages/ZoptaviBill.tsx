@@ -6,13 +6,13 @@ export default function ZoptaviBill() {
   return (
     <div style={{ background: '#fff' }}>
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(160deg,#0F172A 0%,#132a44 60%,#0F172A 100%)', padding: '60px 0 50px', position: 'relative', overflow: 'hidden' }}>
+      <section className="section-black" style={{ background: 'linear-gradient(160deg,#070b12 0%,#0f2036 60%,#070b12 100%)', padding: 'var(--s-8) 0 var(--s-7)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(650px 340px at 90% 0%,rgba(0,201,200,.16),transparent 60%)' }} />
         <div className="wrap" style={{ position: 'relative', textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
             <span className="badge-teal">ZOPTAVI BILL</span>
-            <h1 style={{ color: '#fff', fontSize: 'clamp(28px,4vw,44px)', margin: '16px 0 12px' }}>Billing software that never stops working</h1>
-            <p style={{ color: 'rgba(255,255,255,.75)', fontSize: 15.5, maxWidth: 620, margin: '0 auto 26px' }}>
+            <h1 className="giant-h1" style={{ fontSize: 'clamp(28px,4vw,44px)', margin: '16px auto 12px', maxWidth: 720 }}>Billing software that never stops working</h1>
+            <p style={{ color: 'var(--on-dark-2)', fontSize: 15.5, maxWidth: 620, margin: '0 auto 26px' }}>
               Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch from the owner's phone. Free with every website, until you outgrow it.
             </p>
             <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta shimmer">Get Zoptavi Bill Free →</a>
@@ -27,7 +27,7 @@ export default function ZoptaviBill() {
             {billPillars.map((p, i) => (
               <motion.div key={p.title} variants={revealItem} whileHover={{ y: -5 }} className="pillar-card">
                 <div className="pillar-num">{String(i + 1).padStart(2, '0')}</div>
-                <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 17, color: 'var(--navy)', margin: '10px 0 8px' }}>{p.title}</h3>
+                <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 17, color: 'var(--navy)', margin: 'var(--s-1) 0' }}>{p.title}</h3>
                 <p style={{ fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, margin: 0 }}>{p.detail}</p>
               </motion.div>
             ))}
@@ -58,7 +58,7 @@ export default function ZoptaviBill() {
           <div className="sec-head"><h2>What it does, phase by phase</h2></div>
           <div className="biz-grid-3">
             {billPhases.map(ph => (
-              <div key={ph.phase} className="surface" style={{ padding: 22 }}>
+              <div key={ph.phase} className="surface" style={{ padding: 'var(--s-3)' }}>
                 <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 15, color: 'var(--teal-deep)', margin: '0 0 14px' }}>{ph.phase}</h3>
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {ph.items.map((it, i) => (
@@ -80,7 +80,7 @@ export default function ZoptaviBill() {
           <div className="sec-head">
             <div>
               <span className="badge-orange">PRICING — PER STORE, NOT PER STORAGE</span>
-              <h2 style={{ marginTop: 10 }}>Free to start. Pay when you scale.</h2>
+              <h2 style={{ marginTop: 'var(--s-1)' }}>Free to start. Pay when you scale.</h2>
             </div>
           </div>
           <div className="table-scroll">
@@ -105,10 +105,10 @@ export default function ZoptaviBill() {
       {/* Zoptavi Pay */}
       <section className="sec">
         <div className="wrap">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }} className="biz-grid-2">
+          <div className="biz-grid-2" style={{ gap: 'var(--s-3)', alignItems: 'start' }}>
             <div>
               <span className="badge-teal">CHECKOUT, BRANDED</span>
-              <h2 style={{ marginTop: 10, marginBottom: 14 }}>{zoptaviPay.name} — {zoptaviPay.strapline}</h2>
+              <h2 style={{ marginTop: 'var(--s-1)', marginBottom: 'var(--s-2)' }}>{zoptaviPay.name} — {zoptaviPay.strapline}</h2>
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {zoptaviPay.howItWorks.map((h, i) => (
                   <li key={i} style={{ display: 'flex', gap: 10, fontSize: 13.5, color: '#334155', lineHeight: 1.6 }}>
@@ -118,10 +118,10 @@ export default function ZoptaviBill() {
                 ))}
               </ul>
             </div>
-            <div className="glass-card" style={{ padding: 24, background: 'linear-gradient(135deg,#0F172A,#1e3a5f)', border: 'none' }}>
-              <p style={{ color: '#00C9C8', fontFamily: 'Poppins', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 10px' }}>Why not our own gateway?</p>
-              <p style={{ color: 'rgba(255,255,255,.85)', fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>{zoptaviPay.whyNotOwnGateway}</p>
-              <div style={{ marginTop: 16, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div className="glass-card" style={{ padding: 'var(--s-3)', background: 'linear-gradient(135deg,#070b12,#12263f)', border: '1px solid var(--hairline-strong)' }}>
+              <p style={{ color: 'var(--teal)', fontFamily: 'Poppins', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '.06em', margin: '0 0 10px' }}>Why not our own gateway?</p>
+              <p style={{ color: 'var(--on-dark-2)', fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>{zoptaviPay.whyNotOwnGateway}</p>
+              <div style={{ marginTop: 'var(--s-2)', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {['UPI', 'Cards', 'Net Banking', 'Wallets', 'EMI'].map(m => (
                   <span key={m} style={{ background: 'rgba(255,255,255,.1)', color: '#fff', fontSize: 11, fontFamily: 'Poppins', fontWeight: 600, padding: '5px 10px', borderRadius: 8 }}>{m}</span>
                 ))}
@@ -134,7 +134,7 @@ export default function ZoptaviBill() {
       {/* CTA */}
       <section className="sec tight">
         <div className="wrap">
-          <div style={{ background: 'var(--grad-orange)', borderRadius: 20, padding: '36px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
+          <div style={{ background: 'var(--grad-orange)', borderRadius: 'var(--r-card)', padding: 'var(--s-5) var(--s-4)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--s-3)', flexWrap: 'wrap' }}>
             <div>
               <h2 style={{ color: '#fff', fontSize: 22 }}>Every Zoptavi website comes with Zoptavi Bill, free.</h2>
               <p style={{ color: 'rgba(255,255,255,.9)', fontSize: 13.5, margin: '6px 0 0' }}>Install in 20 minutes. Upgrade only once you have more than one store.</p>

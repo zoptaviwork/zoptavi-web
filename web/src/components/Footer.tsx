@@ -3,7 +3,7 @@ import { coreServices, portfolio } from '../data/business';
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--navy)', color: '#cbd5e1', padding: '0 0 24px' }}>
+    <footer style={{ background: '#070b12', color: '#cbd5e1', padding: '0 0 24px' }}>
       {/* Proof of scale strip */}
       <div style={{ borderBottom: '1px solid rgba(255,255,255,.08)', background: 'rgba(255,255,255,.02)' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '30px 24px' }}>
@@ -15,7 +15,7 @@ export default function Footer() {
               <a key={p.key} href={p.url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 13, textDecoration: 'none', padding: '14px 16px', borderRadius: 14, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', transition: '.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,201,200,.08)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,.04)')}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: 'linear-gradient(135deg,rgba(0,201,200,.2),rgba(0,122,118,.12))', display: 'grid', placeItems: 'center', color: '#00C9C8', flexShrink: 0, fontFamily: 'Poppins', fontWeight: 800 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 'var(--r-sm)', background: 'linear-gradient(135deg,rgba(0,201,200,.2),rgba(0,122,118,.12))', display: 'grid', placeItems: 'center', color: 'var(--teal)', flexShrink: 0, fontFamily: 'Poppins', fontWeight: 800 }}>
                   {p.name[0]}
                 </div>
                 <div>
