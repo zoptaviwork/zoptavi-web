@@ -222,6 +222,40 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Tools we build with */}
+      <section className="section-black" style={{ padding: '0 0 80px' }}>
+        <div className="wrap" style={{ textAlign: 'center' }}>
+          <span className="eyebrow">TOOLS THAT DRIVE RESULTS</span>
+          <h2 className="giant-h2" style={{ margin: '14px 0 34px', fontSize: 'clamp(24px,3.2vw,36px)' }}>What every Zoptavi store runs on</h2>
+          <div className="msh-stat-grid" style={{ gridTemplateColumns: 'repeat(6,1fr)' }}>
+            {['Razorpay', 'Cashfree', 'WhatsApp Business', 'Meta Ads', 'Google', 'Instagram'].map(t => (
+              <div key={t} className="msh-logo-card">{t}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs */}
+      <section className="section-black" style={{ padding: '0 0 90px' }}>
+        <div className="wrap" style={{ maxWidth: 820, margin: '0 auto' }}>
+          <span className="eyebrow">POPULAR QUERIES</span>
+          <h2 className="giant-h2" style={{ margin: '14px 0 30px', fontSize: 'clamp(24px,3.2vw,36px)' }}>FAQs</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {[
+              { q: 'What exactly is in the Zoptavi Bundle?', a: 'Website, billing software (Zoptavi Bill), branded checkout (Zoptavi Pay), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
+              { q: 'Do I have to buy the whole bundle?', a: "No. Every service — website, billing, content, ads, fulfilment — is available à la carte. See full pricing on the Services page." },
+              { q: 'How fast can I get online?', a: "Most stores go live within days of signing up, and our clients' stores typically get their first order within 48 hours of launch." },
+              { q: "What if I'm doing very few orders a month?", a: "That's exactly who we built this for. Zoptavi starts at 10 orders/month — most shipping partners won't even onboard you below 200." },
+            ].map((f, i) => (
+              <div key={i} className="live-card">
+                <p style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 14.5, color: '#fff', margin: '0 0 6px' }}>{f.q}</p>
+                <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,.6)', margin: 0, lineHeight: 1.6 }}>{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="section-black" style={{ padding: '0 0 90px' }}>
         <div className="wrap">
