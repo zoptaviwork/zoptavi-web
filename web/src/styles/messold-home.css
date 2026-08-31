@@ -47,7 +47,7 @@
 .ms-home * { box-sizing: border-box; }
 .ms-home img { max-width: 100%; display: block; }
 .ms-home a { color: inherit; text-decoration: none; }
-.ms-home h1, .ms-home h2, .ms-home h3, .ms-home h4 { font-family: var(--ms-f-head); font-weight: 600; line-height: 1.1; margin: 0; letter-spacing: 0; }
+.ms-home h1, .ms-home h2, .ms-home h3, .ms-home h4 { font-family: var(--ms-f-head); font-weight: 600; line-height: 1.1; margin: 0; letter-spacing: 0; color: inherit; }
 .ms-home p { margin: 0; }
 .ms-home ul { margin: 0; padding: 0; list-style: none; }
 
@@ -67,11 +67,12 @@
 }
 .ms-btn .ms-arrow { transition: transform .2s ease; }
 .ms-btn:hover .ms-arrow { transform: translateX(4px); }
-.ms-btn-solid { background: var(--ms-white); color: var(--ms-black); }
-.ms-btn-solid:hover { transform: translateY(-2px); }
-.ms-btn-ghost { background: transparent; color: var(--ms-white); border-color: rgba(255,255,255,.5); }
-.ms-btn-ghost:hover { background: rgba(255,255,255,.08); border-color: #fff; }
-.ms-btn-ghost.dark { border-color: rgba(255,255,255,.35); }
+/* specificity bumped to .ms-home ... so the button colour wins over `.ms-home a { color: inherit }` */
+.ms-home .ms-btn-solid { background: var(--ms-white); color: var(--ms-black); }
+.ms-home .ms-btn-solid:hover { transform: translateY(-2px); }
+.ms-home .ms-btn-ghost { background: transparent; color: var(--ms-white); border-color: rgba(255,255,255,.5); }
+.ms-home .ms-btn-ghost:hover { background: rgba(255,255,255,.08); border-color: #fff; }
+.ms-home .ms-btn-ghost.dark { border-color: rgba(255,255,255,.35); }
 .ms-btn.sm { padding: 11px 20px; font-size: 13px; }
 
 /* =========================================================
@@ -256,6 +257,75 @@
 /* ---------- scroll reveal shim (works with the site-wide Reveal component) ---------- */
 .ms-home .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .ms-home .reveal.in { opacity: 1; transform: none; }
+
+/* =========================================================
+   SERVICES PAGE — pricing cards + rate tables
+   Same scoped design language (.ms-home), dark surfaces.
+   ========================================================= */
+.ms-price { padding: 30px 0 80px; }
+.ms-price-head { max-width: 640px; margin-bottom: 44px; }
+.ms-price-head .ms-eyebrow { display: block; margin-bottom: 12px; }
+.ms-price-head h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 500; margin-bottom: 14px; }
+.ms-price-head p { color: var(--ms-grey-50); }
+
+.ms-price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
+.ms-price-card {
+  background: var(--ms-grey-7); border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--ms-radius); overflow: hidden; display: flex; flex-direction: column;
+}
+.ms-price-card.feat { border-color: var(--ms-teal); box-shadow: 0 0 0 1px var(--ms-teal), 0 30px 60px rgba(0,201,200,.12); }
+.ms-price-cap {
+  padding: 24px 26px; border-bottom: 1px solid rgba(255,255,255,.07);
+  background: linear-gradient(135deg, rgba(255,255,255,.04), transparent);
+}
+.ms-price-card.feat .ms-price-cap { background: linear-gradient(135deg, rgba(0,201,200,.14), transparent); }
+.ms-price-tag { font-family: var(--ms-f-head); font-weight: 600; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--ms-grey-50); margin-bottom: 6px; }
+.ms-price-name { font-family: var(--ms-f-head); font-weight: 600; font-size: 22px; margin-bottom: 14px; }
+.ms-price-amt { display: flex; align-items: baseline; gap: 6px; }
+.ms-price-amt b { font-family: var(--ms-f-head); font-weight: 700; font-size: 30px; }
+.ms-price-amt span { font-size: 13px; color: var(--ms-grey-50); }
+.ms-price-setup { font-size: 12px; color: var(--ms-grey-50); margin-top: 4px; }
+.ms-price-rows { padding: 20px 26px; display: flex; flex-direction: column; flex: 1; }
+.ms-price-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 12.5px; }
+.ms-price-row:first-child { padding-top: 0; }
+.ms-price-row .k { color: var(--ms-grey-50); font-weight: 500; }
+.ms-price-row .v { color: var(--ms-white); font-weight: 500; text-align: right; max-width: 58%; }
+.ms-price-row .v.off { color: var(--ms-grey-42); }
+.ms-price-save {
+  margin-top: 16px; padding: 12px 14px; border-radius: var(--ms-radius-sm);
+  background: rgba(0,201,200,.08); border: 1px solid rgba(0,201,200,.18); font-size: 12px; color: var(--ms-grey-85);
+}
+.ms-price-save s { color: var(--ms-grey-42); }
+.ms-price-save b { color: var(--ms-teal); font-weight: 700; }
+.ms-price-rows .ms-btn { margin-top: 16px; width: 100%; justify-content: center; }
+.ms-price-note { text-align: center; color: var(--ms-grey-50); font-size: 13px; margin-top: 24px; }
+
+/* ---- à la carte rate tables ---- */
+.ms-alacarte { background: var(--ms-grey-6); padding: 80px 0; border-block: 1px solid rgba(255,255,255,.05); }
+.ms-alacarte-head { margin-bottom: 40px; }
+.ms-alacarte-head .ms-eyebrow { display: block; margin-bottom: 12px; }
+.ms-alacarte-head h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-weight: 500; }
+.ms-rate-block { margin-bottom: 34px; }
+.ms-rate-block > h3 { font-family: var(--ms-f-head); font-weight: 600; font-size: 16px; margin-bottom: 12px; }
+.ms-rate-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+.ms-table-scroll { overflow-x: auto; border: 1px solid rgba(255,255,255,.08); border-radius: var(--ms-radius-sm); }
+.ms-rate-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 340px; }
+.ms-rate-table th, .ms-rate-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.ms-rate-table thead th {
+  font-family: var(--ms-f-head); font-weight: 600; font-size: 11px; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--ms-grey-50); background: rgba(255,255,255,.02);
+}
+.ms-rate-table tbody tr:last-child td { border-bottom: 0; }
+.ms-rate-table td { color: var(--ms-grey-85); }
+.ms-rate-table td.name { color: var(--ms-white); font-weight: 600; }
+.ms-rate-table td.num { text-align: right; font-variant-numeric: tabular-nums; color: var(--ms-white); font-weight: 600; white-space: nowrap; }
+.ms-rate-sub { display: block; font-size: 11.5px; color: var(--ms-grey-50); margin-top: 2px; }
+.ms-rate-foot { font-size: 11.5px; color: var(--ms-grey-50); margin-top: 8px; }
+
+@media (max-width: 1024px) {
+  .ms-price-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+  .ms-rate-cols { grid-template-columns: 1fr; gap: 24px; }
+}
 
 /* =========================================================
    RESPONSIVE
