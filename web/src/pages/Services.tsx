@@ -5,9 +5,7 @@ import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import StatNumber from '../components/StatNumber';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle, SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import {
-  bundles, coreServices, websiteTiers, carePlans, studioPlans, adsPlans, portfolio,
-} from '../data/business';
+import { bundles, coreServices, portfolio } from '../data/business';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -24,31 +22,46 @@ const marqueeRowA = ['Zoptavi Build', 'Zoptavi Bill', 'Zoptavi Studio', 'Zoptavi
 const marqueeRowB = ['WordPress', 'WooCommerce', 'React + Supabase', 'Meta Ads', 'Razorpay', 'Cashfree', 'GST Invoicing'];
 
 const toolCluster = [
-  { label: 'Meta', x: 0, y: 0 }, { label: 'Google', x: 1, y: 1 }, { label: 'Instagram', x: 2, y: 0 },
-  { label: 'WhatsApp', x: 3, y: 1 }, { label: 'Razorpay', x: 0, y: 3 }, { label: 'Cashfree', x: 1, y: 2 },
-  { label: 'UPI', x: 2, y: 3 }, { label: 'GST', x: 3, y: 2 },
+  { label: 'Meta', src: '/logos/meta.png', x: 0, y: 0 },
+  { label: 'Google', src: '/logos/google.png', x: 1, y: 1 },
+  { label: 'Instagram', src: '/logos/instagram.png', x: 2, y: 0 },
+  { label: 'WhatsApp', src: '/logos/whatsapp.png', x: 3, y: 1 },
+  { label: 'Razorpay', src: '/logos/razorpay.png', x: 0, y: 3 },
+  { label: 'Cashfree', src: '/logos/cashfree.png', x: 1, y: 2 },
+  { label: 'UPI', src: '/logos/upi.png', x: 2, y: 3 },
+];
+
+// À la carte — what's available individually, no numbers on the page.
+// Ask on WhatsApp for a quote sized to your business.
+const alaCarte = [
+  { title: 'Websites — Zoptavi Build', desc: 'From a simple business site to a fully custom store with an admin panel, unlimited products and GST-ready invoicing.' },
+  { title: 'Yearly care plan', desc: 'Hosting, domain, SSL, backups and uptime monitoring — with content-update and priority-support tiers on top.' },
+  { title: 'Content — Zoptavi Studio', desc: 'Reels, drone shoots, photography and editing, from a light monthly package up to full cinematography.' },
+  { title: 'Meta Ads — Zoptavi Reach', desc: 'Managed ad campaigns at whatever monthly budget you’re comfortable with — your spend always goes straight to Meta.' },
 ];
 
 const objections: { q: string; a: string }[] = [
   {
-    q: 'Someone quoted ₹3,999 for a website — why is Zoptavi more?',
-    a: "That's a template with a contact form. Zoptavi Store Pro takes payments, manages your stock, sends GST invoices, and we're here all year. Different product.",
+    q: 'Someone quoted me a much cheaper website — why go with Zoptavi?',
+    a: "A cheap quote is usually a template with a contact form. Zoptavi Store Pro takes payments, manages your stock, sends GST invoices, and we're here all year. Different product — message us and we'll walk you through the difference for your business.",
   },
   {
     q: 'Why not just use Shopify?',
-    a: "Shopify is ₹2,000–7,000 every month, forever, plus a fee on each sale. Over three years that's roughly ₹1.5 lakh and you own nothing. Zoptavi is one payment plus a small yearly care fee.",
+    a: "Shopify charges every month, forever, plus a fee on each sale, and you don't own the storefront. Zoptavi is a one-time build plus a small yearly care fee — ask us for the specifics.",
   },
   {
     q: 'Can I pay only for the website, not the whole bundle?',
-    a: 'Yes — every service on this page is available à la carte. The bundle just works out cheaper if you need more than one piece.',
+    a: 'Yes — every service on this page is available à la carte. The bundle just works out cheaper if you need more than one piece. Send us a message and we’ll quote whichever combination fits.',
   },
   {
     q: 'What if I only do a few orders a month?',
     a: "That's exactly who we built this for. Zoptavi starts at 10 orders a month — most shipping partners won't even onboard you below 200.",
   },
+  {
+    q: 'How do I find out what it actually costs?',
+    a: 'Message us on WhatsApp with your business type and what you need — we’ll reply with a plain-English quote, no retainer lock-in and no obligation.',
+  },
 ];
-
-const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
 export default function Services() {
   return (
@@ -68,12 +81,12 @@ export default function Services() {
             initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
-            Everything Your Store Needs.<br />One Price, One Bill.
+            Everything Your Store Needs.<br />One Team, One Bill.
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }}>
-            Website, billing software, content, ads and fulfilment — three bundles, one price each, nothing
-            else to explain. Or buy any single piece à la carte. Whichever you pick, one team runs it and one
-            WhatsApp number reaches us.
+            Website, billing software, content, ads and fulfilment — three bundles, or buy any single piece
+            à la carte. Whichever you pick, one team runs it and one WhatsApp number reaches us. Message us
+            with your business type and we'll reply with a plain-English quote.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.28 }}
@@ -82,7 +95,7 @@ export default function Services() {
             <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
               Book Your Free Growth Audit <span className="ms-arrow">→</span>
             </a>
-            <a href="#bundle" className="ms-btn ms-btn-ghost">See Pricing <span className="ms-arrow">→</span></a>
+            <a href="#bundle" className="ms-btn ms-btn-ghost">See What's Included <span className="ms-arrow">→</span></a>
           </motion.div>
         </div>
       </section>
@@ -126,7 +139,7 @@ export default function Services() {
           </Reveal>
           <Reveal delay={0.08} className="ms-consult-media">
             <div className="ms-media-card ms-media-back"><b>{portfolio[0].name} · {portfolio[0].tier}</b></div>
-            <div className="ms-media-card ms-media-front"><b>{portfolio[1].name} · {portfolio[1].tier}</b></div>
+            <div className="ms-media-card ms-media-front"><b>{portfolio[1].name} · {portfolio[1].category}</b></div>
           </Reveal>
         </div>
       </section>
@@ -156,15 +169,15 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ===================== PRICING HIGHLIGHTS BAND ===================== */}
+      {/* ===================== HIGHLIGHTS BAND ===================== */}
       <section className="ms-stats">
         <div className="ms-stats-bg" />
         <div className="ms-stats-grid">
           {[
-            { n: '₹700', l: 'Starter, per month' },
-            { n: '3', l: 'Bundles — pick one' },
-            { n: '₹51k', l: 'Saved per year on Complete' },
-            { n: '15%', l: 'Off year two, paid upfront' },
+            { n: '3', l: 'Bundles — Or À La Carte' },
+            { n: '5', l: 'Services, One Bill' },
+            { n: '48H', l: 'Typical First Order' },
+            { n: '1', l: 'WhatsApp Number' },
           ].map((s, i) => (
             <motion.div
               key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -183,8 +196,8 @@ export default function Services() {
         <div className="ms-wrap">
           <Reveal className="ms-price-head">
             <span className="ms-eyebrow"><ShinyText text="The Zoptavi Bundle" speed={7} /></span>
-            <h2>One price, everything included</h2>
-            <p>Three packages, one monthly fee each. Website, billing, content, ads and support — all in.</p>
+            <h2>Three ways to go online</h2>
+            <p>Website, billing, content, ads and support — pick the bundle that fits, or mix and match à la carte. Message us for a plan sized to your business.</p>
           </Reveal>
 
           <RevealStagger className="ms-price-grid" gap={0.1}>
@@ -204,8 +217,6 @@ export default function Services() {
                   <div className="ms-price-cap">
                     <p className="ms-price-tag">{b.tagline}</p>
                     <p className="ms-price-name">{b.name}</p>
-                    <div className="ms-price-amt"><b>{inr(b.monthlyFee)}</b><span>/month</span></div>
-                    <p className="ms-price-setup">{inr(b.setupFee)} setup, one-time</p>
                   </div>
                   <div className="ms-price-rows">
                     {rows.map(([k, v]) => (
@@ -214,99 +225,36 @@ export default function Services() {
                         <span className={v === '—' ? 'v off' : 'v'}>{v}</span>
                       </div>
                     ))}
-                    <div className="ms-price-save">
-                      Bought separately: <s>{inr(b.separateYear1)}</s> · <b>save {inr(b.savings)}/yr</b>
-                    </div>
                     <a href={WHATSAPP} target="_blank" rel="noreferrer" className={feat ? 'ms-btn ms-btn-solid' : 'ms-btn ms-btn-ghost dark'}>
-                      Choose {b.name} <span className="ms-arrow">→</span>
+                      Ask About {b.name} <span className="ms-arrow">→</span>
                     </a>
                   </div>
                 </SpotlightDiv>
               );
             })}
           </RevealStagger>
-          <p className="ms-price-note">Two-year offer: pay year two upfront and take 15% off it.</p>
+          <p className="ms-price-note">Want the numbers? Message us on WhatsApp and we'll send a plain-English quote for your business.</p>
         </div>
       </section>
 
-      {/* ===================== À LA CARTE RATE TABLES ===================== */}
+      {/* ===================== À LA CARTE ===================== */}
       <section className="ms-alacarte">
         <div className="ms-wrap">
           <Reveal className="ms-alacarte-head">
             <span className="ms-eyebrow"><ShinyText text="À La Carte" speed={7} /></span>
-            <h2>Buying individually? Every rate.</h2>
+            <h2>Buying individually? Here's what's on offer.</h2>
+            <p>No bundle, no problem — every piece below is available on its own. Tell us what you need on WhatsApp and we'll send a quote.</p>
           </Reveal>
 
-          <Reveal className="ms-rate-block">
-            <h3>Websites — build fee</h3>
-            <div className="ms-table-scroll">
-              <table className="ms-rate-table">
-                <thead><tr><th>Package</th><th>Built on</th><th>What you get</th><th style={{ textAlign: 'right' }}>Price</th></tr></thead>
-                <tbody>
-                  {websiteTiers.map(t => (
-                    <tr key={t.name}>
-                      <td className="name">{t.name}</td><td>{t.builtOn}</td><td>{t.gets}</td>
-                      <td className="num">{inr(t.price)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Reveal>
-
-          <Reveal className="ms-rate-block">
-            <h3>Yearly care plan</h3>
-            <div className="ms-table-scroll">
-              <table className="ms-rate-table">
-                <thead><tr><th>Plan</th><th>Includes</th><th style={{ textAlign: 'right' }}>Per year</th></tr></thead>
-                <tbody>
-                  {carePlans.map(c => (
-                    <tr key={c.name}>
-                      <td className="name">{c.name}</td><td>{c.includes}</td>
-                      <td className="num">{inr(c.perYear)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Reveal>
-
-          <div className="ms-rate-cols">
-            <Reveal className="ms-rate-block" style={{ marginBottom: 0 }}>
-              <h3>Content — Zoptavi Studio</h3>
-              <div className="ms-table-scroll">
-                <table className="ms-rate-table">
-                  <thead><tr><th>Package</th><th style={{ textAlign: 'right' }}>Monthly</th></tr></thead>
-                  <tbody>
-                    {studioPlans.map(s => (
-                      <tr key={s.name}>
-                        <td className="name">{s.name}<span className="ms-rate-sub">{s.gets}</span></td>
-                        <td className="num">{inr(s.monthly)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Reveal>
-
-            <Reveal className="ms-rate-block" style={{ marginBottom: 0 }}>
-              <h3>Meta Ads — Zoptavi Reach</h3>
-              <div className="ms-table-scroll">
-                <table className="ms-rate-table">
-                  <thead><tr><th>Package</th><th>Their budget</th><th style={{ textAlign: 'right' }}>Our fee</th></tr></thead>
-                  <tbody>
-                    {adsPlans.map(a => (
-                      <tr key={a.name}>
-                        <td className="name">{a.name}</td><td>{a.budget}</td>
-                        <td className="num">{typeof a.fee === 'number' ? inr(a.fee) : a.fee}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="ms-rate-foot">Ad spend is always your own money, paid directly to Meta. Our fee is separate.</p>
-            </Reveal>
-          </div>
+          <RevealStagger className="ms-grid-2" gap={0.1}>
+            {alaCarte.map(item => (
+              <motion.div key={item.title} variants={revealItem} className="ms-card">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </motion.div>
+            ))}
+          </RevealStagger>
+          <p className="ms-rate-foot" style={{ marginTop: 20, textAlign: 'center' }}>Ad spend for Zoptavi Reach is always your own money, paid directly to Meta — our fee is separate and quoted upfront.</p>
         </div>
       </section>
 
@@ -355,7 +303,9 @@ export default function Services() {
           </Reveal>
           <div className="ms-tools-cluster" aria-hidden="true">
             {toolCluster.map(t => (
-              <span key={t.label} className="ms-tool-ico" style={{ ['--x' as string]: t.x, ['--y' as string]: t.y }}>{t.label}</span>
+              <span key={t.label} className="ms-tool-ico" style={{ ['--x' as string]: t.x, ['--y' as string]: t.y }}>
+                <img src={t.src} alt={t.label} loading="lazy" />
+              </span>
             ))}
           </div>
         </div>

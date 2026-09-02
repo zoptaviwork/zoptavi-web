@@ -19,14 +19,13 @@ const marketIcons: ReactElement[] = [
 ];
 
 const toolCluster = [
-  { label: 'Meta', x: 0, y: 0 },
-  { label: 'Google', x: 1, y: 1 },
-  { label: 'Instagram', x: 2, y: 0 },
-  { label: 'WhatsApp', x: 3, y: 1 },
-  { label: 'Razorpay', x: 0, y: 3 },
-  { label: 'Cashfree', x: 1, y: 2 },
-  { label: 'UPI', x: 2, y: 3 },
-  { label: 'GST', x: 3, y: 2 },
+  { label: 'Meta', src: '/logos/meta.png', x: 0, y: 0 },
+  { label: 'Google', src: '/logos/google.png', x: 1, y: 1 },
+  { label: 'Instagram', src: '/logos/instagram.png', x: 2, y: 0 },
+  { label: 'WhatsApp', src: '/logos/whatsapp.png', x: 3, y: 1 },
+  { label: 'Razorpay', src: '/logos/razorpay.png', x: 0, y: 3 },
+  { label: 'Cashfree', src: '/logos/cashfree.png', x: 1, y: 2 },
+  { label: 'UPI', src: '/logos/upi.png', x: 2, y: 3 },
 ];
 
 const faqs = [
@@ -176,7 +175,7 @@ export default function Home() {
           <RevealStagger className="ms-work-grid" gap={0.1}>
             {portfolio.map((p, i) => (
               <motion.a key={p.key} variants={revealItem} whileHover={{ y: -4 }} href={p.url} target="_blank" rel="noreferrer" className="ms-work-card"
-                style={{ background: i === 0 ? 'linear-gradient(135deg,#1a0f1f,#3a1530 60%,#5c1f2e)' : 'linear-gradient(135deg,#0f1a1f,#153035 60%,#1f5c4e)' }}>
+                style={{ backgroundImage: `url(${i === 0 ? '/portfolio-meena-rajwada.jpg' : '/portfolio-helmet-hub.jpg'})` }}>
                 <span className="ms-work-tag">↘ {p.name.toUpperCase()}</span>
                 <p className="ms-work-blurb">{p.blurb}</p>
               </motion.a>
@@ -195,7 +194,9 @@ export default function Home() {
           </Reveal>
           <div className="ms-tools-cluster" aria-hidden="true">
             {toolCluster.map(t => (
-              <span key={t.label} className="ms-tool-ico" style={{ ['--x' as string]: t.x, ['--y' as string]: t.y }}>{t.label}</span>
+              <span key={t.label} className="ms-tool-ico" style={{ ['--x' as string]: t.x, ['--y' as string]: t.y }}>
+                <img src={t.src} alt={t.label} loading="lazy" />
+              </span>
             ))}
           </div>
         </div>

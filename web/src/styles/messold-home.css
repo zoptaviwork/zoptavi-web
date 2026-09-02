@@ -179,10 +179,10 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  background-image: url('/hero-bg.jpg');
-  background-size: cover;
-  background-position: 62% center;
-  transform: scale(1.04);
+  background:
+    radial-gradient(60% 55% at 18% 30%, rgba(var(--ms-accent-rgb), .26) 0%, transparent 62%),
+    radial-gradient(55% 60% at 88% 90%, rgba(180, 74, 134, .18) 0%, transparent 58%),
+    var(--ms-bg);
 }
 /* cinematic HLS video background (Home) */
 .ms-hero-video {
@@ -387,6 +387,7 @@
   min-height: 340px;
 }
 .ms-media-card {
+  position: relative;
   border-radius: var(--ms-radius);
   display: flex;
   align-items: flex-end;
@@ -394,10 +395,19 @@
   border: 1px solid var(--ms-line);
   box-shadow: 0 30px 60px rgba(0, 0, 0, .4);
   min-height: 160px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
-.ms-media-card b { font-family: var(--ms-f-head); font-weight: 700; font-size: 15px; color: #fff; }
-.ms-media-back { background: linear-gradient(150deg, #1c0f22, #3d1732 60%, #5f2030); grid-row: span 2; }
-.ms-media-front { background: linear-gradient(150deg, #0f1c1f, #143034 60%, #1d5b4d); margin-top: 40px; }
+.ms-media-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .78) 100%);
+}
+.ms-media-card b { position: relative; font-family: var(--ms-f-head); font-weight: 700; font-size: 15px; color: #fff; }
+.ms-media-back { background-image: url('/portfolio-meena-rajwada.jpg'); grid-row: span 2; }
+.ms-media-front { background-image: url('/portfolio-helmet-hub.jpg'); margin-top: 40px; }
 
 /* =========================================================
    WHY ZOPTAVI
@@ -522,20 +532,18 @@
   height: 72px;
   display: grid;
   place-items: center;
-  background: #f4f5f7;
+  background: #fff;
   border: 1px solid #e8eaee;
   border-radius: 18px;
-  font-family: var(--ms-f-head);
-  font-weight: 700;
-  font-size: 12px;
-  color: #333;
-  text-align: center;
+  padding: 14px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, .1);
   left: calc(50% + (var(--x) - 1.5) * 98px);
   top: calc(var(--y) * 80px);
   animation: ms-float 6s ease-in-out infinite;
   animation-delay: calc(var(--x) * -0.7s + var(--y) * -0.4s);
+  overflow: hidden;
 }
+.ms-tool-ico img { width: 100%; height: 100%; object-fit: contain; }
 @keyframes ms-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes ms-spin { to { transform: rotate(360deg); } }
 
@@ -562,8 +570,23 @@
 .ms-bento-wave { display: flex; flex-direction: column; justify-content: center; gap: 16px; text-align: center; background: #0f0f12; }
 .ms-bento-wave p { font-family: var(--ms-f-head); font-weight: 600; font-size: 13px; letter-spacing: .06em; color: #fff; }
 .ms-wave { height: 3px; background: repeating-linear-gradient(90deg, var(--ms-teal) 0 10px, transparent 10px 20px); border-radius: 3px; }
-.ms-bento-hands { background: linear-gradient(150deg, #1c0f22, #3d1732 60%, #5f2030); display: flex; align-items: flex-end; padding: 22px; }
-.ms-bento-hands b { color: #fff; font-family: var(--ms-f-head); font-size: 14px; }
+.ms-bento-hands, .ms-bento-device {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 22px;
+  overflow: hidden;
+}
+.ms-bento-hands::before, .ms-bento-device::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, .8) 100%);
+}
+.ms-bento-hands b, .ms-bento-device b { position: relative; color: #fff; font-family: var(--ms-f-head); font-size: 14px; }
+.ms-bento-hands { background-image: url('/portfolio-meena-rajwada.jpg'); }
 .ms-bento-tools { background: #0f0f12; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; text-align: center; }
 .ms-bento-tools h4 { font-size: 13px; letter-spacing: .06em; }
 .ms-mini-icons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
@@ -573,8 +596,7 @@
   display: grid; place-items: center;
   font-weight: 700; font-size: 11px; font-family: var(--ms-f-head);
 }
-.ms-bento-device { background: linear-gradient(150deg, #0f1c1f, #143034 60%, #1d5b4d); grid-row: span 2; display: flex; align-items: flex-end; padding: 22px; }
-.ms-bento-device b { color: #fff; font-family: var(--ms-f-head); font-size: 14px; }
+.ms-bento-device { background-image: url('/portfolio-helmet-hub.jpg'); grid-row: span 2; }
 .ms-bento-snapshot { background: #fff; }
 .ms-bento-snapshot h4 { font-size: 16px; color: #111; margin-bottom: 14px; }
 .ms-bento-snapshot li { font-size: 13px; color: var(--ms-grey-27); padding: 6px 0; border-bottom: 1px solid rgba(0, 0, 0, .07); }
@@ -1008,7 +1030,12 @@
   .ms-work-card { min-height: 210px; padding: 20px; }
   .ms-work-featured { min-height: 240px; }
   .ms-work-blurb { font-size: 13px; }
-  .ms-tools-cluster { height: 300px; transform: scale(.82); transform-origin: center; }
+  .ms-tools-cluster { height: 280px; }
+  .ms-tool-ico {
+    width: 58px; height: 58px; padding: 11px;
+    left: calc(50% + (var(--x) - 1.5) * 70px);
+    top: calc(var(--y) * 60px);
+  }
   .ms-bento { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .ms-bento-card { min-height: 150px; }
   .ms-bento-wave { padding-block: 30px; }
@@ -1024,6 +1051,13 @@
 
 @media (max-width: 360px) {
   .ms-why-cards { grid-template-columns: 1fr; }
+  .ms-tools-cluster { height: 250px; }
+  .ms-tool-ico {
+    width: 50px; height: 50px; padding: 9px;
+    left: calc(50% + (var(--x) - 1.5) * 56px);
+    top: calc(var(--y) * 50px);
+  }
+  .ms-stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
