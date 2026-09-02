@@ -59,12 +59,12 @@ export default function Navbar() {
       >
         <div style={{ maxWidth: 1300, margin: '0 auto', padding: '9px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '.02em' }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a163d6" strokeWidth="2"><path d="M9 12l2 2 4-4M12 2 4 5v6c0 5.5 3.8 10 8 11 4.2-1 8-5.5 8-11V5l-8-3z" /></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" strokeWidth="2"><path d="M9 12l2 2 4-4M12 2 4 5v6c0 5.5 3.8 10 8 11 4.2-1 8-5.5 8-11V5l-8-3z" /></svg>
             One team, one bill — website, billing, content, ads &amp; shipping
           </span>
           <span style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
             <a href="tel:+918978605027" style={{ color: 'rgba(255,255,255,.55)' }}>89786 05027</a>
-            <Link to="/contact" style={{ color: '#d9bff0', fontWeight: 600 }}>Get a Quote</Link>
+            <Link to="/contact" style={{ color: '#fff', fontWeight: 600 }}>Get a Quote</Link>
           </span>
         </div>
       </div>

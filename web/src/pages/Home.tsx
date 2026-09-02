@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
+import HlsVideoBg from '../components/HlsVideoBg';
 import { coreServices, portfolio, marketFacts } from '../data/business';
 import '../styles/messold-home.css';
 
@@ -36,9 +37,10 @@ export default function Home() {
   return (
     <div className="ms-home">
       {/* ===================== HERO ===================== */}
-      <section className="ms-hero">
-        <div className="ms-hero-bg" />
+      <section className="ms-hero ms-hero--video">
+        <HlsVideoBg className="ms-hero-video" />
         <div className="ms-hero-overlay" />
+        <div className="ms-hero-fade" aria-hidden="true" />
         <div className="ms-wrap ms-hero-content">
           <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="ms-tagchip">
@@ -55,7 +57,7 @@ export default function Home() {
             <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal">
               Book Your Free Growth Audit <span className="ms-arrow">→</span>
             </a>
-            <Link to="/work" className="ms-btn ms-btn-ghost">See Our Work <span className="ms-arrow">→</span></Link>
+            <Link to="/work" className="ms-btn liquid-glass-strong">See Our Work <span className="ms-arrow">→</span></Link>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }} className="ms-hero-trust">
             <span>2 live client stores</span>
@@ -250,7 +252,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== CTA ===================== */}
+      {/* ===================== CLOSING CTA ===================== */}
       <section className="ms-cta">
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">

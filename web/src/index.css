@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Raleway:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Raleway:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 /* ── Tailwind v4 brand tokens ── */
@@ -13,6 +13,44 @@
   --color-slate-350: #AEBAC9;
   --font-display: "Poppins", sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
+  --font-heading: "Instrument Serif", serif;
+  --font-body: "Barlow", sans-serif;
+}
+
+/* ── Liquid glass — used by CtaFooter and any future glass surface ── */
+@layer components {
+  .liquid-glass-strong {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    border: none;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-glass-strong::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.2) 80%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 }
 
 /* ── Explicit brand utility classes (fallback for Tailwind v4 @theme resolution) ── */
@@ -48,15 +86,19 @@
   --grad-orange:linear-gradient(120deg,#FFA31A 0%,#FF6A00 100%);
   --ease:cubic-bezier(.4,0,.2,1);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--white);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-::selection{background:rgba(0,201,200,.25);color:var(--navy)}
-:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
-input[type="range"]{accent-color:#007A76}
-input[type="checkbox"],input[type="radio"]{accent-color:#007A76}
-select{cursor:pointer}
-img{user-select:none}
+/* Base element styles live in @layer base so Tailwind utility classes
+   (font-heading, text-white, leading-*, …) reliably override them. */
+@layer base {
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#fff;background:#000;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  ::selection{background:rgba(161,99,214,.32);color:#fff}
+  :focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+  input[type="range"]{accent-color:#007A76}
+  input[type="checkbox"],input[type="radio"]{accent-color:#007A76}
+  select{cursor:pointer}
+  img{user-select:none}
+}
 
 /* Page enter animation */
 @keyframes fade-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -65,8 +107,10 @@ img{user-select:none}
 .fade-up-2{animation:fade-up .45s var(--ease) .12s both}
 .fade-up-3{animation:fade-up .45s var(--ease) .18s both}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-h1,h2,h3,h4,h5{font-family:'Poppins',sans-serif;font-weight:800;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.02em}
-p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer;border:none;background:none}ul{margin:0;padding:0;list-style:none}
+@layer base {
+  h1,h2,h3,h4,h5{font-family:'Poppins',sans-serif;font-weight:800;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.02em}
+  p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer;border:none;background:none}ul{margin:0;padding:0;list-style:none}
+}
 
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
 .muted{color:var(--text-2)}
@@ -187,7 +231,9 @@ p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%
 .mob-only{display:none!important}
 .znav-actions{display:flex}
 .hscroll-arrows{display:grid}
-@media(max-width:600px){.mob-hide{display:none!important}.mob-only{display:flex!important}.znav-actions{display:none!important}.hscroll-arrows{display:none!important}}
+/* switch to the hamburger before the desktop nav + WhatsApp pill can overflow (~tablet) */
+@media(max-width:960px){.mob-hide{display:none!important}.mob-only{display:flex!important}}
+@media(max-width:600px){.znav-actions{display:none!important}.hscroll-arrows{display:none!important}}
 
 /* ====== MOBILE BOTTOM NAV BAR ====== */
 .z-bottom-nav{

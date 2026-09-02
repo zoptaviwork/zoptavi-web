@@ -159,6 +159,9 @@
 .ms-home .ms-btn-ghost:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .6); }
 .ms-home .ms-btn-ghost.dark { border-color: rgba(255, 255, 255, .22); }
 .ms-btn.sm { padding: 11px 20px; font-size: 13px; }
+/* liquid-glass pill button — lets the .liquid-glass-strong look win over .ms-btn */
+.ms-home .ms-btn.liquid-glass-strong { color: var(--ms-white); border: none; }
+.ms-home .ms-btn.liquid-glass-strong:hover { background: rgba(255, 255, 255, .12); transform: translateY(-2px); }
 
 /* =========================================================
    HERO
@@ -181,6 +184,18 @@
   background-position: 62% center;
   transform: scale(1.04);
 }
+/* cinematic HLS video background (Home) */
+.ms-hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.06);
+  filter: saturate(1.05) brightness(0.62) contrast(1.02);
+}
 .ms-hero-overlay {
   position: absolute;
   inset: 0;
@@ -189,6 +204,24 @@
     radial-gradient(70% 60% at 18% 40%, rgba(var(--ms-accent-rgb), .16) 0%, rgba(0, 0, 0, 0) 60%),
     linear-gradient(180deg, rgba(6, 7, 10, .78) 0%, rgba(6, 7, 10, .55) 42%, rgba(6, 7, 10, .96) 100%),
     linear-gradient(90deg, rgba(6, 7, 10, .92) 0%, rgba(6, 7, 10, .35) 55%, rgba(6, 7, 10, .1) 100%);
+}
+/* video needs a heavier, more even scrim than the photo did */
+.ms-hero--video .ms-hero-overlay {
+  background:
+    radial-gradient(60% 55% at 16% 42%, rgba(var(--ms-accent-rgb), .22) 0%, rgba(0, 0, 0, 0) 62%),
+    linear-gradient(180deg, rgba(4, 5, 8, .72) 0%, rgba(4, 5, 8, .62) 45%, rgba(4, 5, 8, .98) 100%),
+    linear-gradient(90deg, rgba(4, 5, 8, .94) 0%, rgba(4, 5, 8, .55) 52%, rgba(4, 5, 8, .28) 100%);
+}
+/* bottom fade so the video melts into the black section below */
+.ms-hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 220px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--ms-bg) 4%, rgba(8, 9, 13, 0) 100%);
 }
 .ms-hero-content {
   position: relative;
@@ -203,6 +236,11 @@
   margin: 22px 0 24px;
 }
 .ms-hero h1 .ms-accent {
+  font-family: var(--font-heading, "Instrument Serif", Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding-right: .06em;
   background: linear-gradient(100deg, var(--ms-accent), #e6a3dd);
   -webkit-background-clip: text;
   background-clip: text;
@@ -950,4 +988,10 @@
 @media (prefers-reduced-motion: reduce) {
   .ms-slider-track, .ms-tool-ico { animation: none !important; }
   .ms-home .reveal { opacity: 1; transform: none; transition: none; }
+  .ms-hero-video { display: none; }
+  .ms-hero--video {
+    background:
+      radial-gradient(75% 70% at 20% 30%, rgba(var(--ms-accent-rgb), .22), transparent 60%),
+      linear-gradient(160deg, #17102b 0%, #0a0b12 55%, #06070a 100%);
+  }
 }
