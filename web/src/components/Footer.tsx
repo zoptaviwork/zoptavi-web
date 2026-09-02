@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer style={{ background: '#06080c', color: '#cbd5e1', position: 'relative' }}>
       {/* gradient hairline */}
-      <div style={{ height: 2, background: 'linear-gradient(90deg,transparent,#00C9C8 30%,#FFA31A 70%,transparent)', opacity: 0.6 }} />
+      <div style={{ height: 2, background: 'linear-gradient(90deg,transparent,#7d38ac 25%,#d24f92 62%,transparent)', opacity: 0.7 }} />
 
       {/* CTA band */}
       <div style={{ borderBottom: '1px solid rgba(255,255,255,.07)', background: 'rgba(255,255,255,.015)' }}>
@@ -18,7 +18,7 @@ export default function Footer() {
               Send us your business type — we&rsquo;ll reply with a sample built for you, free.
             </p>
           </div>
-          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn btn-cta" style={{ flexShrink: 0 }}>
+          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn" style={{ flexShrink: 0, background: '#fff', color: '#0b0b0d', boxShadow: '0 10px 30px rgba(255,255,255,.14)' }}>
             Message Us on WhatsApp
           </a>
         </div>
@@ -38,10 +38,10 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 style={{ display: 'flex', alignItems: 'flex-start', gap: 13, padding: '14px 16px', borderRadius: 14, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', transition: 'background .2s, border-color .2s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,201,200,.08)'; e.currentTarget.style.borderColor = 'rgba(0,201,200,.3)'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(161,99,214,.1)'; e.currentTarget.style.borderColor = 'rgba(161,99,214,.35)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,.08)'; }}
               >
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg,rgba(0,201,200,.22),rgba(0,122,118,.12))', display: 'grid', placeItems: 'center', color: 'var(--teal)', flexShrink: 0, fontFamily: 'Poppins', fontWeight: 800 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg,rgba(161,99,214,.28),rgba(210,79,146,.16))', display: 'grid', placeItems: 'center', color: '#d9bff0', flexShrink: 0, fontFamily: 'Poppins', fontWeight: 800 }}>
                   {p.name[0]}
                 </div>
                 <div>
@@ -69,7 +69,7 @@ export default function Footer() {
                   aria-label={s}
                   title={s}
                   style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(255,255,255,.08)', display: 'grid', placeItems: 'center', color: '#cbd5e1', transition: 'all .2s', fontSize: 11, fontFamily: 'Poppins', fontWeight: 700 }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'var(--teal)'; e.currentTarget.style.color = '#05201f'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#a163d6'; e.currentTarget.style.color = '#14061f'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.08)'; e.currentTarget.style.color = '#cbd5e1'; }}
                 >
                   {s[0]}
@@ -86,7 +86,7 @@ export default function Footer() {
                   <Link
                     to={s.key === 'bill' ? '/zoptavi-bill' : '/services'}
                     style={{ fontSize: 14, color: '#cbd5e1', transition: 'color .2s' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--teal)')}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#c9a8e8')}
                     onMouseLeave={e => (e.currentTarget.style.color = '#cbd5e1')}
                   >
                     {s.name}
@@ -110,7 +110,7 @@ export default function Footer() {
                   <Link
                     to={item.to}
                     style={{ fontSize: 14, color: '#cbd5e1', transition: 'color .2s' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--teal)')}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#c9a8e8')}
                     onMouseLeave={e => (e.currentTarget.style.color = '#cbd5e1')}
                   >
                     {item.l}

@@ -13,7 +13,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div style={{ minHeight: "100vh", background: "#fff", display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: "#06070a", display: "flex", flexDirection: "column" }}>
         <Navbar />
         <main className="flex-1">
           <Routes>

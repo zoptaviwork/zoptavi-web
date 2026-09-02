@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Check } from 'lucide-react';
+import Reveal from '../components/Reveal';
+import '../styles/messold-home.css';
+
+const WHATSAPP = 'https://wa.me/918978605027';
+
+const info = [
+  { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST' },
+  { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours' },
+  { icon: MapPin, title: 'Based in', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana' },
+  { icon: Clock, title: 'Response time', primary: 'Usually same day', secondary: 'A homepage sample often within 24 hours' },
+];
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', business: '', category: '', message: '' });
@@ -19,141 +31,158 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <div className="font-sans min-h-screen bg-brand-bg py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-teal/10 text-brand-teal text-xs font-bold uppercase tracking-wider mb-4">
-            <MessageSquare className="w-3.5 h-3.5" /> Let's Talk
-          </span>
-          <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-brand-navy tracking-tight">Get a Free Sample Built</h1>
-          <p className="text-slate-500 text-sm mt-4 leading-relaxed">
-            Tell us your business type and we'll show you a sample built for you — free, no obligation, usually within a day.
-          </p>
+    <div className="ms-home">
+      {/* ===================== HERO ===================== */}
+      <section className="ms-page-hero">
+        <div className="ms-wrap">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+            <span className="ms-badge">Let's Talk</span>
+            <h1>Get a <span className="ms-accent">free sample</span> built.</h1>
+            <p>
+              Tell us your business type and we'll show you a sample built for you — free, no obligation, usually
+              within a day.
+            </p>
+          </motion.div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
-          <div className="lg:col-span-5 space-y-4">
-            {[
-              { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST', color: 'bg-teal-50 border-teal-100 text-brand-teal' },
-              { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours', color: 'bg-indigo-50 border-indigo-100 text-indigo-500' },
-              { icon: MapPin, title: 'Based In', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana', color: 'bg-rose-50 border-rose-100 text-rose-500' },
-              { icon: Clock, title: 'Response Time', primary: 'Usually same day', secondary: 'A homepage sample often within 24 hours', color: 'bg-amber-50 border-amber-100 text-amber-600' },
-            ].map((info, idx) => (
-              <div key={idx} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-start gap-4">
-                <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${info.color}`}>
-                  <info.icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{info.title}</p>
-                  <p className="text-sm font-bold text-brand-navy mt-0.5">{info.primary}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{info.secondary}</p>
-                </div>
+      {/* ===================== INFO + FORM ===================== */}
+      <section className="ms-section tight" style={{ paddingTop: 0 }}>
+        <div className="ms-wrap">
+          <div className="ms-split">
+            {/* left — contact info */}
+            <Reveal>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {info.map(i => (
+                  <div key={i.title} className="ms-info-card">
+                    <span className="ms-info-ico"><i.icon size={19} /></span>
+                    <div>
+                      <p className="lbl">{i.title}</p>
+                      <p className="val">{i.primary}</p>
+                      <p className="sub">{i.secondary}</p>
+                    </div>
+                  </div>
+                ))}
+                <a
+                  href={WHATSAPP}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ms-btn ms-btn-accent"
+                  style={{ justifyContent: 'center', marginTop: 6 }}
+                >
+                  <MessageSquare size={16} /> Message us on WhatsApp
+                </a>
               </div>
-            ))}
+            </Reveal>
 
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 h-14 rounded-2xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm shadow-md transition-colors">
-              <MessageSquare className="w-4 h-4" /> Message us on WhatsApp directly
-            </a>
-          </div>
-
-          <div className="lg:col-span-7">
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8">
-              {submitted ? (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto">
-                    <Check className="w-8 h-8 text-emerald-500" />
-                  </div>
-                  <h3 className="font-display font-extrabold text-xl text-brand-navy">Got it, {formData.name}!</h3>
-                  <p className="text-sm text-slate-500 max-w-sm mx-auto">
-                    We'll take a look at <strong>{formData.business}</strong> and get back to you with a sample and a quote — usually within a day.
-                  </p>
-                  <button
-                    onClick={() => { setSubmitted(false); setFormData({ name: '', business: '', category: '', message: '' }); }}
-                    className="h-10 px-6 rounded-lg bg-brand-teal hover:bg-brand-teal-hover text-white text-xs font-bold transition-colors"
-                  >
-                    Send Another
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="border-b border-slate-50 pb-4 mb-2">
-                    <h2 className="font-display font-extrabold text-xl text-brand-navy">Tell us about your business</h2>
-                    <p className="text-xs text-slate-400 mt-1">All fields marked * are required.</p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Your Name *</label>
-                      <input
-                        type="text" placeholder="Priya Sharma" required
-                        value={formData.name}
-                        onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
-                        className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Business Name *</label>
-                      <input
-                        type="text" placeholder="e.g. Priya's Boutique" required
-                        value={formData.business}
-                        onChange={e => setFormData(f => ({ ...f, business: e.target.value }))}
-                        className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">What kind of business?</label>
-                    <select
-                      value={formData.category}
-                      onChange={e => setFormData(f => ({ ...f, category: e.target.value }))}
-                      className="w-full h-11 px-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal text-slate-700 cursor-pointer"
+            {/* right — form */}
+            <Reveal delay={0.08}>
+              <div className="ms-form-card">
+                {submitted ? (
+                  <div style={{ textAlign: 'center', padding: '32px 0', display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center' }}>
+                    <span
+                      style={{
+                        width: 60, height: 60, borderRadius: '50%', display: 'grid', placeItems: 'center',
+                        background: 'rgba(var(--ms-accent-rgb), .16)', color: 'var(--ms-accent)',
+                      }}
                     >
-                      <option value="">Select a category</option>
-                      <option>Dental clinic or healthcare</option>
-                      <option>Gym or fitness studio</option>
-                      <option>Boutique or clothing brand</option>
-                      <option>Restaurant or café</option>
-                      <option>D2C Instagram brand</option>
-                      <option>Other</option>
-                    </select>
+                      <Check size={30} />
+                    </span>
+                    <h3 style={{ fontSize: 20 }}>Got it, {formData.name}!</h3>
+                    <p style={{ fontSize: 13.5, color: 'var(--ms-grey-63)', maxWidth: 340, lineHeight: 1.65 }}>
+                      We'll take a look at <strong style={{ color: 'var(--ms-white)' }}>{formData.business}</strong> and get
+                      back to you with a sample and a quote — usually within a day.
+                    </p>
+                    <button
+                      onClick={() => { setSubmitted(false); setFormData({ name: '', business: '', category: '', message: '' }); }}
+                      className="ms-btn ms-btn-ghost sm"
+                    >
+                      Send another
+                    </button>
                   </div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    <div style={{ borderBottom: '1px solid var(--ms-line)', paddingBottom: 16, marginBottom: 20 }}>
+                      <h3 style={{ fontSize: 19 }}>Tell us about your business</h3>
+                      <p style={{ fontSize: 12, color: 'var(--ms-grey-50)', marginTop: 4 }}>Fields marked * are required.</p>
+                    </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">What do you need? *</label>
-                    <textarea
-                      rows={6} placeholder="e.g. I run a boutique taking orders over Instagram DM and want a proper website with billing..." required
-                      value={formData.message}
-                      onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
-                      className="w-full px-3 py-3 border border-slate-200 bg-slate-50 text-sm rounded-lg focus:outline-none focus:border-brand-teal transition-colors resize-none"
-                    />
-                  </div>
+                    <div className="ms-row-2">
+                      <div className="ms-field">
+                        <label className="ms-label">Your name *</label>
+                        <input
+                          className="ms-input" type="text" placeholder="Priya Sharma" required
+                          value={formData.name}
+                          onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
+                        />
+                      </div>
+                      <div className="ms-field">
+                        <label className="ms-label">Business name *</label>
+                        <input
+                          className="ms-input" type="text" placeholder="e.g. Priya's Boutique" required
+                          value={formData.business}
+                          onChange={e => setFormData(f => ({ ...f, business: e.target.value }))}
+                        />
+                      </div>
+                    </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full h-12 rounded-xl bg-brand-teal hover:bg-brand-teal-hover text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" /> Send &amp; Get a Free Sample
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
+                    <div className="ms-field">
+                      <label className="ms-label">What kind of business?</label>
+                      <select
+                        className="ms-select"
+                        value={formData.category}
+                        onChange={e => setFormData(f => ({ ...f, category: e.target.value }))}
+                      >
+                        <option value="">Select a category</option>
+                        <option>Dental clinic or healthcare</option>
+                        <option>Gym or fitness studio</option>
+                        <option>Boutique or clothing brand</option>
+                        <option>Restaurant or café</option>
+                        <option>D2C Instagram brand</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+
+                    <div className="ms-field">
+                      <label className="ms-label">What do you need? *</label>
+                      <textarea
+                        className="ms-textarea" rows={5} required
+                        placeholder="e.g. I run a boutique taking orders over Instagram DM and want a proper website with billing..."
+                        value={formData.message}
+                        onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="ms-btn ms-btn-accent"
+                      style={{ width: '100%', justifyContent: 'center', marginTop: 4, opacity: loading ? 0.7 : 1 }}
+                    >
+                      {loading ? (
+                        <>
+                          <span
+                            style={{
+                              width: 15, height: 15, borderRadius: '50%',
+                              border: '2px solid rgba(255,255,255,.35)', borderTopColor: '#fff',
+                              display: 'inline-block', animation: 'ms-spin .8s linear infinite',
+                            }}
+                          />
+                          Sending…
+                        </>
+                      ) : (
+                        <><Send size={16} /> Send &amp; get a free sample</>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </Reveal>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
+
 export default Contact;

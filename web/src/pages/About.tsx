@@ -2,73 +2,110 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal from '../components/Reveal';
 import { marketFacts, coreServices } from '../data/business';
+import '../styles/messold-home.css';
 
 export default function About() {
   return (
-    <div style={{ background: '#fff' }}>
-      {/* Hero */}
-      <section className="section-black" style={{ background: 'linear-gradient(160deg,#070b12 0%,#101f33 55%,#070b12 100%)', padding: 'var(--s-8) 0 var(--s-7)' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(700px 380px at 85% -10%,rgba(0,201,200,.18),transparent 60%),radial-gradient(600px 320px at 5% 110%,rgba(255,106,0,.14),transparent 60%)', pointerEvents: 'none' }} />
-        <div className="wrap" style={{ position: 'relative' }}>
-          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 'var(--s-5)', alignItems: 'center' }}>
-            <div>
-              <span className="badge-teal">THE BUSINESS</span>
-              <h1 className="giant-h1" style={{ fontSize: 'clamp(28px,4vw,42px)', margin: '16px 0' }}>What <span className="gradient-text">Zoptavi</span> is</h1>
-              <p style={{ fontSize: 15, color: 'var(--on-dark-2)', lineHeight: 1.75, marginBottom: 'var(--s-2)' }}>
-                Zoptavi takes a small business fully online and keeps it running. Competitors sell one piece — a website, or software, or reels.
-                Zoptavi sells the whole chain: one relationship, one invoice, and recurring revenue from every client.
-              </p>
-              <div className="glass-card" style={{ padding: 'var(--s-3)', background: 'rgba(255,255,255,.06)', border: '1px solid var(--hairline-strong)', marginTop: 'var(--s-3)', display: 'flex', gap: 'var(--s-2)', alignItems: 'center' }}>
-                <div style={{ width: 46, height: 46, borderRadius: 'var(--r-sm)', background: 'var(--grad-orange)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M8 12h8M12 8v8" /></svg>
-                </div>
-                <div>
-                  <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: 15, color: '#fff', margin: 0 }}>The pitch, in one line</p>
-                  <p style={{ fontSize: 13.5, color: 'var(--on-dark-2)', margin: '2px 0 0' }}>"You run the business. We handle the website, the billing, the content, the ads and the shipping. One team, one bill, one WhatsApp number."</p>
-                </div>
-              </div>
-            </div>
-            <div className="glass-card" style={{ padding: '8px 20px', background: 'rgba(255,255,255,.05)', border: '1px solid var(--hairline-strong)' }}>
-              {coreServices.map(s => (
-                <div key={s.key} style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '13px 4px', borderBottom: '1px solid var(--hairline)' }}>
-                  <span style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: 13.5, color: '#fff' }}>{s.name}</span>
-                  <span style={{ fontSize: 12, color: 'var(--on-dark-3)', textAlign: 'right' }}>{s.revenueType}</span>
-                </div>
-              ))}
-            </div>
+    <div className="ms-home">
+      {/* ===================== HERO ===================== */}
+      <section className="ms-page-hero">
+        <div className="ms-wrap">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+            <span className="ms-badge">The Business</span>
+            <h1>What <span className="ms-accent">Zoptavi</span> is.</h1>
+            <p>
+              Zoptavi takes a small business fully online and keeps it running. Competitors sell one piece — a
+              website, or software, or reels. Zoptavi sells the whole chain: one relationship, one invoice, and
+              recurring revenue from every client.
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Market data */}
-      <section className="sec tight" style={{ background: 'var(--gray-light)' }}>
-        <div className="wrap">
-          <Reveal><div className="sec-head"><div><span className="badge-orange">THE MARKET</span><h2 style={{ marginTop: 'var(--s-1)' }}>Verified market data</h2></div></div></Reveal>
-          <div className="table-scroll">
-            <table className="data-table">
-              <thead><tr><th>Fact</th><th>Figure</th><th>Source</th></tr></thead>
-              <tbody>
-                {marketFacts.map(m => (
-                  <tr key={m.fact}><td style={{ fontWeight: 600 }}>{m.fact}</td><td className="num">{m.figure}</td><td>{m.source}</td></tr>
-                ))}
-              </tbody>
-            </table>
+      {/* ===================== PITCH + SERVICES ===================== */}
+      <section className="ms-section tight">
+        <div className="ms-wrap">
+          <div className="ms-split">
+            <Reveal>
+              <div className="ms-callout" style={{ marginBottom: 22 }}>
+                <strong>The pitch, in one line</strong>
+                <p>
+                  "You run the business. We handle the website, the billing, the content, the ads and the
+                  shipping. One team, one bill, one WhatsApp number."
+                </p>
+              </div>
+              <p style={{ color: 'var(--ms-grey-63)', fontSize: 14.5, lineHeight: 1.75 }}>
+                No freelancer disappearing after launch. No juggling five vendors. Zoptavi builds it, bills it,
+                posts it, promotes it and ships it — and stays on the same WhatsApp thread after you've paid.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="ms-card">
+                <h3 style={{ marginBottom: 6 }}>Five services, one relationship</h3>
+                <p style={{ margin: '0 0 8px' }}>Each earns on its own; together they're the whole chain.</p>
+                <ul>
+                  {coreServices.map(s => (
+                    <li
+                      key={s.key}
+                      style={{
+                        display: 'flex', justifyContent: 'space-between', gap: 12,
+                        padding: '13px 0', borderBottom: '1px solid var(--ms-line)',
+                      }}
+                    >
+                      <span style={{ fontFamily: 'var(--ms-f-head)', fontWeight: 600, fontSize: 13.5, color: 'var(--ms-white)' }}>{s.name}</span>
+                      <span style={{ fontSize: 12, color: 'var(--ms-grey-50)', textAlign: 'right' }}>{s.revenueType}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Gap */}
-      <section className="sec">
-        <div className="wrap" style={{ maxWidth: 780, margin: '0 auto', textAlign: 'center' }}>
-          <span className="badge-teal">THE GAP NOBODY FILLS</span>
-          <h2 style={{ marginTop: 'var(--s-1)' }}>Shiprocket and WareIQ need 200+ orders a month to onboard a seller</h2>
-          <p style={{ fontSize: 14.5, color: 'var(--text-2)', lineHeight: 1.7, marginTop: 'var(--s-2)' }}>
-            Brands doing 10–80 orders a month — roughly 80% of Instagram sellers — have no professional option at all.
-            Zoptavi starts at 10 orders. That segment has effectively zero competition.
-          </p>
-          <div style={{ marginTop: 'var(--s-4)' }}>
-            <Link to="/work" className="pines-btn pines-btn-primary">See our live stores →</Link>
-          </div>
+      {/* ===================== MARKET DATA ===================== */}
+      <section className="ms-section tight alt">
+        <div className="ms-wrap">
+          <Reveal className="ms-sec-head">
+            <span className="ms-badge">The Market</span>
+            <h2 style={{ marginTop: 14 }}>Verified market data</h2>
+          </Reveal>
+          <Reveal>
+            <div className="ms-table-scroll">
+              <table className="ms-table">
+                <thead><tr><th>Fact</th><th style={{ textAlign: 'right' }}>Figure</th><th>Source</th></tr></thead>
+                <tbody>
+                  {marketFacts.map(m => (
+                    <tr key={m.fact}>
+                      <td className="name">{m.fact}</td>
+                      <td className="num">{m.figure}</td>
+                      <td>{m.source}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ===================== THE GAP ===================== */}
+      <section className="ms-section tight center">
+        <div className="ms-wrap">
+          <Reveal>
+            <span className="ms-badge">The gap nobody fills</span>
+            <h2 style={{ margin: '16px 0 14px', fontSize: 'clamp(1.6rem,3.2vw,2.4rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>
+              Shiprocket and WareIQ need 200+ orders a month to onboard a seller.
+            </h2>
+            <p style={{ color: 'var(--ms-grey-63)', fontSize: 15, lineHeight: 1.75 }}>
+              Brands doing 10–80 orders a month — roughly 80% of Instagram sellers — have no professional option
+              at all. Zoptavi starts at 10 orders. That segment has effectively zero competition.
+            </p>
+            <div style={{ marginTop: 30 }}>
+              <Link to="/work" className="ms-btn ms-btn-ghost">See our live stores <span className="ms-arrow">→</span></Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>
