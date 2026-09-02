@@ -44,27 +44,18 @@ export default function Home() {
         <div className="ms-hero-overlay" />
         <div className="ms-hero-fade" aria-hidden="true" />
         <div className="ms-wrap ms-hero-content">
-          <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            className="ms-tagchip">
-            <ShinyText text="Hyderabad · Since 2026" speed={7} />
-          </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}>
             You Run The Business.<br />We Handle <span className="ms-accent">Everything Online</span>.
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }}>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
             Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number.
             Zoptavi takes a small business fully online and keeps it running.
           </motion.p>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.28 }} className="ms-hero-btns">
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="ms-hero-btns">
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-hero-pill">
               Book Your Free Growth Audit <span className="ms-arrow">→</span>
             </a>
-            <Link to="/work" className="ms-btn liquid-glass-strong">See Our Work <span className="ms-arrow">→</span></Link>
-          </motion.div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }} className="ms-hero-trust">
-            <span>2 live client stores</span>
-            <span>From 10 orders / month</span>
-            <span>One WhatsApp number</span>
+            <Link to="/work" className="ms-btn ms-hero-pill">See Our Work <span className="ms-arrow">→</span></Link>
           </motion.div>
         </div>
       </section>
@@ -166,7 +157,7 @@ export default function Home() {
           <div className="ms-work-head">
             <Reveal><h2 className="ms-work-title">OUR<br />WORK</h2></Reveal>
             <Reveal delay={0.08} className="ms-work-intro">
-              <h3>Two real stores.<br />Not concepts.</h3>
+              <h3>Making stores a<br />damn sight better.</h3>
               <p>Your website is often the first touchpoint with your audience. It should reflect the quality and ambition of your brand.</p>
               <p>Smart, intentional design doesn't just look good — it builds trust, captures attention, and sets you apart.</p>
             </Reveal>
