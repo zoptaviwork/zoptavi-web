@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap');
+
+/* =========================================================
+   OUR SERVICES  — rebuilt to match messold.com/our-services
+   Black hero, light body with alternating service blocks,
+   dark video footer-CTA. Scoped under .ors so it never leaks.
+   ========================================================= */
+
+.ors {
+  --ors-ink: #0d0d10;
+  --ors-ink-2: #4b4b55;
+  --ors-ink-3: #85858f;
+  --ors-line: #e7e5ec;
+  --ors-bg: #ffffff;
+  --ors-bg-2: #faf8fc;
+  --ors-black: #06070a;
+  --ors-accent: #a163d6;
+
+  --ors-f-head: "Raleway", "Helvetica Neue", Arial, sans-serif;
+  --ors-f-body: "Roboto", "Helvetica Neue", Arial, sans-serif;
+
+  --ors-maxw: 1240px;
+  --ors-gutter: 40px;
+
+  background: var(--ors-bg);
+  color: var(--ors-ink);
+  font-family: var(--ors-f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+.ors * { box-sizing: border-box; }
+.ors img { max-width: 100%; display: block; }
+.ors a { color: inherit; text-decoration: none; }
+.ors h1, .ors h2 { font-family: var(--ors-f-head); font-weight: 700; margin: 0; letter-spacing: -0.03em; line-height: 1; color: var(--ors-ink); }
+.ors p { margin: 0; }
+.ors ul { margin: 0; padding: 0; list-style: none; }
+
+.ors-wrap {
+  width: 100%;
+  max-width: var(--ors-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ors-gutter);
+}
+
+/* ---------- animated pill buttons ----------
+   selectors are doubled (.ors .ors-btn) so they beat `.ors a { color: inherit }` */
+.ors .ors-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ors-f-head);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ors-ink);
+  color: var(--ors-ink);
+  background: transparent;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
+  cursor: pointer;
+}
+.ors .ors-btn svg { width: 17px; height: 17px; transition: transform .25s ease; }
+.ors .ors-btn:hover { background: var(--ors-ink); color: #fff; transform: translateY(-2px); }
+.ors .ors-btn:hover svg { transform: translateX(3px); }
+.ors .ors-btn--solid { background: #fff; color: var(--ors-black); border-color: #fff; }
+.ors .ors-btn--solid:hover { background: rgba(255, 255, 255, .88); color: var(--ors-black); }
+.ors .ors-btn--fill { background: var(--ors-ink); color: #fff; border-color: var(--ors-ink); }
+.ors .ors-btn--fill:hover { background: #000; color: #fff; }
+
+/* =========================================================
+   HERO  (black)
+   ========================================================= */
+.ors-hero {
+  position: relative;
+  background: var(--ors-black);
+  color: #fff;
+  min-height: min(64vh, 620px);
+  display: flex;
+  align-items: center;
+  padding: clamp(130px, 20vh, 200px) 0 clamp(64px, 9vh, 100px);
+  overflow: hidden;
+  isolation: isolate;
+}
+.ors-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(55% 60% at 10% 6%, rgba(161, 99, 214, .22) 0%, transparent 62%),
+    radial-gradient(45% 55% at 96% 100%, rgba(180, 74, 134, .16) 0%, transparent 58%);
+}
+.ors-hero__inner {
+  width: 100%;
+  max-width: var(--ors-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ors-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.ors-hero h1 {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: .9;
+  letter-spacing: -0.045em;
+}
+.ors-hero h1 span { display: block; }
+
+/* =========================================================
+   SERVICE BLOCKS  (light)
+   ========================================================= */
+.ors-svc {
+  padding: clamp(64px, 8vw, 120px) 0;
+  border-top: 1px solid var(--ors-line);
+}
+.ors-svc__wrap {
+  max-width: var(--ors-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ors-gutter);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 88px);
+  align-items: center;
+}
+.ors-svc.rev .ors-svc__copy { order: 2; }
+
+.ors-svc__eyebrow {
+  font-family: var(--ors-f-head);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ors-ink-3);
+}
+.ors-svc__title {
+  font-size: clamp(2.1rem, 5vw, 3.6rem);
+  margin: 12px 0 0;
+}
+.ors-svc__title span { display: block; }
+.ors-svc__lead {
+  font-family: var(--ors-f-head);
+  font-weight: 500;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: var(--ors-ink);
+  margin: 16px 0 0;
+  max-width: 30ch;
+}
+.ors-svc__bullets { margin: 22px 0 26px; display: flex; flex-direction: column; gap: 12px; }
+.ors-svc__bullets li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--ors-ink-2);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.ors-svc__bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ors-accent);
+}
+
+/* pastel media card with a big icon */
+.ors-svc__media {
+  position: relative;
+  border-radius: 28px;
+  aspect-ratio: 10 / 9;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ors-svc__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 82% 10%, rgba(255, 255, 255, .5), transparent 55%);
+  pointer-events: none;
+}
+.ors-svc__media svg {
+  width: 40%;
+  height: auto;
+  color: rgba(13, 13, 16, .82);
+  stroke-width: 1.3;
+}
+.ors-svc__media .cap {
+  position: absolute;
+  left: 24px;
+  bottom: 20px;
+  font-family: var(--ors-f-head);
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(13, 13, 16, .7);
+}
+.ors-svc__media.g-pink   { background: linear-gradient(150deg, #f8dcef, #efe0f8 55%, #f7ecdc); }
+.ors-svc__media.g-lav    { background: linear-gradient(150deg, #e6ddf9, #f1e5f6 55%, #e9f2ec); }
+.ors-svc__media.g-mint   { background: linear-gradient(150deg, #dcf1e6, #eaf3ec 55%, #f4ecf7); }
+.ors-svc__media.g-cream  { background: linear-gradient(150deg, #faf0e0, #f6e9f0 55%, #eee2f7); }
+.ors-svc__media.g-peach  { background: linear-gradient(150deg, #fde3d4, #f8e5ea 55%, #e8def8); }
+.ors-svc__media.g-sky    { background: linear-gradient(150deg, #dde8f8, #ebe4f5 55%, #f6e3ec); }
+
+/* =========================================================
+   STILL CONFUSED
+   ========================================================= */
+.ors-confused {
+  padding: clamp(70px, 9vw, 130px) 0;
+  border-top: 1px solid var(--ors-line);
+}
+.ors-confused__wrap {
+  max-width: var(--ors-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ors-gutter);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+.ors-confused__title { font-size: clamp(2.4rem, 6vw, 4.4rem); }
+.ors-confused__title span { display: block; }
+.ors-confused__card {
+  margin-top: 28px;
+  background: linear-gradient(150deg, #efe6fb, #f6ecf3 60%, #e7f1ec);
+  border-radius: 24px;
+  padding: clamp(26px, 4vw, 40px);
+}
+.ors-confused__card p {
+  font-family: var(--ors-f-head);
+  font-weight: 600;
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  color: var(--ors-ink);
+  margin-bottom: 20px;
+}
+.ors-confused__media {
+  border-radius: 28px;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(150deg, #e7f0e9, #eee9f4);
+  display: grid;
+  place-items: center;
+  color: rgba(13, 13, 16, .7);
+  font-family: var(--ors-f-head);
+  font-weight: 600;
+}
+.ors-confused__media .kpi {
+  background: #fff;
+  border: 1px solid var(--ors-line);
+  border-radius: 16px;
+  padding: 18px 22px;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, .12);
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.ors-confused__media .kpi b { font-size: 22px; color: var(--ors-ink); display: block; }
+.ors-confused__media .kpi span { font-size: 11px; color: var(--ors-ink-3); text-transform: uppercase; letter-spacing: .08em; }
+
+/* =========================================================
+   FOOTER CTA  (dark, video bg)
+   ========================================================= */
+.ors-footcta {
+  position: relative;
+  min-height: min(70vh, 640px);
+  display: flex;
+  align-items: center;
+  padding: clamp(90px, 14vh, 160px) 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ors-black);
+  color: #fff;
+}
+.ors-footcta__video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.5) saturate(1.05);
+}
+.ors-footcta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, rgba(6, 7, 10, .9) 0%, rgba(6, 7, 10, .55) 60%, rgba(6, 7, 10, .8) 100%);
+}
+.ors-footcta__grid {
+  width: 100%;
+  max-width: var(--ors-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ors-gutter);
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 40px;
+  align-items: end;
+}
+.ors-footcta__grid h2 {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  line-height: .95;
+  letter-spacing: -0.04em;
+}
+.ors-footcta__copy { color: rgba(255, 255, 255, .72); font-size: 15px; }
+.ors-footcta__link {
+  font-family: var(--ors-f-head);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.6vw, 1.9rem);
+  color: #fff;
+  border-bottom: 2px solid var(--ors-accent);
+  padding-bottom: 2px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1000px) {
+  .ors { --ors-gutter: 26px; }
+  .ors-svc__wrap, .ors-confused__wrap { grid-template-columns: 1fr; gap: 28px; }
+  .ors-svc.rev .ors-svc__copy { order: 0; }
+  .ors-footcta__grid { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 560px) {
+  .ors { font-size: 15px; }
+  .ors-hero { min-height: auto; }
+  .ors-svc__media { aspect-ratio: 5 / 4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ors-footcta__video { display: none; }
+  .ors-btn, .ors-btn svg { transition: none; }
+}

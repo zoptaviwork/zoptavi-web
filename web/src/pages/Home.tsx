@@ -214,7 +214,7 @@ export default function Home() {
             <div className="ms-bento-card ms-bento-bind">
               <h3>One Team, Across Every Service</h3>
               <p>No juggling five vendors. Zoptavi builds it, bills it, posts it, promotes it, and ships it — under one bill.</p>
-              <Link to="/services" className="ms-btn sm">See Full Pricing</Link>
+              <Link to="/services" className="ms-btn sm">See Our Services</Link>
             </div>
             <div className="ms-bento-card ms-bento-wave">
               <div className="ms-wave" />

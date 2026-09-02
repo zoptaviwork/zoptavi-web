@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const links = [
   { label: 'Home', to: '/' },
-  { label: 'Services & Pricing', to: '/services' },
+  { label: 'Our Services', to: '/services' },
   { label: 'Zoptavi Bill', to: '/zoptavi-bill' },
   { label: 'Our Work', to: '/work' },
   { label: 'About', to: '/about' },

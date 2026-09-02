@@ -977,6 +977,164 @@
 }
 
 /* =========================================================
+   OUR SERVICES PAGE  (messold.com/our-services layout)
+   ========================================================= */
+.ms-svc-hero {
+  position: relative;
+  padding: clamp(140px, 22vh, 220px) 0 clamp(70px, 10vh, 110px);
+  overflow: hidden;
+  isolation: isolate;
+}
+.ms-svc-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(58% 60% at 12% 8%, rgba(var(--ms-accent-rgb), .24) 0%, transparent 60%),
+    radial-gradient(50% 55% at 92% 100%, rgba(180, 74, 134, .16) 0%, transparent 58%);
+}
+.ms-svc-hero h1 {
+  font-family: var(--ms-f-head);
+  font-weight: 700;
+  font-size: clamp(3.2rem, 12vw, 8rem);
+  line-height: .92;
+  letter-spacing: -0.04em;
+}
+.ms-svc-hero p {
+  color: var(--ms-grey-80);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.7;
+  max-width: 46ch;
+  margin: 22px 0 30px;
+}
+
+.ms-svc { padding: var(--ms-sec-tight) 0 var(--ms-sec); }
+.ms-svc-row {
+  display: grid;
+  grid-template-columns: 1.02fr .98fr;
+  gap: 60px;
+  align-items: center;
+}
+.ms-svc-row + .ms-svc-row { margin-top: clamp(64px, 9vw, 120px); }
+.ms-svc-row.rev .ms-svc-text { order: 2; }
+
+.ms-svc-num {
+  font-family: var(--ms-f-head);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ms-grey-50);
+}
+.ms-svc-text h3 {
+  font-family: var(--ms-f-head);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 14px 0 0;
+}
+.ms-svc-tag {
+  font-family: var(--font-heading, "Instrument Serif", Georgia, serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.9vw, 1.4rem);
+  color: var(--ms-accent);
+  margin: 14px 0 22px;
+}
+.ms-svc-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 26px; }
+.ms-svc-list li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--ms-grey-80);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.ms-svc-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--ms-accent);
+}
+
+.ms-svc-media {
+  position: relative;
+  border-radius: var(--ms-radius-lg);
+  aspect-ratio: 5 / 4;
+  background: var(--ms-grad-purple);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+.ms-svc-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 85% 8%, rgba(255, 255, 255, .18), transparent 55%);
+  pointer-events: none;
+}
+.ms-svc-media svg {
+  width: 34%;
+  height: auto;
+  color: rgba(255, 255, 255, .92);
+  stroke-width: 1.4;
+}
+.ms-svc-media .cap {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  font-family: var(--ms-f-head);
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: .01em;
+}
+
+/* "still not sure?" call band + closing */
+.ms-svc-confused {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  background: var(--ms-grad-stats);
+  border-radius: var(--ms-radius-lg);
+  padding: clamp(36px, 5vw, 64px);
+  position: relative;
+  overflow: hidden;
+}
+.ms-svc-confused::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 120% at 90% 0%, rgba(255, 255, 255, .16), transparent 55%);
+  pointer-events: none;
+}
+.ms-svc-confused > * { position: relative; }
+.ms-svc-confused h2 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.03em; line-height: .95; }
+.ms-svc-confused p { color: rgba(255, 255, 255, .82); margin-top: 12px; font-size: 15px; }
+
+.ms-svc-close { text-align: center; }
+.ms-svc-close h2 {
+  font-family: var(--ms-f-head);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: .98;
+  letter-spacing: -0.035em;
+}
+.ms-svc-close p { color: var(--ms-grey-63); margin: 18px 0 4px; font-size: 15px; }
+.ms-svc-close a.mail {
+  font-family: var(--font-heading, "Instrument Serif", Georgia, serif);
+  font-style: italic;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--ms-accent);
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1080px) {
@@ -993,6 +1151,9 @@
   .ms-work-featured { grid-column: auto; min-height: 300px; }
   .ms-price-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
   .ms-rate-cols { grid-template-columns: 1fr; gap: 24px; }
+  .ms-svc-row, .ms-svc-row.rev { grid-template-columns: 1fr; gap: 28px; }
+  .ms-svc-row.rev .ms-svc-text { order: 0; }
+  .ms-svc-confused { grid-template-columns: 1fr; gap: 22px; }
 }
 
 @media (max-width: 720px) {
