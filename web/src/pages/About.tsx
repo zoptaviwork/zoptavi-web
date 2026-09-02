@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal from '../components/Reveal';
+import ShinyText from '../components/reactbits/ShinyText';
+import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { marketFacts, coreServices } from '../data/business';
 import '../styles/messold-home.css';
 
@@ -11,7 +13,7 @@ export default function About() {
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge">The Business</span>
+            <span className="ms-badge"><ShinyText text="The Business" speed={7} /></span>
             <h1>What <span className="ms-accent">Zoptavi</span> is.</h1>
             <p>
               Zoptavi takes a small business fully online and keeps it running. Competitors sell one piece — a
@@ -41,7 +43,7 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={0.08}>
-              <div className="ms-card">
+              <SpotlightDiv className="ms-card">
                 <h3 style={{ marginBottom: 6 }}>Five services, one relationship</h3>
                 <p style={{ margin: '0 0 8px' }}>Each earns on its own; together they're the whole chain.</p>
                 <ul>
@@ -58,7 +60,7 @@ export default function About() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </SpotlightDiv>
             </Reveal>
           </div>
         </div>

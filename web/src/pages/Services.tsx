@@ -2,6 +2,9 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
+import StatNumber from '../components/StatNumber';
+import ShinyText from '../components/reactbits/ShinyText';
+import { SpotlightArticle, SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import {
   bundles, coreServices, websiteTiers, carePlans, studioPlans, adsPlans, portfolio,
 } from '../data/business';
@@ -59,7 +62,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="ms-eyebrow" style={{ display: 'inline-block', marginBottom: 18 }}
           >
-            Services &amp; Pricing
+            <ShinyText text="Services & Pricing" speed={7} />
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
@@ -133,11 +136,11 @@ export default function Services() {
         <div className="ms-wrap ms-why-grid">
           <RevealStagger className="ms-why-cards">
             {coreServices.map((s, i) => (
-              <motion.article key={s.key} variants={revealItem} className="ms-why-card">
+              <SpotlightArticle key={s.key} variants={revealItem} className="ms-why-card">
                 <span className="ms-why-ico">{serviceIcons[i % serviceIcons.length]}</span>
                 <h3>{s.name}</h3>
                 <p>{s.what} — <em>{s.revenueType.toLowerCase()}</em>.</p>
-              </motion.article>
+              </SpotlightArticle>
             ))}
           </RevealStagger>
           <Reveal delay={0.1} className="ms-why-text">
@@ -168,7 +171,7 @@ export default function Services() {
               viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: i * 0.08 }}
               className="ms-stat"
             >
-              <span className="ms-stat-num">{s.n}</span>
+              <StatNumber value={s.n} className="ms-stat-num" />
               <span className="ms-stat-label">{s.l}</span>
             </motion.div>
           ))}
@@ -179,7 +182,7 @@ export default function Services() {
       <section className="ms-price" id="bundle">
         <div className="ms-wrap">
           <Reveal className="ms-price-head">
-            <span className="ms-eyebrow">The Zoptavi Bundle</span>
+            <span className="ms-eyebrow"><ShinyText text="The Zoptavi Bundle" speed={7} /></span>
             <h2>One price, everything included</h2>
             <p>Three packages, one monthly fee each. Website, billing, content, ads and support — all in.</p>
           </Reveal>
@@ -197,7 +200,7 @@ export default function Services() {
                 ['Updates & support', b.support],
               ];
               return (
-                <motion.div key={b.key} variants={revealItem} whileHover={{ y: -5 }} className={feat ? 'ms-price-card feat' : 'ms-price-card'}>
+                <SpotlightDiv key={b.key} variants={revealItem} whileHover={{ y: -5 }} className={feat ? 'ms-price-card feat' : 'ms-price-card'}>
                   <div className="ms-price-cap">
                     <p className="ms-price-tag">{b.tagline}</p>
                     <p className="ms-price-name">{b.name}</p>
@@ -218,7 +221,7 @@ export default function Services() {
                       Choose {b.name} <span className="ms-arrow">→</span>
                     </a>
                   </div>
-                </motion.div>
+                </SpotlightDiv>
               );
             })}
           </RevealStagger>
@@ -230,7 +233,7 @@ export default function Services() {
       <section className="ms-alacarte">
         <div className="ms-wrap">
           <Reveal className="ms-alacarte-head">
-            <span className="ms-eyebrow">À La Carte</span>
+            <span className="ms-eyebrow"><ShinyText text="À La Carte" speed={7} /></span>
             <h2>Buying individually? Every rate.</h2>
           </Reveal>
 
@@ -311,7 +314,7 @@ export default function Services() {
       <section className="ms-parallels">
         <div className="ms-wrap">
           <Reveal className="ms-parallels-head">
-            <span className="ms-eyebrow">Why Choose Us</span>
+            <span className="ms-eyebrow"><ShinyText text="Why Choose Us" speed={7} /></span>
             <h2>Partnership,<br />Not Just Projects</h2>
             <p>Skip the hiring maze — get website, billing, content, ads and fulfilment from one team.</p>
           </Reveal>
@@ -346,7 +349,7 @@ export default function Services() {
       <section className="ms-tools">
         <div className="ms-wrap ms-tools-grid">
           <Reveal className="ms-tools-text">
-            <span className="ms-eyebrow">Trusted By Experts</span>
+            <span className="ms-eyebrow"><ShinyText text="Trusted By Experts" speed={7} /></span>
             <h2>Tools That<br />Drive Results</h2>
             <p>We rely on the most trusted payment, ads and messaging platforms — the same stack serious brands already use.</p>
           </Reveal>
@@ -362,7 +365,7 @@ export default function Services() {
       <section className="ms-faq">
         <div className="ms-wrap ms-faq-grid">
           <Reveal className="ms-faq-head">
-            <span className="ms-eyebrow">Popular Queries</span>
+            <span className="ms-eyebrow"><ShinyText text="Popular Queries" speed={7} /></span>
             <h2>Questions you're<br />probably asking</h2>
             <p>Straight answers on price, lock-in and what's actually included.</p>
           </Reveal>

@@ -1,5 +1,7 @@
-import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
+import { motion } from 'motion/react';
+import ShinyText from '../components/reactbits/ShinyText';
+import { SpotlightLink } from '../components/reactbits/SpotlightCard';
 import { portfolio, competitorComparison } from '../data/business';
 import '../styles/messold-home.css';
 
@@ -13,7 +15,7 @@ export default function Work() {
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge">Live Stores</span>
+            <span className="ms-badge"><ShinyText text="Live Stores" speed={7} /></span>
             <h1>Not our first store,<br />not our <span className="ms-accent">last</span>.</h1>
             <p>One team, one technology backbone, many platforms. Here's what's already running on Zoptavi today.</p>
           </motion.div>
@@ -25,7 +27,7 @@ export default function Work() {
         <div className="ms-wrap">
           <RevealStagger className="ms-grid-2" gap={0.12}>
             {portfolio.map(p => (
-              <motion.a
+              <SpotlightLink
                 key={p.key}
                 variants={revealItem}
                 whileHover={{ y: -5 }}
@@ -58,7 +60,7 @@ export default function Work() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17 17 7M7 7h10v10" /></svg>
                   </span>
                 </div>
-              </motion.a>
+              </SpotlightLink>
             ))}
           </RevealStagger>
         </div>

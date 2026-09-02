@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import HlsVideoBg from '../components/HlsVideoBg';
+import StatNumber from '../components/StatNumber';
+import ShinyText from '../components/reactbits/ShinyText';
+import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
 import { coreServices, portfolio, marketFacts } from '../data/business';
 import '../styles/messold-home.css';
 
@@ -44,7 +47,7 @@ export default function Home() {
         <div className="ms-wrap ms-hero-content">
           <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="ms-tagchip">
-            Hyderabad · Since 2026
+            <ShinyText text="Hyderabad · Since 2026" speed={7} />
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
             You Run The Business.<br />We Handle <span className="ms-accent">Everything Online</span>.
@@ -120,11 +123,11 @@ export default function Home() {
         <div className="ms-wrap ms-why-grid">
           <RevealStagger className="ms-why-cards">
             {marketFacts.map((m, i) => (
-              <motion.article key={m.fact} variants={revealItem} className="ms-why-card">
+              <SpotlightArticle key={m.fact} variants={revealItem} className="ms-why-card">
                 <span className="ms-why-ico">{marketIcons[i % marketIcons.length]}</span>
                 <h3>{m.figure}</h3>
                 <p>{m.fact} — {m.source}</p>
-              </motion.article>
+              </SpotlightArticle>
             ))}
           </RevealStagger>
           <Reveal delay={0.1} className="ms-why-text">
@@ -151,7 +154,7 @@ export default function Home() {
             { n: '1', l: 'WhatsApp Number' },
           ].map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5, delay: i * 0.08 }} className="ms-stat">
-              <span className="ms-stat-num">{s.n}</span>
+              <StatNumber value={s.n} className="ms-stat-num" />
               <span className="ms-stat-label">{s.l}</span>
             </motion.div>
           ))}
@@ -186,7 +189,7 @@ export default function Home() {
       <section className="ms-tools">
         <div className="ms-wrap ms-tools-grid">
           <Reveal className="ms-tools-text">
-            <span className="ms-eyebrow">Trusted By Experts</span>
+            <span className="ms-eyebrow"><ShinyText text="Trusted By Experts" speed={7} /></span>
             <h2>Tools That<br />Drive Results</h2>
             <p>We rely on the most trusted platforms to deliver seamless experiences, powerful marketing, and measurable growth for your brand.</p>
           </Reveal>
@@ -202,7 +205,7 @@ export default function Home() {
       <section className="ms-parallels">
         <div className="ms-wrap">
           <Reveal className="ms-parallels-head">
-            <span className="ms-eyebrow">Why Choose Us</span>
+            <span className="ms-eyebrow"><ShinyText text="Why Choose Us" speed={7} /></span>
             <h2>Partnership,<br />Not Just Projects</h2>
             <p>Skip the hiring maze — get website, billing, content, ads and fulfilment from one team.</p>
           </Reveal>
@@ -237,7 +240,7 @@ export default function Home() {
       <section className="ms-faq">
         <div className="ms-wrap ms-faq-grid">
           <Reveal className="ms-faq-head">
-            <span className="ms-eyebrow">Popular Queries</span>
+            <span className="ms-eyebrow"><ShinyText text="Popular Queries" speed={7} /></span>
             <h2>FAQs</h2>
             <p>Get the clarity you need about our process and services.</p>
           </Reveal>

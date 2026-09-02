@@ -914,6 +914,47 @@
 .ms-home .ms-btn-accent:hover { transform: translateY(-2px); box-shadow: 0 18px 46px rgba(var(--ms-accent-rgb), .42); }
 
 /* =========================================================
+   REACT-BITS ENHANCEMENTS  (spotlight glow, shiny labels)
+   ========================================================= */
+/* cursor-follow radial glow — hosts set --mx/--my/--spot via useSpotlight() */
+.ms-spot-host { position: relative; isolation: isolate; }
+.ms-spot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;              /* above the card's own background, below its content */
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: calc(var(--spot, 0) * 1);
+  transition: opacity .3s ease;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(var(--ms-accent-rgb), .18),
+    rgba(var(--ms-accent-rgb), 0) 45%
+  );
+}
+
+/* subtle highlight sweep on eyebrow / badge labels */
+.ms-shine {
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, .5) 40%,
+    rgba(255, 255, 255, .95) 50%,
+    rgba(255, 255, 255, .5) 60%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: ms-shine 6s linear infinite;
+}
+.ms-shine--off { animation: none; }
+@keyframes ms-shine {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1080px) {
@@ -988,6 +1029,8 @@
 @media (prefers-reduced-motion: reduce) {
   .ms-slider-track, .ms-tool-ico { animation: none !important; }
   .ms-home .reveal { opacity: 1; transform: none; transition: none; }
+  .ms-shine { animation: none !important; -webkit-text-fill-color: currentColor; color: inherit; background: none; }
+  .ms-spot { display: none; }
   .ms-hero-video { display: none; }
   .ms-hero--video {
     background:

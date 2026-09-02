@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
 import ScrollToTop from './components/ScrollToTop';
+import ClickSpark from './components/reactbits/ClickSpark';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import ZoptaviBill from './pages/ZoptaviBill';
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <ClickSpark sparkColor="#a163d6" sparkCount={8} sparkRadius={15} duration={430} />
       <div style={{ minHeight: "100vh", background: "#06070a", display: "flex", flexDirection: "column" }}>
         <Navbar />
         <main className="flex-1">

@@ -1,5 +1,7 @@
-import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
+import ShinyText from '../components/reactbits/ShinyText';
+import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
+import { motion } from 'motion/react';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
 import '../styles/messold-home.css';
 
@@ -12,7 +14,7 @@ export default function ZoptaviBill() {
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge">Zoptavi Bill</span>
+            <span className="ms-badge"><ShinyText text="Zoptavi Bill" speed={7} /></span>
             <h1>Billing software that <span className="ms-accent">never stops working</span>.</h1>
             <p>
               Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch
@@ -32,11 +34,11 @@ export default function ZoptaviBill() {
         <div className="ms-wrap">
           <RevealStagger className="ms-grid-3 two-up-md" gap={0.1}>
             {billPillars.map((p, i) => (
-              <motion.div key={p.title} variants={revealItem} whileHover={{ y: -5 }} className="ms-card lift">
+              <SpotlightDiv key={p.title} variants={revealItem} whileHover={{ y: -5 }} className="ms-card lift">
                 <span className="ms-num">{String(i + 1).padStart(2, '0')}</span>
                 <h3 style={{ margin: '16px 0 8px' }}>{p.title}</h3>
                 <p>{p.detail}</p>
-              </motion.div>
+              </SpotlightDiv>
             ))}
           </RevealStagger>
         </div>
@@ -63,12 +65,12 @@ export default function ZoptaviBill() {
           <Reveal className="ms-sec-head"><h2>What it does, phase by phase</h2></Reveal>
           <RevealStagger className="ms-grid-3 two-up-md" gap={0.1}>
             {billPhases.map(ph => (
-              <motion.div key={ph.phase} variants={revealItem} className="ms-card">
+              <SpotlightDiv key={ph.phase} variants={revealItem} className="ms-card">
                 <h3 style={{ fontSize: 15, color: 'var(--ms-accent)', marginBottom: 14 }}>{ph.phase}</h3>
                 <ul className="ms-check-list">
                   {ph.items.map((it, i) => <li key={i}>{it}</li>)}
                 </ul>
-              </motion.div>
+              </SpotlightDiv>
             ))}
           </RevealStagger>
         </div>
