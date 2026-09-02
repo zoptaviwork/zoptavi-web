@@ -41,21 +41,26 @@ export default function Home() {
         <div className="ms-hero-overlay" />
         <div className="ms-wrap ms-hero-content">
           <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            className="ms-eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00c9c8', display: 'inline-block' }} /> HYDERABAD · SINCE 2026
+            className="ms-tagchip">
+            Hyderabad · Since 2026
           </motion.span>
           <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
-            You Run The Business.<br />We Handle Everything Online.
+            You Run The Business.<br />We Handle <span className="ms-accent">Everything Online</span>.
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.18 }}>
             Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number.
             Zoptavi takes a small business fully online and keeps it running.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.28 }} className="ms-hero-btns">
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
+            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal">
               Book Your Free Growth Audit <span className="ms-arrow">→</span>
             </a>
             <Link to="/work" className="ms-btn ms-btn-ghost">See Our Work <span className="ms-arrow">→</span></Link>
+          </motion.div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }} className="ms-hero-trust">
+            <span>2 live client stores</span>
+            <span>From 10 orders / month</span>
+            <span>One WhatsApp number</span>
           </motion.div>
         </div>
       </section>
@@ -120,7 +125,7 @@ export default function Home() {
               </motion.article>
             ))}
           </RevealStagger>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} className="ms-why-text">
             <h2>Why <span>ZOPTAVI</span>?</h2>
             <p className="ms-why-lead">We're Not A Typical Agency. We're The Team That Keeps You Online.</p>
             <p className="ms-why-italic">
