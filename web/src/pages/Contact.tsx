@@ -32,7 +32,7 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <div className="ms-home">
+    <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

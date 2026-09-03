@@ -10,7 +10,7 @@ const cell = (v: boolean) => (v ? <span className="yes">✓</span> : <span class
 
 export default function Work() {
   return (
-    <div className="ms-home">
+    <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

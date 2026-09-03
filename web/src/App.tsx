@@ -8,6 +8,7 @@ import Services from './pages/Services';
 import ZoptaviBill from './pages/ZoptaviBill';
 import Work from './pages/Work';
 import About from './pages/About';
+import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/zoptavi-bill" element={<ZoptaviBill />} />
             <Route path="/work" element={<Work />} />
             <Route path="/about" element={<About />} />
+            <Route path="/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>

@@ -7,6 +7,7 @@ const links = [
   { label: 'Our Services', to: '/services' },
   { label: 'Zoptavi Bill', to: '/zoptavi-bill' },
   { label: 'About', to: '/about' },
+  { label: 'Careers', to: '/careers' },
   { label: 'Contact', to: '/contact' },
 ];
 
@@ -40,8 +41,12 @@ export default function Navbar() {
   const path = location.pathname;
   const isActive = (to: string) => (to === '/' ? path === '/' : path.startsWith(to));
 
+  // Home has a dark full-bleed hero, so the bar can float transparent there
+  // until scroll. Every other page is light — keep the bar solid + readable.
+  const solid = (scrolled || path !== '/') && !open;
+
   return (
-    <header className={`mnav ${scrolled && !open ? 'mnav--scrolled' : 'mnav--top'}`} data-open={open}>
+    <header className={`mnav ${solid ? 'mnav--scrolled' : 'mnav--top'}`} data-open={open}>
       <div className="mnav__bar">
         <Link to="/" className="mnav__logo" aria-label="Zoptavi — home">
           <img src="/zoptavi-logo-v5.png" alt="Zoptavi" />
@@ -55,8 +60,18 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="site-menu"
         >
-          {open ? 'Close' : 'Menu'}
-          <span className="mnav__bars" aria-hidden="true"><span /><span /><span /></span>
+          <span className="mnav__toggle-label">Menu</span>
+          <span className="mnav__toggle-icon" aria-hidden="true">
+            {open ? (
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                <path d="M3 6h18M3 12h18M3 18h18" />
+              </svg>
+            )}
+          </span>
         </button>
       </div>
 
@@ -94,6 +109,8 @@ export default function Navbar() {
             </div>
           </div>
 
+          <div className="mmenu__divider" aria-hidden="true" />
+
           <nav className="mmenu__right" aria-label="Primary">
             <ul>
               {links.map((l, i) => (
@@ -106,7 +123,8 @@ export default function Navbar() {
               ))}
             </ul>
             <a href={WHATSAPP} target="_blank" rel="noreferrer" className="mmenu__cta">
-              WhatsApp Us — 89786 05027 <span aria-hidden="true">→</span>
+              <span>WhatsApp Us</span>
+              <span aria-hidden="true" className="mmenu__cta-arrow">→</span>
             </a>
           </nav>
         </div>

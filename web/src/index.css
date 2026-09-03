@@ -1367,42 +1367,39 @@
 .mnav__logo:hover{opacity:.8}
 .mnav__logo img{height:30px;width:auto;display:block}
 .mnav__toggle{
-  display:inline-flex;align-items:center;gap:12px;
+  display:inline-flex;align-items:center;gap:11px;
   background:none;border:none;cursor:pointer;color:#fff;
   font-family:'Raleway','Poppins',sans-serif;font-weight:700;
   font-size:12px;letter-spacing:.24em;text-transform:uppercase;
-  padding:8px 2px;line-height:1;
+  padding:8px 0;line-height:1;
   text-shadow:0 2px 16px rgba(0,0,0,.6);
 }
-.mnav__bars{position:relative;width:26px;height:12px;flex-shrink:0}
-.mnav__bars span{
-  position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor;
-  transition:transform .3s ease,top .3s ease,opacity .2s ease;
-}
-.mnav__bars span:nth-child(1){top:0}
-.mnav__bars span:nth-child(2){top:5px}
-.mnav__bars span:nth-child(3){top:10px}
-.mnav[data-open="true"] .mnav__bars span:nth-child(1){top:5px;transform:rotate(45deg)}
-.mnav[data-open="true"] .mnav__bars span:nth-child(2){opacity:0}
-.mnav[data-open="true"] .mnav__bars span:nth-child(3){top:5px;transform:rotate(-45deg)}
+.mnav__toggle-label{display:inline-block}
+.mnav__toggle-icon{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px}
+.mnav__toggle-icon svg{display:block}
 
 .mmenu{
   position:fixed;inset:0;z-index:990;
   background:linear-gradient(160deg,#0a0b12 0%,#160a26 52%,#06070a 100%);
-  opacity:0;pointer-events:none;
-  transition:opacity .35s ease;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .38s ease,visibility 0s linear .38s;
   overflow-y:auto;overscroll-behavior:contain;
 }
-.mmenu[data-open="true"]{opacity:1;pointer-events:auto}
+.mmenu[data-open="true"]{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .38s ease}
 .mmenu::before{
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(60% 55% at 85% 10%,rgba(161,99,214,.18),transparent 60%);
+  background:radial-gradient(60% 55% at 85% 10%,rgba(161,99,214,.2),transparent 60%);
 }
 .mmenu__inner{
-  position:relative;max-width:1320px;width:100%;margin:auto;
-  padding:128px 40px 64px;
-  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  position:relative;max-width:1280px;width:100%;margin:auto;
+  padding:132px 44px 64px;
+  display:grid;grid-template-columns:1fr 1px 1fr;gap:56px;align-items:center;
+  transform:translateY(26px);opacity:0;
+  transition:transform .5s cubic-bezier(.22,1,.36,1) .06s,opacity .5s ease .06s;
 }
+.mmenu[data-open="true"] .mmenu__inner{transform:none;opacity:1}
+.mmenu__divider{align-self:stretch;background:linear-gradient(180deg,transparent,rgba(255,255,255,.16) 18%,rgba(255,255,255,.16) 82%,transparent)}
+
 .mmenu__left h2{
   font-family:'Raleway',sans-serif;font-weight:700;
   font-size:clamp(1.35rem,2.3vw,1.9rem);line-height:1.24;letter-spacing:-.02em;
@@ -1415,50 +1412,60 @@
 .mmenu__v{display:block;font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.5}
 a.mmenu__v:hover{color:#fff}
 
-.mmenu__right ul{display:flex;flex-direction:column;gap:0}
+.mmenu__right ul{display:flex;flex-direction:column;gap:0;text-align:right}
 .mmenu__right li{
   opacity:0;transform:translateY(16px);
   transition:opacity .45s ease,transform .45s ease;
-  transition-delay:calc(var(--i,0) * .05s + .12s);
+  transition-delay:calc(var(--i,0) * .06s + .14s);
 }
 .mmenu[data-open="true"] .mmenu__right li{opacity:1;transform:none}
-.mmenu__right a{
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
+.mmenu__right ul a{
+  display:flex;align-items:center;justify-content:flex-end;gap:16px;
   font-family:'Raleway',sans-serif;font-weight:700;
-  font-size:clamp(1.7rem,3.6vw,2.9rem);letter-spacing:-.03em;line-height:1.1;
-  color:rgba(255,255,255,.66);
-  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.09);
-  transition:color .2s ease,padding-left .2s ease;
+  font-size:clamp(1.7rem,3.4vw,2.7rem);letter-spacing:-.03em;line-height:1.15;
+  color:rgba(255,255,255,.64);
+  padding:13px 0;border-bottom:1px solid rgba(255,255,255,.09);
+  transition:color .2s ease,padding-right .2s ease;
 }
-.mmenu__right a:hover,.mmenu__right a.is-active{color:#fff;padding-left:12px}
-.mmenu__arrow{font-size:.6em;opacity:0;transform:translate(-6px,4px);transition:opacity .2s,transform .2s}
-.mmenu__right a:hover .mmenu__arrow,.mmenu__right a.is-active .mmenu__arrow{opacity:.7;transform:none}
+.mmenu__right ul a:hover,.mmenu__right ul a.is-active{color:#fff;padding-right:10px}
+.mmenu__arrow{font-size:.5em;opacity:0;transform:translate(6px,3px);transition:opacity .2s,transform .2s;order:-1}
+.mmenu__right ul a:hover .mmenu__arrow,.mmenu__right ul a.is-active .mmenu__arrow{opacity:.7;transform:none}
+
 .mmenu__cta{
-  margin-top:34px;display:inline-flex;align-items:center;gap:10px;
+  margin:34px 0 0 auto;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:max-content;max-width:100%;
   background:linear-gradient(120deg,#7d38ac,#4b249a);color:#fff;
-  font-family:'Raleway',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.01em;
-  padding:15px 26px;border-radius:999px;
+  font-family:'Raleway',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:15px 30px;border-radius:999px;border-bottom:none;
   box-shadow:0 12px 34px rgba(161,99,214,.32);
   transition:transform .2s ease,box-shadow .2s ease;
 }
-.mmenu__cta:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(161,99,214,.46)}
+.mmenu__cta:hover{transform:translateY(-2px);box-shadow:0 18px 46px rgba(161,99,214,.46);color:#fff}
+.mmenu__cta-arrow{transition:transform .2s ease}
+.mmenu__cta:hover .mmenu__cta-arrow{transform:translateX(3px)}
 
 @media(max-width:860px){
   .mmenu__inner{
-    grid-template-columns:1fr;gap:34px;
-    padding:104px 24px 52px;align-items:start;align-content:start;
+    grid-template-columns:1fr;gap:30px;
+    padding:100px 24px 52px;align-items:start;align-content:start;
   }
+  .mmenu__divider{display:none}
   .mmenu__left{order:2}
   .mmenu__right{order:1}
   .mmenu__left h2{margin-bottom:24px}
+  .mmenu__right ul,.mmenu__right ul a{text-align:left;justify-content:space-between}
+  .mmenu__arrow{order:0}
+  .mmenu__cta{margin-left:0}
 }
 @media(max-width:600px){
   .mnav__bar{padding:12px 16px}
   .mnav__logo img{height:26px}
-  .mmenu__right a{font-size:clamp(1.5rem,7.5vw,2rem);padding:12px 0}
+  .mnav__toggle-label{display:none}
+  .mmenu__right ul a{font-size:clamp(1.5rem,7.5vw,2rem);padding:12px 0}
 }
 @media(prefers-reduced-motion:reduce){
-  .mnav,.mnav__bars span,.mmenu,.mmenu__right li,.mmenu__right a,.mmenu__cta{transition:none}
+  .mmenu,.mmenu__inner,.mmenu__right li{transition:opacity .2s ease!important;transform:none!important}
 }
 
 /* no floating bottom-nav exists — drop the phantom space it reserved */

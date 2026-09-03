@@ -342,34 +342,43 @@
    CONSULTATION / GROWTH AUDIT
    ========================================================= */
 .ms-consult { padding: var(--ms-sec-tight) 0; }
-.ms-consult-grid {
-  display: grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap: 32px;
-  align-items: stretch;
-}
+/* white box on the dark home page (replaces the old purple card + portfolio collage) */
 .ms-consult-card {
   position: relative;
-  background: var(--ms-grad-purple);
+  background: #ffffff;
   border-radius: var(--ms-radius-lg);
-  padding: 52px 46px;
-  color: #fff;
+  padding: clamp(36px, 5vw, 64px);
+  color: #14141a;
   overflow: hidden;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .5);
 }
 .ms-consult-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(120% 90% at 90% 0%, rgba(255, 255, 255, .16), transparent 55%);
+  background: radial-gradient(120% 90% at 92% 0%, rgba(161, 99, 214, .1), transparent 55%);
   pointer-events: none;
 }
 .ms-consult-card > * { position: relative; }
-.ms-consult-card h2 { font-size: clamp(1.6rem, 2.7vw, 2.25rem); margin-bottom: 24px; }
+.ms-consult-card__body { max-width: 720px; }
+.ms-consult-eyebrow {
+  font-family: var(--ms-f-head);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #9a5cc9;
+}
+.ms-consult-card h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  margin: 12px 0 24px;
+  color: #14141a;
+}
 .ms-consult-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 26px; }
 .ms-consult-list li {
   position: relative;
-  padding-left: 26px;
-  color: rgba(255, 255, 255, .94);
+  padding-left: 24px;
+  color: #45454f;
   font-family: var(--ms-f-head);
   font-weight: 500;
   font-size: 15px;
@@ -379,51 +388,22 @@
   position: absolute;
   left: 0;
   top: .5em;
-  width: 12px;
-  height: 12px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, .85);
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--ms-accent);
 }
 .ms-partner-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .ms-partner-chips span {
-  background: rgba(255, 255, 255, .16);
-  border: 1px solid rgba(255, 255, 255, .22);
+  background: #f4f0fa;
+  border: 1px solid #e7ddf3;
   border-radius: 8px;
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
   font-family: var(--ms-f-head);
+  color: #5a4a6e;
 }
-.ms-consult-media {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 1fr;
-  gap: 14px;
-  min-height: 340px;
-}
-.ms-media-card {
-  position: relative;
-  border-radius: var(--ms-radius);
-  display: flex;
-  align-items: flex-end;
-  padding: 22px;
-  border: 1px solid var(--ms-line);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, .4);
-  min-height: 160px;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-}
-.ms-media-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, .78) 100%);
-}
-.ms-media-card b { position: relative; font-family: var(--ms-f-head); font-weight: 700; font-size: 15px; color: #fff; }
-.ms-media-back { background-image: url('/portfolio-meena-rajwada.jpg'); grid-row: span 2; }
-.ms-media-front { background-image: url('/portfolio-helmet-hub.jpg'); margin-top: 40px; }
 
 /* =========================================================
    WHY ZOPTAVI
@@ -1249,3 +1229,92 @@
       linear-gradient(160deg, #17102b 0%, #0a0b12 55%, #06070a 100%);
   }
 }
+
+/* =========================================================
+   LIGHT PAGE VARIANT  — Work / About / Contact / Zoptavi Bill / Careers
+   Flips the .ms-* token set to a white editorial theme so the
+   inner pages read like /services, not like the dark home page.
+   ========================================================= */
+.ms-home.ms-light {
+  --ms-bg: #ffffff;
+  --ms-black: #f4f2f8;
+  --ms-white: #16161c;             /* now the primary ink colour */
+  --ms-surface-1: #faf9fc;
+  --ms-surface-2: #f2f0f7;
+  --ms-line: rgba(18, 18, 28, .1);
+  --ms-line-strong: rgba(18, 18, 28, .18);
+  --ms-grey-93: #f3f1f8;
+  --ms-grey-85: #33333c;
+  --ms-grey-80: #3f3f49;
+  --ms-grey-63: #55555f;
+  --ms-grey-50: #78787f;
+  --ms-grey-42: #86868e;
+  --ms-grey-35: #5a5a62;
+  --ms-grey-27: #48484f;
+  --ms-grey-8: #f1eff6;
+  --ms-grey-7: #f6f4fa;
+  --ms-grey-6: #faf8fc;
+  background: var(--ms-bg);
+  color: var(--ms-white);
+}
+/* hero glow — softer on white */
+.ms-home.ms-light .ms-page-hero::before {
+  background:
+    radial-gradient(58% 55% at 50% 0%, rgba(161, 99, 214, .13) 0%, transparent 62%),
+    radial-gradient(50% 60% at 84% 12%, rgba(180, 74, 134, .08) 0%, transparent 55%);
+}
+/* rules that used --ms-white / dark hues as a literal fill */
+.ms-home.ms-light .ms-tools { background: var(--ms-grey-93); color: #16161c; }
+.ms-home.ms-light .ms-parallels { background: #ffffff; }
+.ms-home.ms-light .ms-section.alt { background: var(--ms-grey-6); border-block-color: var(--ms-line); }
+.ms-home.ms-light .ms-alacarte { background: var(--ms-grey-6); }
+.ms-home.ms-light .ms-btn-solid { background: #16161c; color: #ffffff; box-shadow: 0 12px 30px rgba(0, 0, 0, .16); }
+.ms-home.ms-light .ms-btn-solid:hover { box-shadow: 0 16px 40px rgba(0, 0, 0, .24); }
+.ms-home.ms-light .ms-btn-ghost {
+  background: rgba(18, 18, 28, .03);
+  color: #16161c;
+  border-color: rgba(18, 18, 28, .26);
+  backdrop-filter: none;
+}
+.ms-home.ms-light .ms-btn-ghost:hover { background: rgba(18, 18, 28, .07); border-color: rgba(18, 18, 28, .5); }
+.ms-home.ms-light .ms-btn-ghost.dark { border-color: rgba(18, 18, 28, .18); }
+/* badges + eyebrows */
+.ms-home.ms-light .ms-badge { background: rgba(161, 99, 214, .1); border-color: rgba(161, 99, 214, .28); color: #7a3ca8; }
+.ms-home.ms-light .ms-eyebrow { color: var(--ms-grey-42); }
+/* surfaces / cards / faq / inputs */
+.ms-home.ms-light .ms-card,
+.ms-home.ms-light .ms-faq-item,
+.ms-home.ms-light .ms-info-card,
+.ms-home.ms-light .ms-form-card { background: #ffffff; border-color: var(--ms-line); box-shadow: 0 4px 18px rgba(18, 18, 28, .05); }
+.ms-home.ms-light .ms-faq-item[open] { background: #faf7fe; border-color: rgba(161, 99, 214, .3); }
+.ms-home.ms-light .ms-faq-ico { border-color: rgba(18, 18, 28, .22); }
+.ms-home.ms-light .ms-faq-item[open] .ms-faq-ico { background: var(--ms-accent); color: #fff; border-color: transparent; }
+.ms-home.ms-light .ms-input,
+.ms-home.ms-light .ms-select,
+.ms-home.ms-light .ms-textarea { background: #f4f2f9; color: #16161c; border-color: rgba(18, 18, 28, .16); }
+.ms-home.ms-light .ms-input::placeholder,
+.ms-home.ms-light .ms-textarea::placeholder { color: #9a9aa2; }
+.ms-home.ms-light .ms-select option { background: #ffffff; color: #16161c; }
+.ms-home.ms-light .ms-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2378787f' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+}
+/* tables */
+.ms-home.ms-light .ms-table thead th,
+.ms-home.ms-light .ms-rate-table thead th { background: rgba(18, 18, 28, .03); }
+.ms-home.ms-light .ms-table tbody tr:hover td { background: rgba(18, 18, 28, .025); }
+.ms-home.ms-light .ms-table-scroll { background: #ffffff; }
+/* callout keeps a light purple tint (accent rgba on white already works) */
+.ms-home.ms-light .ms-callout { background: rgba(161, 99, 214, .07); border-color: rgba(161, 99, 214, .2); }
+/* coloured cards that stay dark inside a light page — keep their text white */
+.ms-home.ms-light .ms-cta-card h2,
+.ms-home.ms-light .ms-consult-card h2 { color: #ffffff; }
+.ms-home.ms-light .ms-cta-card p { color: rgba(255, 255, 255, .88); }
+.ms-home.ms-light .ms-cta-card .ms-btn-ghost {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, .45);
+  background: rgba(255, 255, 255, .08);
+}
+.ms-home.ms-light .ms-cta-card .ms-btn-ghost:hover { background: rgba(255, 255, 255, .18); border-color: rgba(255, 255, 255, .7); }
+.ms-home.ms-light .ms-cta-card .ms-btn-solid { background: #ffffff; color: #14141a; }
+/* the page wrapper fills the viewport so the dark app shell never peeks through */
+.ms-home.ms-light { min-height: 100vh; }

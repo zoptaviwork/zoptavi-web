@@ -85,25 +85,24 @@ export default function Home() {
 
       {/* ===================== CONSULTATION ===================== */}
       <section className="ms-consult">
-        <div className="ms-wrap ms-consult-grid">
+        <div className="ms-wrap">
           <Reveal className="ms-consult-card">
-            <h2>You've Cracked The Business.<br />Let's Crack Going Online.</h2>
-            <ul className="ms-consult-list">
-              <li>Website, Billing &amp; Checkout — Live In Days</li>
-              <li>Content &amp; Meta Ads That Actually Convert</li>
-              <li>One Bill For Every Service You Use</li>
-              <li>WhatsApp Support, Not Ticket Queues</li>
-            </ul>
-            <div className="ms-partner-chips">
-              {['UPI', 'Cards', 'Net Banking', 'Wallets', 'GST', 'Razorpay'].map(p => <span key={p}>{p}</span>)}
+            <div className="ms-consult-card__body">
+              <span className="ms-consult-eyebrow">Ready When You Are</span>
+              <h2>You've Cracked The Business.<br />Let's Crack Going Online.</h2>
+              <ul className="ms-consult-list">
+                <li>Website, Billing &amp; Checkout — Live In Days</li>
+                <li>Content &amp; Meta Ads That Actually Convert</li>
+                <li>One Bill For Every Service You Use</li>
+                <li>WhatsApp Support, Not Ticket Queues</li>
+              </ul>
+              <div className="ms-partner-chips">
+                {['UPI', 'Cards', 'Net Banking', 'Wallets', 'GST', 'Razorpay'].map(p => <span key={p}>{p}</span>)}
+              </div>
+              <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal">
+                Book Your Free Consultation <span className="ms-arrow">→</span>
+              </a>
             </div>
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-ghost" style={{ borderColor: 'rgba(255,255,255,.6)' }}>
-              Book Your Free Consultation <span className="ms-arrow">→</span>
-            </a>
-          </Reveal>
-          <Reveal delay={0.08} className="ms-consult-media">
-            <div className="ms-media-card ms-media-back"><b>{portfolio[0].name}</b></div>
-            <div className="ms-media-card ms-media-front"><b>{portfolio[1].name}</b></div>
           </Reveal>
         </div>
       </section>

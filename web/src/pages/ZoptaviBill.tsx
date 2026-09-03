@@ -9,7 +9,7 @@ const WHATSAPP = 'https://wa.me/918978605027';
 
 export default function ZoptaviBill() {
   return (
-    <div className="ms-home">
+    <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">
