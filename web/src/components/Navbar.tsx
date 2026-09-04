@@ -60,7 +60,7 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="site-menu"
         >
-          <span className="mnav__toggle-label">Menu</span>
+          <span className="mnav__toggle-label">{open ? 'Close' : 'Menu'}</span>
           <span className="mnav__toggle-icon" aria-hidden="true">
             {open ? (
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">

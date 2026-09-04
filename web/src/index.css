@@ -92,7 +92,7 @@
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#fff;background:#000;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-  ::selection{background:rgba(161,99,214,.32);color:#fff}
+  ::selection{background:rgba(161,99,214,.38)}
   :focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
   input[type="range"]{accent-color:#007A76}
   input[type="checkbox"],input[type="radio"]{accent-color:#007A76}
