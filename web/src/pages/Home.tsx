@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* ===================== CONSULTATION ===================== */}
       <section className="ms-consult">
-        <div className="ms-wrap">
+        <div className="ms-wrap ms-consult-grid">
           <Reveal className="ms-consult-card">
             <div className="ms-consult-card__body">
               <span className="ms-consult-eyebrow">Ready When You Are</span>
@@ -103,6 +103,10 @@ export default function Home() {
                 Book Your Free Consultation <span className="ms-arrow">→</span>
               </a>
             </div>
+          </Reveal>
+          <Reveal delay={0.08} className="ms-consult-photos">
+            <div className="ms-consult-photo ms-consult-photo--back" style={{ backgroundImage: "url('/portfolio-meena-rajwada.jpg')" }} />
+            <div className="ms-consult-photo ms-consult-photo--front" style={{ backgroundImage: "url('/portfolio-helmet-hub.jpg')" }} />
           </Reveal>
         </div>
       </section>
