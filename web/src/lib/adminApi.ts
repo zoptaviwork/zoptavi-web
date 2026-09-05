@@ -99,3 +99,122 @@ export async function fetchAnalytics(): Promise<Analytics> {
   if (!res.ok) throw new Error(body.error || 'Failed to load analytics');
   return body;
 }
+
+async function authedFetch(path: string, options: RequestInit = {}) {
+  const token = getToken();
+  const res = await fetch(`${WORKER_URL}${path}`, {
+    ...options,
+    headers: { ...(options.headers || {}), Authorization: `Bearer ${token}` },
+  });
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.error || 'Request failed');
+  return body;
+}
+
+/** Public URL for an uploaded image key, or a fallback if no key/Worker. */
+export function mediaUrl(key?: string | null): string | undefined {
+  if (!key) return undefined;
+  if (key.startsWith('http') || key.startsWith('/')) return key; // already a full/static path
+  return `${WORKER_URL}/api/media/${key}`;
+}
+
+export async function uploadImage(file: File): Promise<string> {
+  const token = getToken();
+  const res = await fetch(`${WORKER_URL}/api/admin/upload`, {
+    method: 'POST',
+    headers: { 'Content-Type': file.type, Authorization: `Bearer ${token}` },
+    body: file,
+  });
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.error || 'Upload failed');
+  return body.key;
+}
+
+// ---- page content (hero text etc.) ----
+export type ContentField = { key: string; label: string; value: string; type: string };
+
+export function useLiveContent(page: string): Record<string, string> {
+  const [values, setValues] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/content?page=${encodeURIComponent(page)}`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then(d => { if (!cancelled) setValues(d.values || {}); })
+      .catch(() => { /* keep defaults */ });
+    return () => { cancelled = true; };
+  }, [page]);
+  return values;
+}
+
+export async function fetchContentFields(page: string): Promise<ContentField[]> {
+  const res = await fetch(`${WORKER_URL}/api/content?page=${encodeURIComponent(page)}`);
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.error || 'Failed to load content');
+  return body.fields;
+}
+
+export async function saveContent(page: string, values: Record<string, string>) {
+  return authedFetch('/api/admin/content', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ page, values }) });
+}
+
+// ---- FAQs ----
+export type Faq = { id?: number; question: string; answer: string };
+
+export function useLiveFaqs(fallback: Faq[]): Faq[] {
+  const [faqs, setFaqs] = useState<Faq[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/faqs`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: Faq[]) => { if (!cancelled && d.length) setFaqs(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return faqs;
+}
+
+export async function fetchFaqs(): Promise<Faq[]> {
+  const res = await fetch(`${WORKER_URL}/api/faqs`);
+  return res.json();
+}
+export async function saveFaqs(faqs: Faq[]) {
+  return authedFetch('/api/admin/faqs', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(faqs) });
+}
+
+// ---- Portfolio ----
+export type PortfolioItem = { id?: number; key: string; name: string; url?: string; category: string; tier?: string; blurb: string; imageKey?: string };
+
+export function useLivePortfolio(fallback: PortfolioItem[]): PortfolioItem[] {
+  const [items, setItems] = useState<PortfolioItem[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/portfolio`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: PortfolioItem[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchPortfolio(): Promise<PortfolioItem[]> {
+  const res = await fetch(`${WORKER_URL}/api/portfolio`);
+  return res.json();
+}
+export async function savePortfolio(items: PortfolioItem[]) {
+  return authedFetch('/api/admin/portfolio', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- Nav links ----
+export type NavLink = { id?: number; label: string; path: string };
+
+export async function fetchNav(): Promise<NavLink[]> {
+  const res = await fetch(`${WORKER_URL}/api/nav`);
+  return res.json();
+}
+export async function saveNav(links: NavLink[]) {
+  return authedFetch('/api/admin/nav', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(links) });
+}

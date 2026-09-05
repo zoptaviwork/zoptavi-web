@@ -109,6 +109,9 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @layer base {
   h1,h2,h3,h4,h5{font-family:'Poppins',sans-serif;font-weight:800;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.02em}
+  /* /admin uses its own light theme (Inter font, own type scale) — don't inherit the
+     marketing site's Poppins/navy heading styles */
+  .admin-theme h1,.admin-theme h2,.admin-theme h3,.admin-theme h4{font-family:inherit;font-weight:700;letter-spacing:normal;color:inherit}
   p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer;border:none;background:none}ul{margin:0;padding:0;list-style:none}
 }
 

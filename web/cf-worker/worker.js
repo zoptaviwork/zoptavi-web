@@ -1,19 +1,31 @@
 /**
- * Zoptavi admin API — Cloudflare Worker + D1.
- * Free-tier only: one Worker, one D1 database, no KV/R2/queues.
+ * Zoptavi admin API — Cloudflare Worker + D1 + R2.
+ * Free-tier only: one Worker, one D1 database, one R2 bucket.
  *
- * Routes:
- *   GET    /api/services                 public  — current services/pricing (used by the live site)
- *   POST   /api/track                    public  — record a pageview or CTA click
- *   POST   /api/login                    public  — { password } -> { token }
- *   PUT    /api/admin/services           protected — replace services/tiers/care-plans
- *   GET    /api/admin/analytics          protected — pageview + click summary
+ * Public routes:
+ *   GET  /api/services            current services/pricing
+ *   GET  /api/content?page=X      editable text for page X (hero headline etc.)
+ *   GET  /api/faqs                FAQ list
+ *   GET  /api/portfolio           portfolio/client showcase list
+ *   GET  /api/nav                 nav menu links
+ *   GET  /api/media/:key          serves an uploaded image
+ *   POST /api/track               record a pageview or CTA click
+ *   POST /api/login               { password } -> { token }
+ *
+ * Protected routes (Authorization: Bearer <token>):
+ *   PUT  /api/admin/services
+ *   PUT  /api/admin/content       { page, values: { key: value } }
+ *   PUT  /api/admin/faqs          [{ question, answer }]
+ *   PUT  /api/admin/portfolio     [{ key, name, url, category, tier, blurb, imageKey }]
+ *   PUT  /api/admin/nav           [{ label, path }]
+ *   POST /api/admin/upload        raw image body, header X-Filename -> { key }
+ *   GET  /api/admin/analytics
  */
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,POST,PUT,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Filename",
 };
 
 function json(data, status = 200) {
@@ -80,6 +92,13 @@ async function getServices(db) {
   };
 }
 
+function extFromType(type) {
+  if (type === "image/png") return "png";
+  if (type === "image/webp") return "webp";
+  if (type === "image/svg+xml") return "svg";
+  return "jpg";
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -90,13 +109,55 @@ export default {
     }
 
     try {
-      // ---- public: read services ----
+      // ================= PUBLIC READ ROUTES =================
+
       if (pathname === "/api/services" && request.method === "GET") {
-        const data = await getServices(env.DB);
-        return json(data);
+        return json(await getServices(env.DB));
       }
 
-      // ---- public: track a pageview or click ----
+      if (pathname === "/api/content" && request.method === "GET") {
+        const page = url.searchParams.get("page") || "";
+        const rows = await env.DB.prepare(
+          "SELECT key, label, value, type FROM page_content WHERE page = ? ORDER BY sort_order"
+        ).bind(page).all();
+        const values = {};
+        rows.results.forEach(r => { values[r.key] = r.value; });
+        return json({ values, fields: rows.results });
+      }
+
+      if (pathname === "/api/faqs" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, question, answer FROM faqs ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/portfolio" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, key, name, url, category, tier, blurb, image_key as imageKey FROM portfolio ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/nav" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, label, path FROM nav_links ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname.startsWith("/api/media/") && request.method === "GET") {
+        const key = pathname.replace("/api/media/", "");
+        const obj = await env.MEDIA.get(key);
+        if (!obj) return json({ error: "Not found" }, 404);
+        const headers = new Headers(CORS_HEADERS);
+        obj.writeHttpMetadata(headers);
+        headers.set("Cache-Control", "public, max-age=31536000, immutable");
+        return new Response(obj.body, { headers });
+      }
+
+      // ================= PUBLIC WRITE ROUTES (no auth needed) =================
+
       if (pathname === "/api/track" && request.method === "POST") {
         const body = await request.json().catch(() => ({}));
         const type = body.type === "click" ? "click" : "pageview";
@@ -108,67 +169,109 @@ export default {
         return json({ ok: true });
       }
 
-      // ---- public: login ----
       if (pathname === "/api/login" && request.method === "POST") {
         const body = await request.json().catch(() => ({}));
-        if (!env.ADMIN_PASSWORD) {
-          return json({ error: "Server not configured" }, 500);
-        }
-        if (body.password !== env.ADMIN_PASSWORD) {
-          return json({ error: "Wrong password" }, 401);
-        }
+        if (!env.ADMIN_PASSWORD) return json({ error: "Server not configured" }, 500);
+        if (body.password !== env.ADMIN_PASSWORD) return json({ error: "Wrong password" }, 401);
         const token = await makeToken(env.ADMIN_SECRET);
         return json({ token });
       }
 
-      // ---- protected: replace services/pricing ----
+      // ================= PROTECTED ROUTES =================
+
+      if (pathname.startsWith("/api/admin/") && !(await requireAuth(request, env))) {
+        return json({ error: "Unauthorized" }, 401);
+      }
+
       if (pathname === "/api/admin/services" && request.method === "PUT") {
-        if (!(await requireAuth(request, env))) return json({ error: "Unauthorized" }, 401);
         const body = await request.json().catch(() => null);
         if (!body) return json({ error: "Invalid body" }, 400);
         const { coreServices = [], websiteTiers = [], carePlans = [] } = body;
-
         const stmts = [
           env.DB.prepare("DELETE FROM core_services"),
           env.DB.prepare("DELETE FROM website_tiers"),
           env.DB.prepare("DELETE FROM care_plans"),
         ];
         coreServices.forEach((s, i) => stmts.push(
-          env.DB.prepare(
-            "INSERT INTO core_services (key, name, what, revenue_type, icon, sort_order) VALUES (?,?,?,?,?,?)"
-          ).bind(s.key, s.name, s.what, s.revenueType, s.icon || s.key, i)
+          env.DB.prepare("INSERT INTO core_services (key, name, what, revenue_type, icon, sort_order) VALUES (?,?,?,?,?,?)")
+            .bind(s.key, s.name, s.what, s.revenueType, s.icon || s.key, i)
         ));
         websiteTiers.forEach((t, i) => stmts.push(
-          env.DB.prepare(
-            "INSERT INTO website_tiers (name, built_on, gets, price, sort_order) VALUES (?,?,?,?,?)"
-          ).bind(t.name, t.builtOn, t.gets, t.price, i)
+          env.DB.prepare("INSERT INTO website_tiers (name, built_on, gets, price, sort_order) VALUES (?,?,?,?,?)")
+            .bind(t.name, t.builtOn, t.gets, t.price, i)
         ));
         carePlans.forEach((c, i) => stmts.push(
-          env.DB.prepare(
-            "INSERT INTO care_plans (name, includes, per_year, sort_order) VALUES (?,?,?,?)"
-          ).bind(c.name, c.includes, c.perYear, i)
+          env.DB.prepare("INSERT INTO care_plans (name, includes, per_year, sort_order) VALUES (?,?,?,?)")
+            .bind(c.name, c.includes, c.perYear, i)
         ));
         await env.DB.batch(stmts);
-        const data = await getServices(env.DB);
-        return json({ ok: true, ...data });
+        return json({ ok: true, ...(await getServices(env.DB)) });
       }
 
-      // ---- protected: analytics summary ----
+      if (pathname === "/api/admin/content" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!body || !body.page || !body.values) return json({ error: "Invalid body" }, 400);
+        const stmts = Object.entries(body.values).map(([key, value]) =>
+          env.DB.prepare(
+            "UPDATE page_content SET value = ? WHERE page = ? AND key = ?"
+          ).bind(String(value), body.page, key)
+        );
+        if (stmts.length) await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/faqs" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM faqs")];
+        body.forEach((f, i) => stmts.push(
+          env.DB.prepare("INSERT INTO faqs (question, answer, sort_order) VALUES (?,?,?)")
+            .bind(f.question, f.answer, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/portfolio" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM portfolio")];
+        body.forEach((p, i) => stmts.push(
+          env.DB.prepare(
+            "INSERT INTO portfolio (key, name, url, category, tier, blurb, image_key, sort_order) VALUES (?,?,?,?,?,?,?,?)"
+          ).bind(p.key, p.name, p.url || null, p.category, p.tier || null, p.blurb, p.imageKey || null, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/nav" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM nav_links")];
+        body.forEach((n, i) => stmts.push(
+          env.DB.prepare("INSERT INTO nav_links (label, path, sort_order) VALUES (?,?,?)")
+            .bind(n.label, n.path, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/upload" && request.method === "POST") {
+        const contentType = request.headers.get("Content-Type") || "application/octet-stream";
+        const key = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${extFromType(contentType)}`;
+        const bytes = await request.arrayBuffer();
+        if (bytes.byteLength > 5 * 1024 * 1024) return json({ error: "Image too large (max 5MB)" }, 400);
+        await env.MEDIA.put(key, bytes, { httpMetadata: { contentType } });
+        return json({ key });
+      }
+
       if (pathname === "/api/admin/analytics" && request.method === "GET") {
-        if (!(await requireAuth(request, env))) return json({ error: "Unauthorized" }, 401);
         const [totals, byPath, byLabel, last7d] = await Promise.all([
-          env.DB.prepare(
-            "SELECT type, COUNT(*) as count FROM events WHERE created_at >= datetime('now','-30 days') GROUP BY type"
-          ).all(),
-          env.DB.prepare(
-            "SELECT path, COUNT(*) as count FROM events WHERE type='pageview' AND created_at >= datetime('now','-30 days') GROUP BY path ORDER BY count DESC LIMIT 20"
-          ).all(),
-          env.DB.prepare(
-            "SELECT label, COUNT(*) as count FROM events WHERE type='click' AND created_at >= datetime('now','-30 days') GROUP BY label ORDER BY count DESC LIMIT 20"
-          ).all(),
-          env.DB.prepare(
-            "SELECT date(created_at) as day, type, COUNT(*) as count FROM events WHERE created_at >= datetime('now','-7 days') GROUP BY day, type ORDER BY day"
-          ).all(),
+          env.DB.prepare("SELECT type, COUNT(*) as count FROM events WHERE created_at >= datetime('now','-30 days') GROUP BY type").all(),
+          env.DB.prepare("SELECT path, COUNT(*) as count FROM events WHERE type='pageview' AND created_at >= datetime('now','-30 days') GROUP BY path ORDER BY count DESC LIMIT 20").all(),
+          env.DB.prepare("SELECT label, COUNT(*) as count FROM events WHERE type='click' AND created_at >= datetime('now','-30 days') GROUP BY label ORDER BY count DESC LIMIT 20").all(),
+          env.DB.prepare("SELECT date(created_at) as day, type, COUNT(*) as count FROM events WHERE created_at >= datetime('now','-7 days') GROUP BY day, type ORDER BY day").all(),
         ]);
         return json({
           totals: totals.results,

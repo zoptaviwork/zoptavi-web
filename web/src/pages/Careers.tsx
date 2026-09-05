@@ -2,7 +2,10 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
+import { useLiveContent } from '../lib/adminApi';
 import '../styles/messold-home.css';
+
+const defaultHeadline = 'Build the stack that puts Hyderabad’s shops online.';
 
 const WHATSAPP = 'https://wa.me/918978605027';
 const MAIL = 'mailto:hello@zoptavi.com?subject=Careers%20at%20Zoptavi';
@@ -54,18 +57,21 @@ const hiring = [
 ];
 
 export default function Careers() {
+  const content = useLiveContent('careers');
   return (
     <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge"><ShinyText text="Careers" speed={7} /></span>
-            <h1>Build the stack that puts<br />Hyderabad’s shops <span className="ms-accent">online</span>.</h1>
+            <span className="ms-badge"><ShinyText text={content.hero_eyebrow || 'Careers'} speed={7} /></span>
+            <h1>
+              {content.hero_headline && content.hero_headline !== defaultHeadline
+                ? content.hero_headline
+                : <>Build the stack that puts<br />Hyderabad’s shops <span className="ms-accent">online</span>.</>}
+            </h1>
             <p>
-              Zoptavi runs the whole chain for small businesses — website, billing, checkout, content, ads and
-              shipping. Small team, real products, paying customers from day one. If you want to own something,
-              this is the place.
+              {content.hero_subtext || 'Zoptavi runs the whole chain for small businesses — website, billing, checkout, content, ads and shipping. Small team, real products, paying customers from day one. If you want to own something, this is the place.'}
             </p>
             <div className="ms-hero-btns">
               <a href={MAIL} className="ms-btn ms-btn-accent">Send us your work <span className="ms-arrow">→</span></a>

@@ -3,9 +3,11 @@ import { motion } from 'motion/react';
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
+import { useLiveContent } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
+const defaultHeadline = 'Get a free sample built.';
 
 const info = [
   { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST' },
@@ -15,6 +17,7 @@ const info = [
 ];
 
 export const Contact: React.FC = () => {
+  const content = useLiveContent('contact');
   const [formData, setFormData] = useState({ name: '', business: '', category: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,11 +40,14 @@ export const Contact: React.FC = () => {
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge"><ShinyText text="Let's Talk" speed={7} /></span>
-            <h1>Get a <span className="ms-accent">free sample</span> built.</h1>
+            <span className="ms-badge"><ShinyText text={content.hero_eyebrow || "Let's Talk"} speed={7} /></span>
+            <h1>
+              {content.hero_headline && content.hero_headline !== defaultHeadline
+                ? content.hero_headline
+                : <>Get a <span className="ms-accent">free sample</span> built.</>}
+            </h1>
             <p>
-              Tell us your business type and we'll show you a sample built for you — free, no obligation, usually
-              within a day.
+              {content.hero_subtext || "Tell us your business type and we'll show you a sample built for you — free, no obligation, usually within a day."}
             </p>
           </motion.div>
         </div>

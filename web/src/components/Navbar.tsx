@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { track } from '../lib/adminApi';
+import { track, WORKER_URL } from '../lib/adminApi';
 
-const links = [
+const defaultLinks = [
   { label: 'Home', to: '/' },
   { label: 'Our Work', to: '/work' },
   { label: 'Our Services', to: '/services' },
@@ -18,6 +18,17 @@ export default function Navbar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [links, setLinks] = useState(defaultLinks);
+
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    fetch(`${WORKER_URL}/api/nav`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: { label: string; path: string }[]) => {
+        if (d.length) setLinks(d.map(l => ({ label: l.label, to: l.path })));
+      })
+      .catch(() => { /* keep defaults */ });
+  }, []);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 8);

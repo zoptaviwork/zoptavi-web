@@ -7,7 +7,9 @@ import StatNumber from '../components/StatNumber';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
 import { portfolio, marketFacts } from '../data/business';
-import { useLiveServices, track } from '../lib/adminApi';
+import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track } from '../lib/adminApi';
+
+const defaultHeroHeadline = 'You Run The Business. We Handle Everything Online.';
 import '../styles/messold-home.css';
 
 const marketIcons: ReactElement[] = [
@@ -30,14 +32,17 @@ const toolCluster = [
 ];
 
 const faqs = [
-  { q: 'What exactly is in the Zoptavi Bundle?', a: 'Website, billing software (Zoptavi Bill), branded checkout (Zoptavi Pay), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
-  { q: 'Do I have to buy the whole bundle?', a: "No. Every service — website, billing, content, ads, fulfilment — is available à la carte. See full pricing on the Services page." },
-  { q: 'How fast can I get online?', a: "Most stores go live within days of signing up, and our clients' stores typically get their first order within 48 hours of launch." },
-  { q: "What if I'm doing very few orders a month?", a: "That's exactly who we built this for. Zoptavi starts at 10 orders/month — most shipping partners won't even onboard you below 200." },
+  { question: 'What exactly is in the Zoptavi Bundle?', answer: 'Website, billing software (Zoptavi Bill), branded checkout (Zoptavi Pay), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
+  { question: 'Do I have to buy the whole bundle?', answer: "No. Every service — website, billing, content, ads, fulfilment — is available à la carte. See full pricing on the Services page." },
+  { question: 'How fast can I get online?', answer: "Most stores go live within days of signing up, and our clients' stores typically get their first order within 48 hours of launch." },
+  { question: "What if I'm doing very few orders a month?", answer: "That's exactly who we built this for. Zoptavi starts at 10 orders/month — most shipping partners won't even onboard you below 200." },
 ];
 
 export default function Home() {
   const { coreServices } = useLiveServices();
+  const content = useLiveContent('home');
+  const liveFaqs = useLiveFaqs(faqs);
+  const livePortfolio = useLivePortfolio(portfolio);
   return (
     <div className="ms-home">
       {/* ===================== HERO ===================== */}
@@ -47,11 +52,12 @@ export default function Home() {
         <div className="ms-hero-fade" aria-hidden="true" />
         <div className="ms-wrap ms-hero-content">
           <motion.h1 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}>
-            You Run The Business.<br />We Handle <span className="ms-accent">Everything Online</span>.
+            {content.hero_headline && content.hero_headline !== defaultHeroHeadline
+              ? content.hero_headline
+              : <>You Run The Business.<br />We Handle <span className="ms-accent">Everything Online</span>.</>}
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
-            Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number.
-            Zoptavi takes a small business fully online and keeps it running.
+            {content.hero_subtext || 'Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.'}
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="ms-hero-btns">
             <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-hero-pill">
@@ -217,12 +223,12 @@ export default function Home() {
               <p>WE BUILD STORES<br />WE KEEP THEM RUNNING<br />WE HANDLE EVERYTHING ONLINE</p>
               <div className="ms-wave" />
             </div>
-            <div className="ms-bento-card ms-bento-hands"><b>{portfolio[0].name} · {portfolio[0].category}</b></div>
+            <div className="ms-bento-card ms-bento-hands"><b>{livePortfolio[0].name} · {livePortfolio[0].category}</b></div>
             <div className="ms-bento-card ms-bento-tools">
               <h4>Tools &amp; Integrations</h4>
               <div className="ms-mini-icons"><span>Razorpay</span><span>Meta</span><span>GST</span><span>UPI</span></div>
             </div>
-            <div className="ms-bento-card ms-bento-device"><b>{portfolio[1].name} · {portfolio[1].category}</b></div>
+            <div className="ms-bento-card ms-bento-device"><b>{livePortfolio[1].name} · {livePortfolio[1].category}</b></div>
             <div className="ms-bento-card ms-bento-snapshot">
               <h4>Service Snapshot</h4>
               <ul>
@@ -242,10 +248,10 @@ export default function Home() {
             <p>Get the clarity you need about our process and services.</p>
           </Reveal>
           <div className="ms-faq-list">
-            {faqs.map(f => (
-              <details key={f.q} className="ms-faq-item">
-                <summary>{f.q} <span className="ms-faq-ico">↘</span></summary>
-                <p>{f.a}</p>
+            {liveFaqs.map(f => (
+              <details key={f.question} className="ms-faq-item">
+                <summary>{f.question} <span className="ms-faq-ico">↘</span></summary>
+                <p>{f.answer}</p>
               </details>
             ))}
           </div>

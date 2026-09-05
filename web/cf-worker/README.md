@@ -1,46 +1,59 @@
-# Zoptavi admin API (Cloudflare Worker + D1)
+# Zoptavi admin API (Cloudflare Worker + D1 + R2)
 
-Free-tier only: one Worker, one D1 database (`zoptavi-admin`, already created —
-id `26eb88bd-7867-4fa0-95f9-ab9df2062655` — and seeded with your current
-services/pricing). No KV, no R2, no paid add-ons.
+Free-tier only: one Worker, one D1 database (`zoptavi-admin`, id
+`26eb88bd-7867-4fa0-95f9-ab9df2062655`), one R2 bucket (`zoptavi-media`, for
+admin-uploaded images). No KV, no paid add-ons.
 
-## Deploy (one time)
+## Redeploy (you already did the first deploy — do this again to pick up the
+## new admin panel: page content, FAQ, portfolio, navigation, image uploads)
 
-From this `cf-worker` folder, on a machine with Cloudflare CLI access:
+From this `cf-worker` folder:
 
 ```
-npm install -g wrangler        # if you don't already have it
-wrangler login                 # opens a browser to authorize your Cloudflare account
-wrangler secret put ADMIN_PASSWORD   # you'll be prompted — type the password you want for /admin
-wrangler secret put ADMIN_SECRET     # type any long random string (used to sign login tokens)
+npx wrangler deploy
+```
+
+That's it — the D1 and R2 bindings are already in `wrangler.toml`, and your
+`ADMIN_PASSWORD`/`ADMIN_SECRET` secrets are already set from the first
+deploy, so you don't need to redo those steps. Wrangler will print the same
+Worker URL as before.
+
+## First-time deploy (if you're setting this up fresh)
+
+```
+npm install -g wrangler
+wrangler login
+wrangler secret put ADMIN_PASSWORD
+wrangler secret put ADMIN_SECRET
 wrangler deploy
 ```
 
-Wrangler will print your Worker's URL, e.g.
-`https://zoptavi-admin.<your-subdomain>.workers.dev`.
-
-## Wire it into the site
-
-Open `web/src/lib/adminApi.ts` and set `WORKER_URL` to that URL. Rebuild and
-redeploy the site as usual. That's the only code change needed — the /admin
-page and the site's live services data both point at that one constant.
+Then set `WORKER_URL` in `web/src/lib/adminApi.ts` to the printed URL.
 
 ## What it does
 
-- `GET /api/services` — public, read-only. The Services/Home pages fetch this
-  on load; if the Worker isn't deployed yet (or the request fails), they fall
-  back to the bundled data in `business.ts`, so the site never breaks.
-- `POST /api/track` — public. Fired once per pageview and on a few key CTA
-  clicks (WhatsApp, Book Consultation, See Our Services).
-- `POST /api/login` — checks the password against `ADMIN_PASSWORD`, returns a
-  signed token (12h expiry). No cookies, no sessions table — the token is
-  just checked with HMAC on every admin request.
-- `PUT /api/admin/services` — protected, replaces the services/tiers/care
-  plans in D1. This is what the /admin page's "Save" button calls.
-- `GET /api/admin/analytics` — protected, aggregated pageview/click counts
-  for the last 30 days plus a 7-day daily breakdown.
+**Public (read-only, used by the live site):**
+- `GET /api/services` — services & pricing
+- `GET /api/content?page=X` — editable hero text for that page
+- `GET /api/faqs` — FAQ list
+- `GET /api/portfolio` — client showcase list
+- `GET /api/nav` — nav menu links
+- `GET /api/media/:key` — serves an uploaded image
+- `POST /api/track` — records a pageview or CTA click
+
+Every one of these has a fallback: if the Worker is down or not yet
+deployed, the site falls back to what's already bundled in the code, so a
+Worker outage never breaks the public site — it just means edits made in
+`/admin` won't show up until the Worker is back.
+
+**Protected (`/admin` page only, needs the password):**
+- `POST /api/login`
+- `PUT /api/admin/services`, `/content`, `/faqs`, `/portfolio`, `/nav`
+- `POST /api/admin/upload` — stores an image in R2, returns a key
+- `GET /api/admin/analytics`
 
 ## Cost
 
 Workers free tier: 100,000 requests/day. D1 free tier: 5GB storage, ~5M rows
-read/day. A small business site will use a tiny fraction of either.
+read/day. R2 free tier: 10GB storage, 1M reads + 1M writes/month. A small
+business site will use a tiny fraction of any of these.

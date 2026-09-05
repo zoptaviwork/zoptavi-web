@@ -3,7 +3,9 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import { useLiveServices } from '../lib/adminApi';
+import { useLiveServices, useLiveContent } from '../lib/adminApi';
+
+const defaultHeadline = 'The team that keeps you online.';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -37,18 +39,21 @@ const steps = [
 
 export default function About() {
   const { coreServices } = useLiveServices();
+  const content = useLiveContent('about');
   return (
     <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge"><ShinyText text="Who We Are" speed={7} /></span>
-            <h1>The team that keeps<br />you <span className="ms-accent">online</span>.</h1>
+            <span className="ms-badge"><ShinyText text={content.hero_eyebrow || 'Who We Are'} speed={7} /></span>
+            <h1>
+              {content.hero_headline && content.hero_headline !== defaultHeadline
+                ? content.hero_headline
+                : <>The team that keeps<br />you <span className="ms-accent">online</span>.</>}
+            </h1>
             <p>
-              Zoptavi is a Hyderabad company that takes a small business fully online and keeps it running.
-              Most vendors sell one piece — a website, or software, or reels. We run the whole chain on one
-              relationship and one invoice.
+              {content.hero_subtext || 'Zoptavi is a Hyderabad company that takes a small business fully online and keeps it running. Most vendors sell one piece — a website, or software, or reels. We run the whole chain on one relationship and one invoice.'}
             </p>
           </motion.div>
         </div>
