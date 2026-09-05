@@ -7,13 +7,13 @@ import { useLiveContent } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
-const defaultHeadline = 'Get a free sample built.';
+const defaultHeadline = "Let's build your website.";
 
 const info = [
   { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST' },
   { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours' },
   { icon: MapPin, title: 'Based in', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana' },
-  { icon: Clock, title: 'Response time', primary: 'Usually same day', secondary: 'A homepage sample often within 24 hours' },
+  { icon: Clock, title: 'Response time', primary: 'Usually same day', secondary: 'A plan and quote often within 24 hours' },
 ];
 
 export const Contact: React.FC = () => {
@@ -44,10 +44,10 @@ export const Contact: React.FC = () => {
             <h1>
               {content.hero_headline && content.hero_headline !== defaultHeadline
                 ? content.hero_headline
-                : <>Get a <span className="ms-accent">free sample</span> built.</>}
+                : <>Let's build <span className="ms-accent">your website</span>.</>}
             </h1>
             <p>
-              {content.hero_subtext || "Tell us your business type and we'll show you a sample built for you — free, no obligation, usually within a day."}
+              {content.hero_subtext || "Tell us your business type and we'll show you similar work we've built, with a clear quote — usually within a day."}
             </p>
           </motion.div>
         </div>
@@ -98,7 +98,7 @@ export const Contact: React.FC = () => {
                     <h3 style={{ fontSize: 20 }}>Got it, {formData.name}!</h3>
                     <p style={{ fontSize: 13.5, color: 'var(--ms-grey-63)', maxWidth: 340, lineHeight: 1.65 }}>
                       We'll take a look at <strong style={{ color: 'var(--ms-white)' }}>{formData.business}</strong> and get
-                      back to you with a sample and a quote — usually within a day.
+                      back to you with a plan and a quote — usually within a day.
                     </p>
                     <button
                       onClick={() => { setSubmitted(false); setFormData({ name: '', business: '', category: '', message: '' }); }}
@@ -178,7 +178,7 @@ export const Contact: React.FC = () => {
                           Sending…
                         </>
                       ) : (
-                        <><Send size={16} /> Send &amp; get a free sample</>
+                        <><Send size={16} /> Send &amp; get a quote</>
                       )}
                     </button>
                   </form>

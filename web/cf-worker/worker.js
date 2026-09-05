@@ -10,7 +10,7 @@
  *   GET  /api/nav                 nav menu links
  *   GET  /api/media/:key          serves an uploaded image
  *   POST /api/track               record a pageview or CTA click
- *   POST /api/login               { password } -> { token }
+ *   POST /api/login               { username, password } -> { token }
  *
  * Protected routes (Authorization: Bearer <token>):
  *   PUT  /api/admin/services
@@ -79,6 +79,26 @@ async function requireAuth(request, env) {
   return verifyToken(env.ADMIN_SECRET, token);
 }
 
+// Constant-time string comparison — avoids leaking password length/contents
+// via response-time differences (timing attack).
+function timingSafeEqual(a, b) {
+  const aBytes = textEncode(String(a ?? ""));
+  const bBytes = textEncode(String(b ?? ""));
+  const len = Math.max(aBytes.length, bBytes.length, 1);
+  let diff = aBytes.length ^ bBytes.length;
+  for (let i = 0; i < len; i++) {
+    diff |= (aBytes[i] || 0) ^ (bBytes[i] || 0);
+  }
+  return diff === 0;
+}
+
+const LOGIN_MAX_ATTEMPTS = 8;
+const LOGIN_WINDOW_MINUTES = 15;
+
+function clientIp(request) {
+  return request.headers.get("CF-Connecting-IP") || "unknown";
+}
+
 async function getServices(db) {
   const [coreServices, websiteTiers, carePlans] = await Promise.all([
     db.prepare("SELECT key, name, what, revenue_type as revenueType, icon FROM core_services ORDER BY sort_order").all(),
@@ -92,10 +112,15 @@ async function getServices(db) {
   };
 }
 
+const ALLOWED_IMAGE_TYPES = new Set([
+  "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/svg+xml",
+]);
+
 function extFromType(type) {
   if (type === "image/png") return "png";
   if (type === "image/webp") return "webp";
   if (type === "image/svg+xml") return "svg";
+  if (type === "image/gif") return "gif";
   return "jpg";
 }
 
@@ -178,8 +203,25 @@ export default {
 
       if (pathname === "/api/login" && request.method === "POST") {
         const body = await request.json().catch(() => ({}));
-        if (!env.ADMIN_PASSWORD) return json({ error: "Server not configured" }, 500);
-        if (body.password !== env.ADMIN_PASSWORD) return json({ error: "Wrong password" }, 401);
+        if (!env.ADMIN_PASSWORD || !env.ADMIN_USERNAME) return json({ error: "Server not configured" }, 500);
+
+        const ip = clientIp(request);
+        const since = new Date(Date.now() - LOGIN_WINDOW_MINUTES * 60 * 1000).toISOString();
+        const { results } = await env.DB.prepare(
+          "SELECT COUNT(*) as n FROM login_attempts WHERE ip = ? AND created_at >= ?"
+        ).bind(ip, since).all();
+        if ((results[0]?.n || 0) >= LOGIN_MAX_ATTEMPTS) {
+          return json({ error: "Too many attempts. Try again in a few minutes." }, 429);
+        }
+
+        const usernameOk = timingSafeEqual(body.username, env.ADMIN_USERNAME);
+        const passwordOk = timingSafeEqual(body.password, env.ADMIN_PASSWORD);
+        // Opportunistic cleanup so this table never grows unbounded on the free tier.
+        await env.DB.prepare("DELETE FROM login_attempts WHERE created_at < datetime('now','-1 day')").run();
+        if (!usernameOk || !passwordOk) {
+          await env.DB.prepare("INSERT INTO login_attempts (ip) VALUES (?)").bind(ip).run();
+          return json({ error: "Wrong user ID or password" }, 401);
+        }
         const token = await makeToken(env.ADMIN_SECRET);
         return json({ token });
       }
@@ -278,6 +320,9 @@ export default {
 
       if (pathname === "/api/admin/upload" && request.method === "POST") {
         const contentType = request.headers.get("Content-Type") || "application/octet-stream";
+        if (!ALLOWED_IMAGE_TYPES.has(contentType)) {
+          return json({ error: "Unsupported file type — images only (jpg, png, webp, gif, svg)" }, 400);
+        }
         const key = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${extFromType(contentType)}`;
         const bytes = await request.arrayBuffer();
         if (bytes.byteLength > 5 * 1024 * 1024) return json({ error: "Image too large (max 5MB)" }, 400);

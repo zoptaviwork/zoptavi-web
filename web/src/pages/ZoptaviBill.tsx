@@ -3,22 +3,28 @@ import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { motion } from 'motion/react';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
+import { useLiveContent } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
+const defaultHeadline = 'Billing software that never stops working.';
 
 export default function ZoptaviBill() {
+  const content = useLiveContent('zoptavi-bill');
   return (
     <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
-            <span className="ms-badge"><ShinyText text="Zoptavi Bill" speed={7} /></span>
-            <h1>Billing software that <span className="ms-accent">never stops working</span>.</h1>
+            <span className="ms-badge"><ShinyText text={content.hero_eyebrow || 'Zoptavi Bill'} speed={7} /></span>
+            <h1>
+              {content.hero_headline && content.hero_headline !== defaultHeadline
+                ? content.hero_headline
+                : <>Billing software that <span className="ms-accent">never stops working</span>.</>}
+            </h1>
             <p>
-              Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch
-              from the owner's phone. Free with every website, until you outgrow it.
+              {content.hero_subtext || "Works without internet. Prints on any ₹3,400 thermal printer. Shows live stock across every branch from the owner's phone. Free with every website, until you outgrow it."}
             </p>
             <div className="ms-hero-btns">
               <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-accent">
@@ -153,7 +159,7 @@ export default function ZoptaviBill() {
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">
             <h2>Every Zoptavi website comes with Zoptavi Bill, free.</h2>
-            <p>Install in 20 minutes. Upgrade only once you have more than one store.</p>
+            <p>{content.cta_note || 'Install in 20 minutes. Upgrade only once you have more than one store.'}</p>
             <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
               Start Free <span className="ms-arrow">→</span>
             </a>

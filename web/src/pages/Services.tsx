@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal from '../components/Reveal';
 import HlsVideoBg from '../components/HlsVideoBg';
+import { useLiveContent, mediaUrl } from '../lib/adminApi';
 import '../styles/our-services.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -159,6 +160,8 @@ function CopyCol({ b }: { b: Block }) {
 }
 
 export default function Services() {
+  const content = useLiveContent('services');
+  const buildPhoto = mediaUrl(content.build_photo);
   return (
     <div className="ors">
       {/* ===================== HERO ===================== */}
@@ -184,10 +187,16 @@ export default function Services() {
         <section key={b.key} className={i % 2 === 1 ? 'ors-svc rev' : 'ors-svc'} aria-label={b.title.join(' ')}>
           <Reveal className="ors-svc__wrap">
             <CopyCol b={b} />
-            <div className={`ors-svc__media ${b.grad}`} aria-hidden="true">
-              {b.icon}
-              <span className="cap">{b.cap}</span>
-            </div>
+            {b.key === 'build' && buildPhoto ? (
+              <div className={`ors-svc__media ${b.grad}`} style={{ backgroundImage: `url('${buildPhoto}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <span className="cap">{b.cap}</span>
+              </div>
+            ) : (
+              <div className={`ors-svc__media ${b.grad}`} aria-hidden="true">
+                {b.icon}
+                <span className="cap">{b.cap}</span>
+              </div>
+            )}
           </Reveal>
         </section>
       ))}

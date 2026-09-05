@@ -23,17 +23,19 @@ const btnGhost: React.CSSProperties = { background: 'transparent', color: colors
 const btnDanger: React.CSSProperties = { background: 'transparent', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 8, padding: '6px 10px', fontWeight: 600, cursor: 'pointer', fontSize: 12 };
 
 const SECTIONS = [
-  { key: 'dashboard', label: 'Dashboard' },
-  { key: 'home', label: 'Home Content' },
-  { key: 'about', label: 'About Content' },
-  { key: 'careers', label: 'Careers Content' },
-  { key: 'careersRoles', label: 'Careers Open Roles' },
-  { key: 'contact', label: 'Contact Content' },
-  { key: 'faq', label: 'FAQ' },
-  { key: 'portfolio', label: 'Portfolio' },
-  { key: 'nav', label: 'Navigation' },
-  { key: 'services', label: 'Services & Pricing' },
-  { key: 'analytics', label: 'Analytics' },
+  { key: 'dashboard', label: 'Dashboard', group: 'Overview' },
+  { key: 'home', label: 'Home Page', group: 'Pages' },
+  { key: 'servicesPage', label: 'Our Services Page', group: 'Pages' },
+  { key: 'billPage', label: 'Zoptavi Bill Page', group: 'Pages' },
+  { key: 'about', label: 'About Page', group: 'Pages' },
+  { key: 'careers', label: 'Careers Page — Text', group: 'Pages' },
+  { key: 'careersRoles', label: 'Careers Page — Open Roles', group: 'Pages' },
+  { key: 'contact', label: 'Contact Page', group: 'Pages' },
+  { key: 'faq', label: 'FAQ', group: 'Site-wide' },
+  { key: 'portfolio', label: 'Portfolio / Our Work', group: 'Site-wide' },
+  { key: 'nav', label: 'Navigation Menu', group: 'Site-wide' },
+  { key: 'services', label: 'Pricing Tables', group: 'Site-wide' },
+  { key: 'analytics', label: 'Analytics', group: 'Overview' },
 ] as const;
 type SectionKey = typeof SECTIONS[number]['key'];
 
@@ -59,6 +61,7 @@ export default function Admin() {
 }
 
 function Login({ onSuccess }: { onSuccess: () => void }) {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -68,7 +71,7 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
     setBusy(true);
     setError('');
     try {
-      await login(password);
+      await login(username.trim(), password);
       onSuccess();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
@@ -80,8 +83,12 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
   return (
     <div className="admin-theme" style={{ minHeight: '100vh', background: colors.bg, color: colors.text, fontFamily: "'Inter', system-ui, sans-serif", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <form onSubmit={submit} style={{ ...card, width: 340 }}>
-        <h2 style={{ marginBottom: 16 }}>Zoptavi Admin</h2>
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} style={{ ...input, marginBottom: 12 }} autoFocus />
+        <h2 style={{ marginBottom: 4 }}>Zoptavi Admin</h2>
+        <p style={{ color: colors.muted, fontSize: 12.5, marginBottom: 16 }}>Sign in with your admin ID and password.</p>
+        <label style={label}>User ID</label>
+        <input type="text" autoComplete="username" placeholder="Admin user ID" value={username} onChange={e => setUsername(e.target.value)} style={{ ...input, marginBottom: 12 }} autoFocus />
+        <label style={label}>Password</label>
+        <input type="password" autoComplete="current-password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} style={{ ...input, marginBottom: 12 }} />
         {error && <p style={{ color: '#dc2626', fontSize: 13, marginBottom: 12 }}>{error}</p>}
         <button type="submit" style={{ ...btnPrimary, width: '100%' }} disabled={busy}>{busy ? 'Checking…' : 'Log in'}</button>
       </form>
@@ -99,21 +106,28 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           <div style={{ width: 24, height: 24, borderRadius: 6, background: `linear-gradient(135deg, ${colors.amber}, #f59e0b)` }} />
           <strong style={{ fontSize: 14 }}>Zoptavi Admin</strong>
         </div>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-          {SECTIONS.map(s => (
-            <button
-              key={s.key}
-              onClick={() => setSection(s.key)}
-              style={{
-                textAlign: 'left', padding: '9px 10px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                fontSize: 13, fontWeight: section === s.key ? 700 : 500,
-                background: section === s.key ? colors.amberBg : 'transparent',
-                color: section === s.key ? colors.amber : colors.text,
-                borderLeft: section === s.key ? `3px solid ${colors.amber}` : '3px solid transparent',
-              }}
-            >
-              {s.label}
-            </button>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, overflowY: 'auto' }}>
+          {(['Overview', 'Pages', 'Site-wide'] as const).map(group => (
+            <div key={group} style={{ marginBottom: 10 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: colors.muted, textTransform: 'uppercase', letterSpacing: '.06em', padding: '10px 10px 4px' }}>
+                {group}
+              </div>
+              {SECTIONS.filter(s => s.group === group).map(s => (
+                <button
+                  key={s.key}
+                  onClick={() => setSection(s.key)}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left', padding: '9px 10px', borderRadius: 8, border: 'none', cursor: 'pointer',
+                    fontSize: 13, fontWeight: section === s.key ? 700 : 500,
+                    background: section === s.key ? colors.amberBg : 'transparent',
+                    color: section === s.key ? colors.amber : colors.text,
+                    borderLeft: section === s.key ? `3px solid ${colors.amber}` : '3px solid transparent',
+                  }}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
           ))}
         </nav>
         <button onClick={onLogout} style={{ ...btnGhost, marginTop: 12 }}>Log out</button>
@@ -122,6 +136,8 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       <main style={{ flex: 1, padding: '28px 32px', maxWidth: 900, overflowY: 'auto' }}>
         {section === 'dashboard' && <DashboardHome onNavigate={setSection} />}
         {section === 'home' && <PageContentEditor page="home" title="Home Content" />}
+        {section === 'servicesPage' && <PageContentEditor page="services" title="Our Services Page" />}
+        {section === 'billPage' && <PageContentEditor page="zoptavi-bill" title="Zoptavi Bill Page" />}
         {section === 'about' && <PageContentEditor page="about" title="About Content" />}
         {section === 'careers' && <PageContentEditor page="careers" title="Careers Content" />}
         {section === 'careersRoles' && <CareerRolesEditor />}

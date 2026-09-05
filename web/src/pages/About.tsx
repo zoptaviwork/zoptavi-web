@@ -31,7 +31,7 @@ const values = [
 
 const steps = [
   { n: '01', t: 'Talk', d: 'Tell us your business on WhatsApp. Fifteen minutes, no deck.' },
-  { n: '02', t: 'Sample', d: 'We send a real homepage built for you — free, usually within a day.' },
+  { n: '02', t: 'Plan & quote', d: 'We show you similar work we’ve built and send a clear quote, usually within a day.' },
   { n: '03', t: 'Build', d: 'Store, billing and branded checkout go live, wired together from day one.' },
   { n: '04', t: 'Launch', d: 'Content and Meta ads switch on. First orders usually land within 48 hours.' },
   { n: '05', t: 'Run', d: 'One monthly bill. We keep it online, updated, promoted and shipping.' },
@@ -171,7 +171,7 @@ export default function About() {
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">
             <h2>One paying client this week beats a perfect plan this month.</h2>
-            <p>Send us your business type and we’ll reply with a sample built for you — free, no obligation.</p>
+            <p>Send us your business type and we’ll reply with similar work we’ve built and a clear quote.</p>
             <div className="ms-hero-btns" style={{ justifyContent: 'center' }}>
               <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
                 Message Us on WhatsApp <span className="ms-arrow">→</span>

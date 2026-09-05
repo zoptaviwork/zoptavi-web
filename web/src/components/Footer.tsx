@@ -15,7 +15,7 @@ export default function Footer() {
               Ready to take your shop fully online?
             </p>
             <p style={{ fontSize: 14, color: '#94a3b8', margin: '6px 0 0' }}>
-              Send us your business type — we&rsquo;ll reply with a sample built for you, free.
+              Send us your business type — we&rsquo;ll reply with similar work we&rsquo;ve built and a clear quote.
             </p>
           </div>
           <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn" style={{ flexShrink: 0, background: '#fff', color: '#0b0b0d', boxShadow: '0 10px 30px rgba(255,255,255,.14)' }}>

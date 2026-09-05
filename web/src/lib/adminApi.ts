@@ -59,11 +59,11 @@ export function track(type: 'pageview' | 'click', path: string, label?: string) 
   }).catch(() => { /* analytics should never break the site */ });
 }
 
-export async function login(password: string): Promise<string> {
+export async function login(username: string, password: string): Promise<string> {
   const res = await fetch(`${WORKER_URL}/api/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password }),
+    body: JSON.stringify({ username, password }),
   });
   const body = await res.json();
   if (!res.ok) throw new Error(body.error || 'Login failed');

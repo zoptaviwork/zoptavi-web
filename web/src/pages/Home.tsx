@@ -263,7 +263,7 @@ export default function Home() {
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">
             <h2>One Paying Client This Week Beats A Perfect Plan This Month.</h2>
-            <p>Send us your business type and we'll reply with a sample built for you — free, no obligation.</p>
+            <p>Send us your business type and we'll reply with similar work we've built and a clear quote.</p>
             <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
               Message Us on WhatsApp <span className="ms-arrow">→</span>
             </a>
