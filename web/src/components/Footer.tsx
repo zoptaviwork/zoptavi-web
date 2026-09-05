@@ -57,7 +57,7 @@ export default function Footer() {
       <div style={{ maxWidth: 1300, margin: '0 auto', padding: '48px 24px 0' }}>
         <div className="zfoot-cols" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: 40, marginBottom: 40 }}>
           <div>
-            <img src="/zoptavi-logo-v5.png" alt="Zoptavi" style={{ height: 40, width: 'auto', display: 'block', marginBottom: 18 }} />
+            <img src="/zoptavi-logo-v6.png" alt="Zoptavi Technologies" style={{ height: 40, width: 'auto', display: 'block', marginBottom: 18 }} />
             <p style={{ fontSize: 14, color: '#94a3b8', lineHeight: 1.7, maxWidth: 300 }}>
               We take a small business fully online and keep it running — website, billing software, content, ads and fulfilment. One team, one bill, one WhatsApp number.
             </p>

@@ -49,7 +49,7 @@ export default function Navbar() {
     <header className={`mnav ${solid ? 'mnav--scrolled' : 'mnav--top'}`} data-open={open}>
       <div className="mnav__bar">
         <Link to="/" className="mnav__logo" aria-label="Zoptavi — home">
-          <img src="/zoptavi-logo-v5.png" alt="Zoptavi" />
+          <img src="/zoptavi-logo-v6.png" alt="Zoptavi Technologies" />
         </Link>
 
         <button
@@ -77,6 +77,16 @@ export default function Navbar() {
 
       {/* Full-screen overlay menu */}
       <div id="site-menu" className="mmenu" data-open={open} role="dialog" aria-modal="true" aria-hidden={!open}>
+        <button
+          type="button"
+          className="mmenu__close"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
         <div className="mmenu__inner">
           <div className="mmenu__left">
             <h2>Looking for us?<br />Here&rsquo;s how to reach out.</h2>
