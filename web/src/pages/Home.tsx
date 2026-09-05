@@ -7,7 +7,7 @@ import StatNumber from '../components/StatNumber';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
 import { portfolio, marketFacts } from '../data/business';
-import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track } from '../lib/adminApi';
+import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track, mediaUrl } from '../lib/adminApi';
 
 const defaultHeroHeadline = 'You Run The Business. We Handle Everything Online.';
 import '../styles/messold-home.css';
@@ -113,8 +113,8 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={0.08} className="ms-consult-photos">
-            <div className="ms-consult-photo ms-consult-photo--back" style={{ backgroundImage: "url('/portfolio-meena-rajwada.jpg')" }} />
-            <div className="ms-consult-photo ms-consult-photo--front" style={{ backgroundImage: "url('/portfolio-helmet-hub.jpg')" }} />
+            <div className="ms-consult-photo ms-consult-photo--back" style={{ backgroundImage: `url('${mediaUrl(content.consult_photo_back) || '/portfolio-meena-rajwada.jpg'}')` }} />
+            <div className="ms-consult-photo ms-consult-photo--front" style={{ backgroundImage: `url('${mediaUrl(content.consult_photo_front) || '/portfolio-helmet-hub.jpg'}')` }} />
           </Reveal>
         </div>
       </section>

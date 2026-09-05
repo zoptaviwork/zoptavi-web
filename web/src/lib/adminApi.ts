@@ -208,6 +208,31 @@ export async function savePortfolio(items: PortfolioItem[]) {
   return authedFetch('/api/admin/portfolio', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
 }
 
+// ---- Careers open roles ----
+export type CareerRole = { id?: number; title: string; type: string; place: string; blurb: string };
+
+export function useLiveCareerRoles(fallback: CareerRole[]): CareerRole[] {
+  const [items, setItems] = useState<CareerRole[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/careers-roles`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: CareerRole[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchCareerRoles(): Promise<CareerRole[]> {
+  const res = await fetch(`${WORKER_URL}/api/careers-roles`);
+  return res.json();
+}
+export async function saveCareerRoles(roles: CareerRole[]) {
+  return authedFetch('/api/admin/careers-roles', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(roles) });
+}
+
 // ---- Nav links ----
 export type NavLink = { id?: number; label: string; path: string };
 

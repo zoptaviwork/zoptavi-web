@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import { useLiveContent } from '../lib/adminApi';
+import { useLiveContent, useLiveCareerRoles } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const defaultHeadline = 'Build the stack that puts Hyderabad’s shops online.';
@@ -58,6 +58,7 @@ const hiring = [
 
 export default function Careers() {
   const content = useLiveContent('careers');
+  const liveRoles = useLiveCareerRoles(roles);
   return (
     <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}
@@ -116,7 +117,7 @@ export default function Careers() {
             <p>All roles are Hyderabad-based. Apply by emailing your work to hello@zoptavi.com.</p>
           </Reveal>
           <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 12 }} gap={0.07}>
-            {roles.map(r => (
+            {liveRoles.map(r => (
               <motion.div key={r.title} variants={revealItem} className="ms-card">
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, marginBottom: 10 }}>
                   <h3 style={{ fontSize: 17, margin: 0 }}>{r.title}</h3>

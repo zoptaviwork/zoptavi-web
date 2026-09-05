@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import {
   WORKER_URL, getToken, clearToken, login, saveServices, fetchAnalytics,
   fetchContentFields, saveContent, fetchFaqs, saveFaqs, fetchPortfolio, savePortfolio,
-  fetchNav, saveNav, uploadImage, mediaUrl,
-  type ServicesData, type Analytics, type ContentField, type Faq, type PortfolioItem, type NavLink,
+  fetchNav, saveNav, fetchCareerRoles, saveCareerRoles, uploadImage, mediaUrl,
+  type ServicesData, type Analytics, type ContentField, type Faq, type PortfolioItem, type NavLink, type CareerRole,
 } from '../lib/adminApi';
 import { coreServices as staticCoreServices, websiteTiers as staticWebsiteTiers, carePlans as staticCarePlans } from '../data/business';
 
@@ -27,6 +27,7 @@ const SECTIONS = [
   { key: 'home', label: 'Home Content' },
   { key: 'about', label: 'About Content' },
   { key: 'careers', label: 'Careers Content' },
+  { key: 'careersRoles', label: 'Careers Open Roles' },
   { key: 'contact', label: 'Contact Content' },
   { key: 'faq', label: 'FAQ' },
   { key: 'portfolio', label: 'Portfolio' },
@@ -123,6 +124,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         {section === 'home' && <PageContentEditor page="home" title="Home Content" />}
         {section === 'about' && <PageContentEditor page="about" title="About Content" />}
         {section === 'careers' && <PageContentEditor page="careers" title="Careers Content" />}
+        {section === 'careersRoles' && <CareerRolesEditor />}
         {section === 'contact' && <PageContentEditor page="contact" title="Contact Content" />}
         {section === 'faq' && <FaqEditor />}
         {section === 'portfolio' && <PortfolioEditor />}
@@ -165,11 +167,25 @@ function DashboardHome({ onNavigate }: { onNavigate: (s: SectionKey) => void }) 
 function PageContentEditor({ page, title }: { page: string; title: string }) {
   const [fields, setFields] = useState<ContentField[]>([]);
   const [status, setStatus] = useState('');
+  const [uploading, setUploading] = useState<string | null>(null);
 
   useEffect(() => { fetchContentFields(page).then(setFields).catch(() => {}); }, [page]);
 
   function update(key: string, value: string) {
     setFields(fs => fs.map(f => (f.key === key ? { ...f, value } : f)));
+  }
+
+  async function onImagePick(key: string, file: File | undefined) {
+    if (!file) return;
+    setUploading(key);
+    try {
+      const imgKey = await uploadImage(file);
+      update(key, imgKey);
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploading(null);
+    }
   }
 
   async function save() {
@@ -191,9 +207,17 @@ function PageContentEditor({ page, title }: { page: string; title: string }) {
         {fields.map(f => (
           <div key={f.key} style={{ marginBottom: 14 }}>
             <label style={label}>{f.label}</label>
-            {f.type === 'textarea' ? (
+            {f.type === 'textarea' && (
               <textarea style={{ ...input, minHeight: 70 }} value={f.value} onChange={e => update(f.key, e.target.value)} />
-            ) : (
+            )}
+            {f.type === 'image' && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                {f.value && <img src={mediaUrl(f.value)} alt="" style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover', border: `1px solid ${colors.border}` }} />}
+                <input type="file" accept="image/*" onChange={e => onImagePick(f.key, e.target.files?.[0])} style={{ fontSize: 12 }} />
+                {uploading === f.key && <span style={{ fontSize: 12, color: colors.muted }}>Uploading…</span>}
+              </div>
+            )}
+            {f.type !== 'textarea' && f.type !== 'image' && (
               <input style={input} value={f.value} onChange={e => update(f.key, e.target.value)} />
             )}
           </div>
@@ -309,6 +333,53 @@ function PortfolioEditor() {
       ))}
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
         <button onClick={add} style={btnGhost}>+ Add client</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Careers open roles editor
+// ---------------------------------------------------------------------------
+function CareerRolesEditor() {
+  const [items, setItems] = useState<CareerRole[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchCareerRoles().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof CareerRole, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', type: 'Full-time', place: 'Hyderabad', blurb: '' }]); }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveCareerRoles(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Careers — Open Roles</h2>
+      {items.map((r, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <label style={label}>Role {i + 1}</label>
+            <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+            <input style={input} value={r.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. Full-Stack Developer)" />
+            <input style={input} value={r.type} onChange={e => update(i, 'type', e.target.value)} placeholder="Type (e.g. Full-time, Internship)" />
+            <input style={{ ...input, gridColumn: '1 / -1' }} value={r.place} onChange={e => update(i, 'place', e.target.value)} placeholder="Location (e.g. Hyderabad · Hybrid)" />
+          </div>
+          <textarea style={{ ...input, minHeight: 60 }} value={r.blurb} onChange={e => update(i, 'blurb', e.target.value)} placeholder="Description" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add role</button>
         <button onClick={save} style={btnPrimary}>Save changes</button>
         {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
       </div>

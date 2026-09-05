@@ -146,6 +146,13 @@ export default {
         return json(rows.results);
       }
 
+      if (pathname === "/api/careers-roles" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, type, place, blurb FROM careers_roles ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
       if (pathname.startsWith("/api/media/") && request.method === "GET") {
         const key = pathname.replace("/api/media/", "");
         const obj = await env.MEDIA.get(key);
@@ -252,6 +259,18 @@ export default {
         body.forEach((n, i) => stmts.push(
           env.DB.prepare("INSERT INTO nav_links (label, path, sort_order) VALUES (?,?,?)")
             .bind(n.label, n.path, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/careers-roles" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM careers_roles")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO careers_roles (title, type, place, blurb, sort_order) VALUES (?,?,?,?,?)")
+            .bind(r.title, r.type, r.place, r.blurb, i)
         ));
         await env.DB.batch(stmts);
         return json({ ok: true });

@@ -974,9 +974,10 @@
   box-shadow: 0 0 0 3px rgba(var(--ms-accent-rgb), .22);
 }
 .ms-select {
-  cursor: pointer; appearance: none; -webkit-appearance: none;
+  cursor: pointer; appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  color-scheme: dark;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8a8f' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center;
+  background-repeat: no-repeat; background-position: right 14px center; background-size: 12px 8px;
   padding-right: 36px;
 }
 .ms-select option { background: #141417; color: #fff; }
@@ -1378,13 +1379,21 @@
 .ms-home.ms-light .ms-faq-ico { border-color: rgba(18, 18, 28, .22); }
 .ms-home.ms-light .ms-faq-item[open] .ms-faq-ico { background: var(--ms-accent); color: #fff; border-color: transparent; }
 .ms-home.ms-light .ms-input,
-.ms-home.ms-light .ms-select,
 .ms-home.ms-light .ms-textarea { background: #f4f2f9; color: #16161c; border-color: rgba(18, 18, 28, .16); }
 .ms-home.ms-light .ms-input::placeholder,
 .ms-home.ms-light .ms-textarea::placeholder { color: #9a9aa2; }
 .ms-home.ms-light .ms-select option { background: #ffffff; color: #16161c; }
+/* Consolidated into one rule (not split across two) so background-color and the
+   arrow background-image can never be reset out of order by the cascade. */
 .ms-home.ms-light .ms-select {
+  color-scheme: light;
+  background-color: #f4f2f9;
+  color: #16161c;
+  border-color: rgba(18, 18, 28, .16);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2378787f' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
 }
 /* tables */
 .ms-home.ms-light .ms-table thead th,
