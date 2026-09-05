@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { track } from '../lib/adminApi';
 
 const links = [
   { label: 'Home', to: '/' },
@@ -132,7 +133,7 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
-            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="mmenu__cta">
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="mmenu__cta" onClick={() => track('click', location.pathname, 'WhatsApp Us (menu)')}>
               <span>WhatsApp Us</span>
               <span aria-hidden="true" className="mmenu__cta-arrow">→</span>
             </a>

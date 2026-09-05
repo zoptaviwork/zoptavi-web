@@ -6,7 +6,8 @@ import HlsVideoBg from '../components/HlsVideoBg';
 import StatNumber from '../components/StatNumber';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
-import { coreServices, portfolio, marketFacts } from '../data/business';
+import { portfolio, marketFacts } from '../data/business';
+import { useLiveServices, track } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const marketIcons: ReactElement[] = [
@@ -36,6 +37,7 @@ const faqs = [
 ];
 
 export default function Home() {
+  const { coreServices } = useLiveServices();
   return (
     <div className="ms-home">
       {/* ===================== HERO ===================== */}
@@ -99,7 +101,7 @@ export default function Home() {
               <div className="ms-partner-chips">
                 {['UPI', 'Cards', 'Net Banking', 'Wallets', 'GST', 'Razorpay'].map(p => <span key={p}>{p}</span>)}
               </div>
-              <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal">
+              <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal" onClick={() => track('click', '/', 'Book Your Free Consultation')}>
                 Book Your Free Consultation <span className="ms-arrow">→</span>
               </a>
             </div>
@@ -208,7 +210,7 @@ export default function Home() {
             <div className="ms-bento-card ms-bento-bind">
               <h3>One Team, Across Every Service</h3>
               <p>No juggling five vendors. Zoptavi builds it, bills it, posts it, promotes it, and ships it — under one bill.</p>
-              <Link to="/services" className="ms-btn sm">See Our Services</Link>
+              <Link to="/services" className="ms-btn sm" onClick={() => track('click', '/', 'See Our Services')}>See Our Services</Link>
             </div>
             <div className="ms-bento-card ms-bento-wave">
               <div className="ms-wave" />

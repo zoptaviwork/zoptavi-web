@@ -896,6 +896,13 @@
 .ms-table td.num { text-align: right; font-variant-numeric: tabular-nums; color: var(--ms-white); font-weight: 600; white-space: nowrap; }
 .ms-table .yes { color: var(--ms-accent); font-weight: 700; }
 .ms-table .no { color: var(--ms-grey-35); }
+/* highlight the Zoptavi column (last) so the winning column reads at a glance */
+.ms-table th:last-child, .ms-table td:last-child {
+  position: relative;
+  background: rgba(var(--ms-accent-rgb), .1);
+}
+.ms-table thead th:last-child { color: var(--ms-accent); font-weight: 700; }
+.ms-table .yes { font-size: 15px; }
 
 .ms-callout {
   background: rgba(var(--ms-accent-rgb), .08);
@@ -1300,6 +1307,22 @@
    Flips the .ms-* token set to a white editorial theme so the
    inner pages read like /services, not like the dark home page.
    ========================================================= */
+/* .ms-shine is a white gradient sweep meant for dark backgrounds —
+   on light pages it goes nearly invisible (white-on-white), so give
+   it a dark sweep here instead. */
+.ms-home.ms-light .ms-shine {
+  background: linear-gradient(
+    110deg,
+    rgba(30, 18, 46, .55) 40%,
+    rgba(30, 18, 46, .95) 50%,
+    rgba(30, 18, 46, .55) 60%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
 .ms-home.ms-light {
   --ms-bg: #ffffff;
   --ms-black: #f4f2f8;

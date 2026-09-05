@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import { coreServices } from '../data/business';
+import { useLiveServices } from '../lib/adminApi';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -36,6 +36,7 @@ const steps = [
 ];
 
 export default function About() {
+  const { coreServices } = useLiveServices();
   return (
     <div className="ms-home ms-light">
       {/* ===================== HERO ===================== */}

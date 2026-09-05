@@ -1,0 +1,12 @@
+name = "zoptavi-admin"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zoptavi-admin"
+database_id = "26eb88bd-7867-4fa0-95f9-ab9df2062655"
+
+# Set these two secrets before deploying (see README.md in this folder):
+#   npx wrangler secret put ADMIN_PASSWORD
+#   npx wrangler secret put ADMIN_SECRET
