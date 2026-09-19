@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { coreServices, portfolio } from '../data/business';
+import { useLiveSiteContact, whatsappUrl } from '../lib/adminApi';
 
 export default function Footer() {
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
   return (
     <footer style={{ background: '#06080c', color: '#cbd5e1', position: 'relative' }}>
       {/* gradient hairline */}
@@ -18,7 +21,7 @@ export default function Footer() {
               Send us your business type — we&rsquo;ll reply with similar work we&rsquo;ve built and a clear quote.
             </p>
           </div>
-          <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="btn" style={{ flexShrink: 0, background: '#fff', color: '#0b0b0d', boxShadow: '0 10px 30px rgba(255,255,255,.14)' }}>
+          <a href={WHATSAPP} target="_blank" rel="noreferrer" className="btn" style={{ flexShrink: 0, background: '#fff', color: '#0b0b0d', boxShadow: '0 10px 30px rgba(255,255,255,.14)' }}>
             Message Us on WhatsApp
           </a>
         </div>

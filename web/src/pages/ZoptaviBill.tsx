@@ -3,15 +3,16 @@ import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { motion } from 'motion/react';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
-import { useLiveContent, useLiveBillPillars, useLiveBillPricing, useLiveBillPhases } from '../lib/adminApi';
+import { useLiveContent, useLiveBillPillars, useLiveBillPricing, useLiveBillPhases, useLiveSiteContact, whatsappUrl } from '../lib/adminApi';
 import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
-const WHATSAPP = 'https://wa.me/918978605027';
 const defaultHeadline = 'Billing software that never stops working.';
 
 export default function ZoptaviBill() {
   const content = useLiveContent('zoptavi-bill');
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
   const pillars = useLiveBillPillars(billPillars);
   const pricing = useLiveBillPricing(billPricing);
   const phases = useLiveBillPhases(billPhases);

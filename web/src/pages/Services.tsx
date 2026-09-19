@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Reveal from '../components/Reveal';
 import HlsVideoBg from '../components/HlsVideoBg';
-import { useLiveContent, mediaUrl } from '../lib/adminApi';
+import { useLiveContent, mediaUrl, useLiveSiteContact, whatsappUrl } from '../lib/adminApi';
 import Seo from '../components/Seo';
 import '../styles/our-services.css';
-
-const WHATSAPP = 'https://wa.me/918978605027';
 
 const Arrow = () => (
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
@@ -57,7 +55,7 @@ const blocks: Block[] = [
       'Your ad spend always goes straight to Meta — our fee is separate and quoted upfront.',
       'Weekly reporting against real ROI, not vanity metrics.',
     ],
-    cta: { label: 'Know More', href: WHATSAPP },
+    cta: { label: 'Know More', href: '__WHATSAPP__' },
     cap: 'Meta ads — leads and sales',
     grad: 'g-cream',
     icon: (
@@ -129,7 +127,7 @@ const blocks: Block[] = [
       "The segment big 3PLs won't onboard — brands under 200 orders a month.",
       'Tracking pushed to the customer automatically.',
     ],
-    cta: { label: 'Know More', href: WHATSAPP },
+    cta: { label: 'Know More', href: '__WHATSAPP__' },
     cap: 'Pack & ship — per order + monthly',
     grad: 'g-sky',
     icon: (
@@ -162,6 +160,8 @@ function CopyCol({ b }: { b: Block }) {
 
 export default function Services() {
   const content = useLiveContent('services');
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
   const resolvedBlocks = blocks.map(b => {
     const titleOverride = content[`${b.key}_title`];
     const bulletsOverride = content[`${b.key}_bullets`];
@@ -172,6 +172,7 @@ export default function Services() {
       bullets: bulletsOverride ? bulletsOverride.split('\n').map(s => s.trim()).filter(Boolean) : b.bullets,
       cap: content[`${b.key}_cap`] || b.cap,
       photo: mediaUrl(content[`${b.key}_photo`]),
+      cta: b.cta && b.cta.href === '__WHATSAPP__' ? { ...b.cta, href: WHATSAPP } : b.cta,
     };
   });
   return (

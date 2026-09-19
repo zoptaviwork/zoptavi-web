@@ -130,6 +130,37 @@ export async function uploadImage(file: File): Promise<string> {
   return body.key;
 }
 
+// ---- Site-wide contact info (address, phone, email, WhatsApp) ----
+// Backed by page_content with page="site" — reuses the same generic
+// useLiveContent/PageContentEditor plumbing as every other page.
+export type SiteContact = { address: string; phoneDisplay: string; phoneDigits: string; email: string };
+const DEFAULT_SITE_CONTACT: SiteContact = {
+  address: 'Hyderabad, Telangana, India',
+  phoneDisplay: '+91 89786 05027',
+  phoneDigits: '918978605027',
+  email: 'hello@zoptavi.com',
+};
+
+export function useLiveSiteContact(): SiteContact {
+  const content = useLiveContent('site');
+  return {
+    address: content.contact_address || DEFAULT_SITE_CONTACT.address,
+    phoneDisplay: content.contact_phone_display || DEFAULT_SITE_CONTACT.phoneDisplay,
+    phoneDigits: content.contact_phone_digits || DEFAULT_SITE_CONTACT.phoneDigits,
+    email: content.contact_email || DEFAULT_SITE_CONTACT.email,
+  };
+}
+
+export function whatsappUrl(phoneDigits: string): string {
+  return `https://wa.me/${phoneDigits.replace(/\D/g, '')}`;
+}
+export function telUrl(phoneDigits: string): string {
+  return `tel:+${phoneDigits.replace(/\D/g, '')}`;
+}
+export function mailUrl(email: string): string {
+  return `mailto:${email}`;
+}
+
 // ---- page content (hero text etc.) ----
 export type ContentField = { key: string; label: string; value: string; type: string };
 
@@ -231,6 +262,106 @@ export async function fetchCareerRoles(): Promise<CareerRole[]> {
 }
 export async function saveCareerRoles(roles: CareerRole[]) {
   return authedFetch('/api/admin/careers-roles', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(roles) });
+}
+
+// ---- Careers: "Why join" perks ----
+export type CareersPerk = { id?: number; title: string; detail: string };
+
+export function useLiveCareersPerks(fallback: CareersPerk[]): CareersPerk[] {
+  const [items, setItems] = useState<CareersPerk[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/careers-perks`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: CareersPerk[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchCareersPerks(): Promise<CareersPerk[]> {
+  const res = await fetch(`${WORKER_URL}/api/careers-perks`);
+  return res.json();
+}
+export async function saveCareersPerks(items: CareersPerk[]) {
+  return authedFetch('/api/admin/careers-perks', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- Careers: "How we hire" steps ----
+export type CareersHiringStep = { id?: number; title: string; detail: string };
+
+export function useLiveCareersHiringSteps(fallback: CareersHiringStep[]): CareersHiringStep[] {
+  const [items, setItems] = useState<CareersHiringStep[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/careers-hiring-steps`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: CareersHiringStep[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchCareersHiringSteps(): Promise<CareersHiringStep[]> {
+  const res = await fetch(`${WORKER_URL}/api/careers-hiring-steps`);
+  return res.json();
+}
+export async function saveCareersHiringSteps(items: CareersHiringStep[]) {
+  return authedFetch('/api/admin/careers-hiring-steps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- About: values ----
+export type AboutValue = { id?: number; title: string; detail: string };
+
+export function useLiveAboutValues(fallback: AboutValue[]): AboutValue[] {
+  const [items, setItems] = useState<AboutValue[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/about-values`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: AboutValue[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchAboutValues(): Promise<AboutValue[]> {
+  const res = await fetch(`${WORKER_URL}/api/about-values`);
+  return res.json();
+}
+export async function saveAboutValues(items: AboutValue[]) {
+  return authedFetch('/api/admin/about-values', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- About: "How we work" steps ----
+export type AboutStep = { id?: number; title: string; detail: string };
+
+export function useLiveAboutSteps(fallback: AboutStep[]): AboutStep[] {
+  const [items, setItems] = useState<AboutStep[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/about-steps`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: AboutStep[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchAboutSteps(): Promise<AboutStep[]> {
+  const res = await fetch(`${WORKER_URL}/api/about-steps`);
+  return res.json();
+}
+export async function saveAboutSteps(items: AboutStep[]) {
+  return authedFetch('/api/admin/about-steps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
 }
 
 // ---- Nav links ----

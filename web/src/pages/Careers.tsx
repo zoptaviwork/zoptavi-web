@@ -2,14 +2,11 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import { useLiveContent, useLiveCareerRoles } from '../lib/adminApi';
+import { useLiveContent, useLiveCareerRoles, useLiveSiteContact, whatsappUrl, useLiveCareersPerks, useLiveCareersHiringSteps } from '../lib/adminApi';
 import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
 const defaultHeadline = 'Build the stack that puts Hyderabad’s shops online.';
-
-const WHATSAPP = 'https://wa.me/918978605027';
-const MAIL = 'mailto:hello@zoptavi.com?subject=Careers%20at%20Zoptavi';
 
 const roles = [
   {
@@ -60,6 +57,11 @@ const hiring = [
 export default function Careers() {
   const content = useLiveContent('careers');
   const liveRoles = useLiveCareerRoles(roles);
+  const livePerks = useLiveCareersPerks(perks.map(p => ({ title: p.t, detail: p.d })));
+  const liveHiring = useLiveCareersHiringSteps(hiring.map(h => ({ title: h.t, detail: h.d })));
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
+  const MAIL = `mailto:${contact.email}?subject=Careers%20at%20Zoptavi`;
   return (
     <div className="ms-home ms-light">
       <Seo
@@ -92,21 +94,19 @@ export default function Careers() {
         <div className="ms-wrap">
           <div className="ms-split">
             <Reveal>
-              <span className="ms-eyebrow">Why join</span>
+              <span className="ms-eyebrow">{content.why_join_eyebrow || 'Why join'}</span>
               <h2 style={{ margin: '12px 0 16px', fontSize: 'clamp(1.6rem,3.2vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                We’d rather be small and own it than big and blurry.
+                {content.why_join_heading || 'We’d rather be small and own it than big and blurry.'}
               </h2>
               <p style={{ color: 'var(--ms-grey-63)', fontSize: 14.5, lineHeight: 1.8 }}>
-                Every person here touches a live business — a storefront taking orders, an ad account spending
-                real money, a shelf being packed. The work is visible, the loop is short, and the customer is a
-                real shop owner on the other end of a WhatsApp thread.
+                {content.why_join_body || 'Every person here touches a live business — a storefront taking orders, an ad account spending real money, a shelf being packed. The work is visible, the loop is short, and the customer is a real shop owner on the other end of a WhatsApp thread.'}
               </p>
             </Reveal>
             <RevealStagger className="ms-grid-2" gap={0.09}>
-              {perks.map(p => (
-                <SpotlightDiv key={p.t} variants={revealItem} className="ms-card lift">
-                  <h3 style={{ marginBottom: 6, fontSize: 15.5 }}>{p.t}</h3>
-                  <p style={{ color: 'var(--ms-grey-63)', fontSize: 13, lineHeight: 1.6 }}>{p.d}</p>
+              {livePerks.map((p, i) => (
+                <SpotlightDiv key={p.title || i} variants={revealItem} className="ms-card lift">
+                  <h3 style={{ marginBottom: 6, fontSize: 15.5 }}>{p.title}</h3>
+                  <p style={{ color: 'var(--ms-grey-63)', fontSize: 13, lineHeight: 1.6 }}>{p.detail}</p>
                 </SpotlightDiv>
               ))}
             </RevealStagger>
@@ -120,7 +120,7 @@ export default function Careers() {
           <Reveal className="ms-sec-head">
             <span className="ms-eyebrow">Open roles</span>
             <h2 style={{ marginTop: 12 }}>Where we need people</h2>
-            <p>All roles are Hyderabad-based. Apply by emailing your work to hello@zoptavi.com.</p>
+            <p>{content.roles_intro || 'All roles are Hyderabad-based. Apply by emailing your work to hello@zoptavi.com.'}</p>
           </Reveal>
           <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 12 }} gap={0.07}>
             {liveRoles.map(r => (
@@ -143,14 +143,14 @@ export default function Careers() {
         <div className="ms-wrap">
           <Reveal className="ms-sec-head">
             <span className="ms-eyebrow">How we hire</span>
-            <h2 style={{ marginTop: 12 }}>Three steps, one week</h2>
+            <h2 style={{ marginTop: 12 }}>{content.hiring_heading || 'Three steps, one week'}</h2>
           </Reveal>
           <RevealStagger className="ms-grid-3 two-up-md" gap={0.09}>
-            {hiring.map(s => (
-              <SpotlightDiv key={s.n} variants={revealItem} className="ms-card">
-                <span className="ms-num">{s.n}</span>
-                <h3 style={{ margin: '14px 0 6px', fontSize: 16 }}>{s.t}</h3>
-                <p style={{ color: 'var(--ms-grey-63)', fontSize: 13, lineHeight: 1.6 }}>{s.d}</p>
+            {liveHiring.map((s, i) => (
+              <SpotlightDiv key={s.title || i} variants={revealItem} className="ms-card">
+                <span className="ms-num">{String(i + 1).padStart(2, '0')}</span>
+                <h3 style={{ margin: '14px 0 6px', fontSize: 16 }}>{s.title}</h3>
+                <p style={{ color: 'var(--ms-grey-63)', fontSize: 13, lineHeight: 1.6 }}>{s.detail}</p>
               </SpotlightDiv>
             ))}
           </RevealStagger>
@@ -161,8 +161,8 @@ export default function Careers() {
       <section className="ms-cta">
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">
-            <h2>Don’t see your role? Tell us what you’d own.</h2>
-            <p>If you can point at a part of the business and say “I’d run that better,” we want to hear from you.</p>
+            <h2>{content.cta_heading || 'Don’t see your role? Tell us what you’d own.'}</h2>
+            <p>{content.cta_subtext || 'If you can point at a part of the business and say “I’d run that better,” we want to hear from you.'}</p>
             <div className="ms-hero-btns" style={{ justifyContent: 'center' }}>
               <a href={MAIL} className="ms-btn ms-btn-solid">Email hello@zoptavi.com <span className="ms-arrow">→</span></a>
               <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-ghost">Message on WhatsApp <span className="ms-arrow">→</span></a>

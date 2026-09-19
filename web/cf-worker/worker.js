@@ -199,6 +199,34 @@ export default {
         return json(rows.results.map(r => ({ ...r, items: r.items.split("\n").filter(Boolean) })));
       }
 
+      if (pathname === "/api/careers-perks" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, detail FROM careers_perks ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/careers-hiring-steps" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, detail FROM careers_hiring_steps ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/about-values" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, detail FROM about_values ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/about-steps" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, detail FROM about_steps ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
       if (pathname.startsWith("/api/media/") && request.method === "GET") {
         const key = pathname.replace("/api/media/", "");
         const obj = await env.MEDIA.get(key);
@@ -370,6 +398,54 @@ export default {
         body.forEach((r, i) => stmts.push(
           env.DB.prepare("INSERT INTO bill_phases (phase, items, sort_order) VALUES (?,?,?)")
             .bind(r.phase, Array.isArray(r.items) ? r.items.join("\n") : (r.items || ""), i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/careers-perks" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM careers_perks")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO careers_perks (title, detail, sort_order) VALUES (?,?,?)")
+            .bind(r.title, r.detail, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/careers-hiring-steps" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM careers_hiring_steps")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO careers_hiring_steps (title, detail, sort_order) VALUES (?,?,?)")
+            .bind(r.title, r.detail, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/about-values" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM about_values")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO about_values (title, detail, sort_order) VALUES (?,?,?)")
+            .bind(r.title, r.detail, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/about-steps" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM about_steps")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO about_steps (title, detail, sort_order) VALUES (?,?,?)")
+            .bind(r.title, r.detail, i)
         ));
         await env.DB.batch(stmts);
         return json({ ok: true });

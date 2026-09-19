@@ -111,7 +111,12 @@
   h1,h2,h3,h4,h5{font-family:'Poppins',sans-serif;font-weight:800;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.02em}
   /* /admin uses its own light theme (Inter font, own type scale) — don't inherit the
      marketing site's Poppins/navy heading styles */
-  .admin-theme h1,.admin-theme h2,.admin-theme h3,.admin-theme h4{font-family:'Raleway',sans-serif;font-weight:700;letter-spacing:normal;color:inherit}
+  .admin-theme h1,.admin-theme h2,.admin-theme h3,.admin-theme h4{font-family:'Raleway',sans-serif;font-weight:600;letter-spacing:normal;color:inherit;margin:0;line-height:1.3}
+  .admin-theme h2{font-size:19px}
+  .admin-theme h3{font-size:14.5px;font-weight:600}
+  .admin-theme{-webkit-font-smoothing:antialiased}
+  .admin-theme button{font-weight:inherit}
+  .admin-theme input,.admin-theme textarea{font-weight:400}
   p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer;border:none;background:none}ul{margin:0;padding:0;list-style:none}
 }
 

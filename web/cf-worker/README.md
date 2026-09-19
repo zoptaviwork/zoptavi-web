@@ -50,6 +50,10 @@ Then set `WORKER_URL` in `web/src/lib/adminApi.ts` to the printed URL.
 - `GET /api/bill-pillars` — Zoptavi Bill "why it works" pillar cards
 - `GET /api/bill-pricing` — Zoptavi Bill pricing table
 - `GET /api/bill-phases` — Zoptavi Bill rollout-phases cards
+- `GET /api/careers-perks` — Careers "Why join" perk cards
+- `GET /api/careers-hiring-steps` — Careers "How we hire" step cards
+- `GET /api/about-values` — About "Our values" cards
+- `GET /api/about-steps` — About "How we work" step cards
 - `GET /api/media/:key` — serves an uploaded image
 - `POST /api/track` — records a pageview or CTA click
 - `POST /api/login` — `{ username, password }` → `{ token }`
@@ -61,7 +65,8 @@ won't show up until the Worker is back.
 
 **Protected (`/admin` page only, needs a valid login token):**
 - `PUT /api/admin/services`, `/content`, `/faqs`, `/portfolio`, `/nav`, `/careers-roles`,
-  `/bill-pillars`, `/bill-pricing`, `/bill-phases`
+  `/bill-pillars`, `/bill-pricing`, `/bill-phases`, `/careers-perks`, `/careers-hiring-steps`,
+  `/about-values`, `/about-steps`
 - `POST /api/admin/upload` — stores an image in R2, returns a key
 - `GET /api/admin/analytics`
 

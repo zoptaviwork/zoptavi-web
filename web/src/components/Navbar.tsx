@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { track, WORKER_URL } from '../lib/adminApi';
+import { track, WORKER_URL, useLiveSiteContact, whatsappUrl, telUrl, mailUrl } from '../lib/adminApi';
 
 const defaultLinks = [
   { label: 'Home', to: '/' },
@@ -12,13 +12,13 @@ const defaultLinks = [
   { label: 'Contact', to: '/contact' },
 ];
 
-const WHATSAPP = 'https://wa.me/918978605027';
-
 export default function Navbar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [links, setLinks] = useState(defaultLinks);
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
 
   useEffect(() => {
     if (!WORKER_URL) return;
@@ -108,7 +108,7 @@ export default function Navbar() {
               <span>
                 <span className="mmenu__k">Address</span>
                 <span className="mmenu__t">Visit our base</span>
-                <span className="mmenu__v">Hyderabad, Telangana, India</span>
+                <span className="mmenu__v">{contact.address}</span>
               </span>
             </div>
 
@@ -117,7 +117,7 @@ export default function Navbar() {
               <span>
                 <span className="mmenu__k">Call us</span>
                 <span className="mmenu__t">Speak to the team</span>
-                <a className="mmenu__v" href="tel:+918978605027">+91 89786 05027</a>
+                <a className="mmenu__v" href={telUrl(contact.phoneDigits)}>{contact.phoneDisplay}</a>
               </span>
             </div>
 
@@ -126,7 +126,7 @@ export default function Navbar() {
               <span>
                 <span className="mmenu__k">Email us</span>
                 <span className="mmenu__t">Drop us a line</span>
-                <a className="mmenu__v" href="mailto:hello@zoptavi.com">hello@zoptavi.com</a>
+                <a className="mmenu__v" href={mailUrl(contact.email)}>{contact.email}</a>
               </span>
             </div>
           </div>

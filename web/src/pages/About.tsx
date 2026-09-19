@@ -3,13 +3,11 @@ import { motion } from 'motion/react';
 import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
-import { useLiveServices, useLiveContent } from '../lib/adminApi';
+import { useLiveServices, useLiveContent, useLiveSiteContact, whatsappUrl, useLiveAboutValues, useLiveAboutSteps } from '../lib/adminApi';
 import Seo from '../components/Seo';
 
 const defaultHeadline = 'The team that keeps you online.';
 import '../styles/messold-home.css';
-
-const WHATSAPP = 'https://wa.me/918978605027';
 
 const values = [
   {
@@ -41,6 +39,10 @@ const steps = [
 export default function About() {
   const { coreServices } = useLiveServices();
   const content = useLiveContent('about');
+  const liveValues = useLiveAboutValues(values.map(v => ({ title: v.t, detail: v.d })));
+  const liveSteps = useLiveAboutSteps(steps.map(s => ({ title: s.t, detail: s.d })));
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
   return (
     <div className="ms-home ms-light">
       <Seo
@@ -70,19 +72,15 @@ export default function About() {
         <div className="ms-wrap">
           <div className="ms-split">
             <Reveal>
-              <span className="ms-eyebrow">The story</span>
+              <span className="ms-eyebrow">{content.story_eyebrow || 'The story'}</span>
               <h2 style={{ margin: '12px 0 16px', fontSize: 'clamp(1.6rem,3.2vw,2.4rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                Started in 2026, for the businesses everyone else skips.
+                {content.story_heading || 'Started in 2026, for the businesses everyone else skips.'}
               </h2>
               <p style={{ color: 'var(--ms-grey-63)', fontSize: 14.5, lineHeight: 1.8, marginBottom: 14 }}>
-                Around 80% of Instagram sellers in India run on DMs, screenshots and a personal UPI ID. Agencies
-                want a retainer they can’t afford. Shipping partners won’t onboard them below 200 orders a
-                month. Software makes them a project manager for five different vendors.
+                {content.story_body1 || 'Around 80% of Instagram sellers in India run on DMs, screenshots and a personal UPI ID. Agencies want a retainer they can’t afford. Shipping partners won’t onboard them below 200 orders a month. Software makes them a project manager for five different vendors.'}
               </p>
               <p style={{ color: 'var(--ms-grey-63)', fontSize: 14.5, lineHeight: 1.8 }}>
-                Zoptavi was built to be the one team that does all of it — build the store, bill the sales,
-                brand the checkout, make the content, run the ads, pack the orders — and stays on WhatsApp
-                after you’ve paid.
+                {content.story_body2 || 'Zoptavi was built to be the one team that does all of it — build the store, bill the sales, brand the checkout, make the content, run the ads, pack the orders — and stays on WhatsApp after you’ve paid.'}
               </p>
             </Reveal>
 
@@ -117,13 +115,13 @@ export default function About() {
         <div className="ms-wrap">
           <Reveal className="ms-sec-head">
             <span className="ms-eyebrow">What we stand for</span>
-            <h2 style={{ marginTop: 12 }}>Our values</h2>
+            <h2 style={{ marginTop: 12 }}>{content.values_heading || 'Our values'}</h2>
           </Reveal>
           <RevealStagger className="ms-grid-2" gap={0.1}>
-            {values.map(v => (
-              <SpotlightDiv key={v.t} variants={revealItem} className="ms-card lift">
-                <h3 style={{ marginBottom: 8 }}>{v.t}</h3>
-                <p style={{ color: 'var(--ms-grey-63)', fontSize: 13.5, lineHeight: 1.7 }}>{v.d}</p>
+            {liveValues.map((v, i) => (
+              <SpotlightDiv key={v.title || i} variants={revealItem} className="ms-card lift">
+                <h3 style={{ marginBottom: 8 }}>{v.title}</h3>
+                <p style={{ color: 'var(--ms-grey-63)', fontSize: 13.5, lineHeight: 1.7 }}>{v.detail}</p>
               </SpotlightDiv>
             ))}
           </RevealStagger>
@@ -134,13 +132,12 @@ export default function About() {
       <section className="ms-section tight center">
         <div className="ms-wrap">
           <Reveal>
-            <span className="ms-eyebrow">Our mission</span>
+            <span className="ms-eyebrow">{content.mission_eyebrow || 'Our mission'}</span>
             <h2 style={{ margin: '14px 0 16px', fontSize: 'clamp(1.6rem,3.4vw,2.5rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>
-              Put every small Indian business online — properly, and keep it there.
+              {content.mission_heading || 'Put every small Indian business online — properly, and keep it there.'}
             </h2>
             <p style={{ color: 'var(--ms-grey-63)', fontSize: 15, lineHeight: 1.75, maxWidth: '62ch', margin: '0 auto' }}>
-              Not a template dumped on the customer. A real storefront, real billing, a branded checkout and a
-              team that answers on WhatsApp — for the price of the freelancer they were about to hire.
+              {content.mission_body || 'Not a template dumped on the customer. A real storefront, real billing, a branded checkout and a team that answers on WhatsApp — for the price of the freelancer they were about to hire.'}
             </p>
           </Reveal>
         </div>
@@ -151,20 +148,20 @@ export default function About() {
         <div className="ms-wrap">
           <Reveal className="ms-sec-head">
             <span className="ms-eyebrow">How we work</span>
-            <h2 style={{ marginTop: 12 }}>Five steps, one team</h2>
+            <h2 style={{ marginTop: 12 }}>{content.how_we_work_heading || 'Five steps, one team'}</h2>
           </Reveal>
           <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 12 }} gap={0.08}>
-            {steps.map(s => (
+            {liveSteps.map((s, i) => (
               <motion.div
-                key={s.n}
+                key={s.title || i}
                 variants={revealItem}
                 className="ms-card"
                 style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}
               >
-                <span className="ms-num" style={{ flexShrink: 0 }}>{s.n}</span>
+                <span className="ms-num" style={{ flexShrink: 0 }}>{String(i + 1).padStart(2, '0')}</span>
                 <div>
-                  <h3 style={{ fontSize: 16, marginBottom: 4 }}>{s.t}</h3>
-                  <p style={{ color: 'var(--ms-grey-63)', fontSize: 13.5, lineHeight: 1.6 }}>{s.d}</p>
+                  <h3 style={{ fontSize: 16, marginBottom: 4 }}>{s.title}</h3>
+                  <p style={{ color: 'var(--ms-grey-63)', fontSize: 13.5, lineHeight: 1.6 }}>{s.detail}</p>
                 </div>
               </motion.div>
             ))}
@@ -176,8 +173,8 @@ export default function About() {
       <section className="ms-cta">
         <div className="ms-wrap">
           <Reveal className="ms-cta-card">
-            <h2>One paying client this week beats a perfect plan this month.</h2>
-            <p>Send us your business type and we’ll reply with similar work we’ve built and a clear quote.</p>
+            <h2>{content.cta_heading || 'One paying client this week beats a perfect plan this month.'}</h2>
+            <p>{content.cta_subtext || 'Send us your business type and we’ll reply with similar work we’ve built and a clear quote.'}</p>
             <div className="ms-hero-btns" style={{ justifyContent: 'center' }}>
               <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
                 Message Us on WhatsApp <span className="ms-arrow">→</span>

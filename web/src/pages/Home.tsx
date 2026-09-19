@@ -7,7 +7,7 @@ import StatNumber from '../components/StatNumber';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
 import { portfolio, marketFacts } from '../data/business';
-import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track, mediaUrl } from '../lib/adminApi';
+import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track, mediaUrl, useLiveSiteContact, whatsappUrl } from '../lib/adminApi';
 import Seo from '../components/Seo';
 
 const defaultHeroHeadline = 'You Run The Business. We Handle Everything Online.';
@@ -44,6 +44,8 @@ export default function Home() {
   const content = useLiveContent('home');
   const liveFaqs = useLiveFaqs(faqs);
   const livePortfolio = useLivePortfolio(portfolio);
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
   return (
     <div className="ms-home">
       <Seo
@@ -66,7 +68,7 @@ export default function Home() {
             {content.hero_subtext || 'Website, billing software, content, ads and shipping — one team, one bill, one WhatsApp number. Zoptavi takes a small business fully online and keeps it running.'}
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }} className="ms-hero-btns">
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-hero-pill">
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-hero-pill">
               Book Your Free Growth Audit <span className="ms-arrow">→</span>
             </a>
             <Link to="/work" className="ms-btn ms-hero-pill">See Our Work <span className="ms-arrow">→</span></Link>
@@ -113,7 +115,7 @@ export default function Home() {
               <div className="ms-partner-chips">
                 {['UPI', 'Cards', 'Net Banking', 'Wallets', 'GST', 'Razorpay'].map(p => <span key={p}>{p}</span>)}
               </div>
-              <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal" onClick={() => track('click', '/', 'Book Your Free Consultation')}>
+              <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-teal" onClick={() => track('click', '/', 'Book Your Free Consultation')}>
                 Book Your Free Consultation <span className="ms-arrow">→</span>
               </a>
             </div>
@@ -145,7 +147,7 @@ export default function Home() {
               One team, on WhatsApp, that builds it, bills it, posts it, promotes it, and ships it — and sticks around after you pay.
             </p>
             <p className="ms-why-body">If you're ready to go online properly, we're ready to make it happen.</p>
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-ghost dark">Talk to us, we won't oversell <span className="ms-arrow">→</span></a>
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-ghost dark">Talk to us, we won't oversell <span className="ms-arrow">→</span></a>
           </Reveal>
         </div>
       </section>
@@ -270,7 +272,7 @@ export default function Home() {
           <Reveal className="ms-cta-card">
             <h2>One Paying Client This Week Beats A Perfect Plan This Month.</h2>
             <p>Send us your business type and we'll reply with similar work we've built and a clear quote.</p>
-            <a href="https://wa.me/918978605027" target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
+            <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-solid">
               Message Us on WhatsApp <span className="ms-arrow">→</span>
             </a>
           </Reveal>

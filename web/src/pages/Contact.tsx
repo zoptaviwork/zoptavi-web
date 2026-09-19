@@ -3,22 +3,22 @@ import { motion } from 'motion/react';
 import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
-import { useLiveContent } from '../lib/adminApi';
+import { useLiveContent, useLiveSiteContact, whatsappUrl } from '../lib/adminApi';
 import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
-const WHATSAPP = 'https://wa.me/918978605027';
 const defaultHeadline = "Let's build your website.";
-
-const info = [
-  { icon: Phone, title: 'Call or WhatsApp', primary: '+91 89786 05027', secondary: 'Mon–Sat, 9 AM to 8 PM IST' },
-  { icon: Mail, title: 'Email', primary: 'hello@zoptavi.com', secondary: 'We reply within 4 business hours' },
-  { icon: MapPin, title: 'Based in', primary: 'Zoptavi', secondary: 'Hyderabad, Telangana' },
-  { icon: Clock, title: 'Response time', primary: 'Usually same day', secondary: 'A plan and quote often within 24 hours' },
-];
 
 export const Contact: React.FC = () => {
   const content = useLiveContent('contact');
+  const contact = useLiveSiteContact();
+  const WHATSAPP = whatsappUrl(contact.phoneDigits);
+  const info = [
+    { icon: Phone, title: 'Call or WhatsApp', primary: contact.phoneDisplay, secondary: 'Mon–Sat, 9 AM to 8 PM IST' },
+    { icon: Mail, title: 'Email', primary: contact.email, secondary: 'We reply within 4 business hours' },
+    { icon: MapPin, title: 'Based in', primary: 'Zoptavi', secondary: contact.address },
+    { icon: Clock, title: 'Response time', primary: 'Usually same day', secondary: 'A plan and quote often within 24 hours' },
+  ];
   const [formData, setFormData] = useState({ name: '', business: '', category: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);

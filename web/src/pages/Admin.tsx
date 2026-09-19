@@ -4,8 +4,11 @@ import {
   fetchContentFields, saveContent, fetchFaqs, saveFaqs, fetchPortfolio, savePortfolio,
   fetchNav, saveNav, fetchCareerRoles, saveCareerRoles, uploadImage, mediaUrl,
   fetchBillPillars, saveBillPillars, fetchBillPricing, saveBillPricing, fetchBillPhases, saveBillPhases,
+  fetchCareersPerks, saveCareersPerks, fetchCareersHiringSteps, saveCareersHiringSteps,
+  fetchAboutValues, saveAboutValues, fetchAboutSteps, saveAboutSteps,
   type ServicesData, type Analytics, type ContentField, type Faq, type PortfolioItem, type NavLink, type CareerRole,
-  type BillPillar, type BillPricingTier, type BillPhase,
+  type BillPillar, type BillPricingTier, type BillPhase, type CareersPerk, type CareersHiringStep,
+  type AboutValue, type AboutStep,
 } from '../lib/adminApi';
 import { coreServices as staticCoreServices, websiteTiers as staticWebsiteTiers, carePlans as staticCarePlans } from '../data/business';
 import Seo from '../components/Seo';
@@ -18,21 +21,21 @@ import Seo from '../components/Seo';
 // the site's Raleway typeface so it doesn't feel like a foreign template.
 // ---------------------------------------------------------------------------
 const colors = {
-  bg: '#f9fafb', card: '#ffffff', border: '#e5e7eb', text: '#111827',
-  muted: '#6b7280', accent: '#b45309', accentBg: '#fffbeb', accentBorder: '#fde68a',
+  bg: '#fafafa', card: '#ffffff', border: '#ececec', text: '#2b2d33',
+  muted: '#8a8f98', accent: '#b45309', accentBg: '#fffaf0', accentBorder: '#fbe4bd',
   gradient: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)',
-  danger: '#dc2626', dangerBg: '#fef2f2', dangerBorder: '#fecaca',
+  danger: '#c0392b', dangerBg: '#fdf3f2', dangerBorder: '#f4cfc9',
   blue: '#2563eb', green: '#16a34a',
   fHead: "'Raleway', 'Helvetica Neue', Arial, sans-serif",
   fBody: "'Inter', 'Helvetica Neue', Arial, sans-serif",
 };
-const card: React.CSSProperties = { background: colors.card, border: `1px solid ${colors.border}`, borderRadius: 12, padding: 20, marginBottom: 16 };
-const input: React.CSSProperties = { background: '#fff', border: `1px solid ${colors.border}`, borderRadius: 8, color: colors.text, padding: '8px 10px', fontSize: 13, width: '100%', fontFamily: 'inherit' };
-const label: React.CSSProperties = { fontSize: 11, fontWeight: 600, color: colors.muted, textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 4, display: 'block' };
-const btnPrimary: React.CSSProperties = { background: colors.gradient, color: '#fff', border: 'none', borderRadius: 8, padding: '9px 18px', fontWeight: 600, cursor: 'pointer', fontSize: 13 };
-const btnGhost: React.CSSProperties = { background: 'transparent', color: colors.text, border: `1px solid ${colors.border}`, borderRadius: 8, padding: '9px 18px', fontWeight: 600, cursor: 'pointer', fontSize: 13 };
-const btnDanger: React.CSSProperties = { background: 'transparent', color: colors.danger, border: `1px solid ${colors.dangerBorder}`, borderRadius: 8, padding: '6px 10px', fontWeight: 600, cursor: 'pointer', fontSize: 12 };
-const iconBtn: React.CSSProperties = { background: colors.bg, color: colors.text, border: `1px solid ${colors.border}`, borderRadius: 6, width: 26, height: 26, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, lineHeight: 1, padding: 0 };
+const card: React.CSSProperties = { background: colors.card, border: `1px solid ${colors.border}`, borderRadius: 14, padding: 22, marginBottom: 14, boxShadow: '0 1px 2px rgba(20,20,30,.03)' };
+const input: React.CSSProperties = { background: '#fff', border: `1px solid ${colors.border}`, borderRadius: 9, color: colors.text, padding: '9px 12px', fontSize: 13.5, width: '100%', fontFamily: 'inherit', fontWeight: 400 };
+const label: React.CSSProperties = { fontSize: 11, fontWeight: 500, color: colors.muted, textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: 6, display: 'block' };
+const btnPrimary: React.CSSProperties = { background: colors.gradient, color: '#fff', border: 'none', borderRadius: 9, padding: '9px 18px', fontWeight: 500, cursor: 'pointer', fontSize: 13, boxShadow: '0 1px 2px rgba(180,83,9,.18)' };
+const btnGhost: React.CSSProperties = { background: '#fff', color: colors.text, border: `1px solid ${colors.border}`, borderRadius: 9, padding: '9px 18px', fontWeight: 500, cursor: 'pointer', fontSize: 13 };
+const btnDanger: React.CSSProperties = { background: 'transparent', color: colors.danger, border: `1px solid ${colors.dangerBorder}`, borderRadius: 9, padding: '6px 11px', fontWeight: 500, cursor: 'pointer', fontSize: 12 };
+const iconBtn: React.CSSProperties = { background: '#fff', color: colors.text, border: `1px solid ${colors.border}`, borderRadius: 7, width: 27, height: 27, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 12, lineHeight: 1, padding: 0 };
 
 const SECTIONS = [
   { key: 'dashboard', label: 'Dashboard', group: 'Overview' },
@@ -43,12 +46,17 @@ const SECTIONS = [
   { key: 'billPricing', label: 'Zoptavi Bill — Pricing Table', group: 'Pages' },
   { key: 'billPhases', label: 'Zoptavi Bill — Rollout Phases', group: 'Pages' },
   { key: 'about', label: 'About Page', group: 'Pages' },
+  { key: 'aboutValues', label: 'About Page — Our Values', group: 'Pages' },
+  { key: 'aboutSteps', label: 'About Page — How We Work Steps', group: 'Pages' },
   { key: 'careers', label: 'Careers Page — Text', group: 'Pages' },
   { key: 'careersRoles', label: 'Careers Page — Open Roles', group: 'Pages' },
+  { key: 'careersPerks', label: 'Careers Page — Why Join Perks', group: 'Pages' },
+  { key: 'careersHiring', label: 'Careers Page — How We Hire Steps', group: 'Pages' },
   { key: 'contact', label: 'Contact Page', group: 'Pages' },
   { key: 'faq', label: 'FAQ', group: 'Site-wide' },
   { key: 'portfolio', label: 'Our Work — Store Cards & Images', group: 'Site-wide' },
   { key: 'nav', label: 'Navigation Menu', group: 'Site-wide' },
+  { key: 'siteContact', label: 'Contact Info (Address, Phone, Email)', group: 'Site-wide' },
   { key: 'services', label: 'Pricing Tables', group: 'Site-wide' },
   { key: 'analytics', label: 'Analytics', group: 'Overview' },
 ] as const;
@@ -64,13 +72,18 @@ const SECTION_HINTS: Partial<Record<SectionKey, string>> = {
   billPillars: 'Controls the 3 "Why it works" cards near the top of the /zoptavi-bill page (Works offline, Multi-store live stock, Runs on what they own).',
   billPricing: 'Controls the pricing table (Free / Shop / Multi-Store / Chain plans) on the /zoptavi-bill page.',
   billPhases: 'Controls the "What it does, phase by phase" cards on the /zoptavi-bill page. Each phase is a list of bullet items — one per line.',
-  about: 'Controls the text on the /about page.',
-  careers: 'Controls the intro/header text on the /careers page.',
+  about: 'Controls the hero, "The story" text, "Our values" heading, mission heading/body, "How we work" heading, and the bottom CTA heading/subtext on the /about page.',
+  aboutValues: 'Controls the 4 "Our values" cards on the /about page.',
+  aboutSteps: 'Controls the 5 "How we work" step cards on the /about page.',
+  careers: 'Controls the hero text, "Why join" heading/body, open-roles intro line, "How we hire" heading, and the bottom CTA heading/subtext on the /careers page.',
   careersRoles: 'Controls the list of open job roles shown on the /careers page.',
+  careersPerks: 'Controls the 4 "Why join" cards (Real ownership, Ship every week, etc.) on the /careers page.',
+  careersHiring: 'Controls the 3 "How we hire" step cards on the /careers page.',
   contact: 'Controls the hero text on the /contact page.',
   faq: 'Controls the FAQ list shown on the homepage and wherever FAQs are used site-wide.',
   portfolio: 'Controls every client shown in "Our Work" on the homepage and on the /work page — name, category, description, website link, and the background photo for each card. Add or edit entries here to change what appears in those cards.',
   nav: 'Controls the links shown in the top navigation menu.',
+  siteContact: 'Controls the address, phone number and email shown in the "Looking for us?" side menu, the Contact page, and every WhatsApp / call / email button site-wide (Home, Services, Careers, Zoptavi Bill, About, Footer). One change here updates all of them.',
   services: 'Controls the core-services list and internal pricing reference tables (used on Home/About).',
   analytics: 'Read-only: pageviews and CTA clicks tracked on the live site over the last 30 days.',
 };
@@ -179,7 +192,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           {(['Overview', 'Pages', 'Site-wide'] as const).map(group => (
             <div key={group} style={{ marginBottom: 10 }}>
               {!collapsed && (
-                <div style={{ fontSize: 10, fontWeight: 700, color: colors.muted, textTransform: 'uppercase', letterSpacing: '.06em', padding: '8px 8px 4px' }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: colors.muted, textTransform: 'uppercase', letterSpacing: '.06em', padding: '8px 8px 4px' }}>
                   {group}
                 </div>
               )}
@@ -190,7 +203,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                   title={collapsed ? s.label : undefined}
                   style={{
                     display: 'flex', alignItems: 'center', width: '100%', textAlign: 'left', padding: collapsed ? '9px 0' : '8px 10px', borderRadius: 8, cursor: 'pointer',
-                    fontSize: 13, fontWeight: section === s.key ? 700 : 500,
+                    fontSize: 13, fontWeight: section === s.key ? 600 : 400,
                     background: section === s.key ? colors.accentBg : 'transparent',
                     color: section === s.key ? colors.accent : colors.text,
                     borderLeft: section === s.key ? `3px solid ${colors.accent}` : '3px solid transparent',
@@ -253,12 +266,17 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         {section === 'billPricing' && <BillPricingEditor />}
         {section === 'billPhases' && <BillPhasesEditor />}
         {section === 'about' && <PageContentEditor page="about" title="About Content" />}
+        {section === 'aboutValues' && <AboutValuesEditor />}
+        {section === 'aboutSteps' && <AboutStepsEditor />}
         {section === 'careers' && <PageContentEditor page="careers" title="Careers Content" />}
         {section === 'careersRoles' && <CareerRolesEditor />}
+        {section === 'careersPerks' && <CareersPerksEditor />}
+        {section === 'careersHiring' && <CareersHiringEditor />}
         {section === 'contact' && <PageContentEditor page="contact" title="Contact Content" />}
         {section === 'faq' && <FaqEditor />}
         {section === 'portfolio' && <PortfolioEditor />}
         {section === 'nav' && <NavEditor />}
+        {section === 'siteContact' && <PageContentEditor page="site" title="Contact Info" />}
         {section === 'services' && <ServicesEditor />}
         {section === 'analytics' && <AnalyticsView />}
         </main>
@@ -279,7 +297,7 @@ function StatCard({ label: lbl, value, tint, onClick }: { label: string; value: 
     >
       <div style={{ width: 40, height: 40, borderRadius: 10, background: tint, flexShrink: 0 }} />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 22, fontWeight: 700, fontFamily: colors.fHead, lineHeight: 1.1 }}>{value}</div>
+        <div style={{ fontSize: 21, fontWeight: 600, fontFamily: colors.fHead, lineHeight: 1.1 }}>{value}</div>
         <div style={{ fontSize: 12, color: colors.muted, marginTop: 2 }}>{lbl}</div>
       </div>
       {onClick && <span style={{ color: colors.border, fontSize: 18 }}>›</span>}
@@ -606,6 +624,230 @@ function CareerRolesEditor() {
       ))}
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
         <button onClick={add} style={btnGhost}>+ Add role</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Careers — "Why join" perks editor
+// ---------------------------------------------------------------------------
+function CareersPerksEditor() {
+  const [items, setItems] = useState<CareersPerk[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchCareersPerks().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof CareersPerk, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', detail: '' }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveCareersPerks(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Careers — Why Join Perks</h2>
+      {items.map((p, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Perk {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={p.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. Real ownership)" />
+          <textarea style={{ ...input, minHeight: 60 }} value={p.detail} onChange={e => update(i, 'detail', e.target.value)} placeholder="Detail" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add perk</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Careers — "How we hire" steps editor
+// ---------------------------------------------------------------------------
+function CareersHiringEditor() {
+  const [items, setItems] = useState<CareersHiringStep[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchCareersHiringSteps().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof CareersHiringStep, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', detail: '' }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveCareersHiringSteps(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Careers — How We Hire Steps</h2>
+      {items.map((s, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Step {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={s.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. Send your work)" />
+          <textarea style={{ ...input, minHeight: 60 }} value={s.detail} onChange={e => update(i, 'detail', e.target.value)} placeholder="Detail" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add step</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// About — "Our values" editor
+// ---------------------------------------------------------------------------
+function AboutValuesEditor() {
+  const [items, setItems] = useState<AboutValue[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchAboutValues().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof AboutValue, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', detail: '' }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveAboutValues(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>About — Our Values</h2>
+      {items.map((v, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Value {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={v.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. We own the whole chain)" />
+          <textarea style={{ ...input, minHeight: 60 }} value={v.detail} onChange={e => update(i, 'detail', e.target.value)} placeholder="Detail" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add value</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// About — "How we work" steps editor
+// ---------------------------------------------------------------------------
+function AboutStepsEditor() {
+  const [items, setItems] = useState<AboutStep[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchAboutSteps().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof AboutStep, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', detail: '' }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveAboutSteps(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>About — How We Work Steps</h2>
+      {items.map((s, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Step {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={s.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. Talk)" />
+          <textarea style={{ ...input, minHeight: 60 }} value={s.detail} onChange={e => update(i, 'detail', e.target.value)} placeholder="Detail" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add step</button>
         <button onClick={save} style={btnPrimary}>Save changes</button>
         {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
       </div>
