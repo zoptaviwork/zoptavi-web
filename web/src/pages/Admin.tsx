@@ -6,6 +6,7 @@ import {
   type ServicesData, type Analytics, type ContentField, type Faq, type PortfolioItem, type NavLink, type CareerRole,
 } from '../lib/adminApi';
 import { coreServices as staticCoreServices, websiteTiers as staticWebsiteTiers, carePlans as staticCarePlans } from '../data/business';
+import Seo from '../components/Seo';
 
 // ---------------------------------------------------------------------------
 // Shared style tokens — modeled on a proven admin-panel pattern: a light,
@@ -54,6 +55,7 @@ export default function Admin() {
   if (!WORKER_URL) {
     return (
       <div className="admin-theme" style={{ minHeight: '100vh', background: colors.bg, color: colors.text, fontFamily: colors.fBody, padding: 40 }}>
+        <Seo title="Admin" description="Zoptavi admin panel." path="/admin" noindex />
         <div style={{ ...card, maxWidth: 560, margin: '40px auto' }}>
           <h2 style={{ marginBottom: 8, fontFamily: colors.fHead }}>Admin not connected yet</h2>
           <p style={{ color: colors.muted, lineHeight: 1.6, fontSize: 14 }}>
@@ -97,6 +99,7 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20,
       }}
     >
+      <Seo title="Admin" description="Zoptavi admin panel." path="/admin" noindex />
       <form onSubmit={submit} style={{ ...card, width: 360, maxWidth: '100%' }}>
         <div style={{ width: 40, height: 40, borderRadius: 10, background: colors.gradient, marginBottom: 14 }} />
         <h2 style={{ marginBottom: 4, fontFamily: colors.fHead, fontSize: 20 }}>Zoptavi Admin Panel</h2>
@@ -127,6 +130,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   return (
     <div className="admin-theme admin-shell" style={{ minHeight: '100vh', background: colors.bg, color: colors.text, fontFamily: colors.fBody, display: 'flex' }}>
+      <Seo title="Admin" description="Zoptavi admin panel." path="/admin" noindex />
       <div className={`admin-backdrop${navOpen ? ' is-open' : ''}`} onClick={() => setNavOpen(false)} />
 
       <aside

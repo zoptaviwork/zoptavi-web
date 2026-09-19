@@ -8,6 +8,7 @@ import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightArticle } from '../components/reactbits/SpotlightCard';
 import { portfolio, marketFacts } from '../data/business';
 import { useLiveServices, useLiveContent, useLiveFaqs, useLivePortfolio, track, mediaUrl } from '../lib/adminApi';
+import Seo from '../components/Seo';
 
 const defaultHeroHeadline = 'You Run The Business. We Handle Everything Online.';
 import '../styles/messold-home.css';
@@ -45,6 +46,11 @@ export default function Home() {
   const livePortfolio = useLivePortfolio(portfolio);
   return (
     <div className="ms-home">
+      <Seo
+        title="Zoptavi — Digital Marketing & Web Development Agency in Hyderabad"
+        description="Zoptavi is a digital marketing agency in Hyderabad. We design and build websites, billing software, branded checkout, content and Meta ads for small businesses — one team, one monthly bill."
+        path="/"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-hero ms-hero--video">
         <HlsVideoBg className="ms-hero-video" />

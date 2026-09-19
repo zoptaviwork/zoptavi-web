@@ -4,6 +4,7 @@ import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { motion } from 'motion/react';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
 import { useLiveContent } from '../lib/adminApi';
+import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -13,6 +14,11 @@ export default function ZoptaviBill() {
   const content = useLiveContent('zoptavi-bill');
   return (
     <div className="ms-home ms-light">
+      <Seo
+        title="Zoptavi Bill — Offline Billing & Multi-Store Stock Software"
+        description="Zoptavi Bill is billing and stock software built by Zoptavi for small business clients — works offline, prints on any thermal printer, and syncs live stock across branches. Included with every Zoptavi website."
+        path="/zoptavi-bill"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

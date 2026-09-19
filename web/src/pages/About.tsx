@@ -4,6 +4,7 @@ import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { useLiveServices, useLiveContent } from '../lib/adminApi';
+import Seo from '../components/Seo';
 
 const defaultHeadline = 'The team that keeps you online.';
 import '../styles/messold-home.css';
@@ -42,6 +43,11 @@ export default function About() {
   const content = useLiveContent('about');
   return (
     <div className="ms-home ms-light">
+      <Seo
+        title="About Zoptavi — Digital Marketing Agency, Hyderabad"
+        description="Zoptavi is a Hyderabad-based digital marketing agency that builds websites, billing software, content and Meta ad campaigns for small businesses. Here's who we are and how we work."
+        path="/about"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

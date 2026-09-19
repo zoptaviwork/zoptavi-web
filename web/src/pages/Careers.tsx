@@ -3,6 +3,7 @@ import Reveal, { RevealStagger, revealItem } from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { useLiveContent, useLiveCareerRoles } from '../lib/adminApi';
+import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
 const defaultHeadline = 'Build the stack that puts Hyderabad’s shops online.';
@@ -61,6 +62,11 @@ export default function Careers() {
   const liveRoles = useLiveCareerRoles(roles);
   return (
     <div className="ms-home ms-light">
+      <Seo
+        title="Careers at Zoptavi — Join Our Hyderabad Marketing Agency"
+        description="Zoptavi is hiring in Hyderabad — full-stack developers, content creators, performance marketers and more. Join the team building websites, ads and billing software for small businesses."
+        path="/careers"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

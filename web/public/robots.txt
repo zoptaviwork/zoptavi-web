@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# AI / generative-engine crawlers — explicitly allowed so answer engines
+# (ChatGPT, Perplexity, Google AI Overviews, Claude) can read the real
+# positioning of this site instead of guessing.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+
+Sitemap: https://zoptavi.com/sitemap.xml

@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Check } from 'lucide-r
 import Reveal from '../components/Reveal';
 import ShinyText from '../components/reactbits/ShinyText';
 import { useLiveContent } from '../lib/adminApi';
+import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -36,6 +37,11 @@ export const Contact: React.FC = () => {
 
   return (
     <div className="ms-home ms-light">
+      <Seo
+        title="Contact Zoptavi — Digital Marketing Agency, Hyderabad"
+        description="Get in touch with Zoptavi, a digital marketing agency in Hyderabad. Tell us about your business and we'll reply with a plan and a quote for your website, ads or billing software."
+        path="/contact"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">

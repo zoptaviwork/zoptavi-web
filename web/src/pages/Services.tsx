@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import Reveal from '../components/Reveal';
 import HlsVideoBg from '../components/HlsVideoBg';
 import { useLiveContent, mediaUrl } from '../lib/adminApi';
+import Seo from '../components/Seo';
 import '../styles/our-services.css';
 
 const WHATSAPP = 'https://wa.me/918978605027';
@@ -161,9 +162,25 @@ function CopyCol({ b }: { b: Block }) {
 
 export default function Services() {
   const content = useLiveContent('services');
-  const buildPhoto = mediaUrl(content.build_photo);
+  const resolvedBlocks = blocks.map(b => {
+    const titleOverride = content[`${b.key}_title`];
+    const bulletsOverride = content[`${b.key}_bullets`];
+    return {
+      ...b,
+      title: titleOverride ? [titleOverride] : b.title,
+      lead: content[`${b.key}_lead`] || b.lead,
+      bullets: bulletsOverride ? bulletsOverride.split('\n').map(s => s.trim()).filter(Boolean) : b.bullets,
+      cap: content[`${b.key}_cap`] || b.cap,
+      photo: mediaUrl(content[`${b.key}_photo`]),
+    };
+  });
   return (
     <div className="ors">
+      <Seo
+        title="Our Services — Web Development, Marketing & Billing Software"
+        description="Zoptavi's marketing agency services in Hyderabad: website development, performance marketing (Meta ads), billing & stock software, branded checkout, content creation, and order fulfilment."
+        path="/services"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ors-hero" role="banner" aria-label="Our Services">
         <div className="ors-hero__inner">
@@ -183,12 +200,12 @@ export default function Services() {
       </section>
 
       {/* ===================== SERVICE BLOCKS ===================== */}
-      {blocks.map((b, i) => (
+      {resolvedBlocks.map((b, i) => (
         <section key={b.key} className={i % 2 === 1 ? 'ors-svc rev' : 'ors-svc'} aria-label={b.title.join(' ')}>
           <Reveal className="ors-svc__wrap">
             <CopyCol b={b} />
-            {b.key === 'build' && buildPhoto ? (
-              <div className={`ors-svc__media ${b.grad}`} style={{ backgroundImage: `url('${buildPhoto}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            {b.photo ? (
+              <div className={`ors-svc__media ${b.grad}`} style={{ backgroundImage: `url('${b.photo}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <span className="cap">{b.cap}</span>
               </div>
             ) : (

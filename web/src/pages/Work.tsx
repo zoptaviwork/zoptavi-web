@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightLink } from '../components/reactbits/SpotlightCard';
 import { portfolio, competitorComparison } from '../data/business';
+import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
 const cols = ['Freelancer', 'Agency', 'Vyapar', 'Shopify', 'Zoptavi'] as const;
@@ -11,6 +12,11 @@ const cell = (v: boolean) => (v ? <span className="yes">✓</span> : <span class
 export default function Work() {
   return (
     <div className="ms-home ms-light">
+      <Seo
+        title="Our Work — Client Websites Built by Zoptavi"
+        description="A look at client websites, stores and platforms Zoptavi has designed and built in Hyderabad — see how our marketing agency compares to freelancers, other agencies and DIY platforms."
+        path="/work"
+      />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
         <div className="ms-wrap">
