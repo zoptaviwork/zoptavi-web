@@ -111,6 +111,27 @@ async function authedFetch(path: string, options: RequestInit = {}) {
   return body;
 }
 
+/**
+ * Fetches a JSON array from a public GET route, used by every admin list
+ * editor (FAQ, portfolio, career roles, bill pillars/pricing/phases,
+ * careers perks/hiring, about values/steps, etc). Always resolves to an
+ * array — never throws, never returns something a .map() would choke on —
+ * so a route that 404s (e.g. the Worker hasn't been redeployed with a new
+ * route yet) shows an empty, editable list instead of crashing the whole
+ * admin section to a blank screen.
+ */
+async function fetchArray<T>(path: string): Promise<T[]> {
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}${path}`);
+    if (!res.ok) return [];
+    const body = await res.json();
+    return Array.isArray(body) ? body : [];
+  } catch {
+    return [];
+  }
+}
+
 /** Public URL for an uploaded image key, or a fallback if no key/Worker. */
 export function mediaUrl(key?: string | null): string | undefined {
   if (!key) return undefined;
@@ -179,10 +200,15 @@ export function useLiveContent(page: string): Record<string, string> {
 }
 
 export async function fetchContentFields(page: string): Promise<ContentField[]> {
-  const res = await fetch(`${WORKER_URL}/api/content?page=${encodeURIComponent(page)}`);
-  const body = await res.json();
-  if (!res.ok) throw new Error(body.error || 'Failed to load content');
-  return body.fields;
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/api/content?page=${encodeURIComponent(page)}`);
+    if (!res.ok) return [];
+    const body = await res.json();
+    return Array.isArray(body.fields) ? body.fields : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function saveContent(page: string, values: Record<string, string>) {
@@ -207,8 +233,7 @@ export function useLiveFaqs(fallback: Faq[]): Faq[] {
 }
 
 export async function fetchFaqs(): Promise<Faq[]> {
-  const res = await fetch(`${WORKER_URL}/api/faqs`);
-  return res.json();
+  return fetchArray<Faq>('/api/faqs');
 }
 export async function saveFaqs(faqs: Faq[]) {
   return authedFetch('/api/admin/faqs', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(faqs) });
@@ -232,8 +257,7 @@ export function useLivePortfolio(fallback: PortfolioItem[]): PortfolioItem[] {
 }
 
 export async function fetchPortfolio(): Promise<PortfolioItem[]> {
-  const res = await fetch(`${WORKER_URL}/api/portfolio`);
-  return res.json();
+  return fetchArray<PortfolioItem>('/api/portfolio');
 }
 export async function savePortfolio(items: PortfolioItem[]) {
   return authedFetch('/api/admin/portfolio', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -257,8 +281,7 @@ export function useLiveCareerRoles(fallback: CareerRole[]): CareerRole[] {
 }
 
 export async function fetchCareerRoles(): Promise<CareerRole[]> {
-  const res = await fetch(`${WORKER_URL}/api/careers-roles`);
-  return res.json();
+  return fetchArray<CareerRole>('/api/careers-roles');
 }
 export async function saveCareerRoles(roles: CareerRole[]) {
   return authedFetch('/api/admin/careers-roles', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(roles) });
@@ -282,8 +305,7 @@ export function useLiveCareersPerks(fallback: CareersPerk[]): CareersPerk[] {
 }
 
 export async function fetchCareersPerks(): Promise<CareersPerk[]> {
-  const res = await fetch(`${WORKER_URL}/api/careers-perks`);
-  return res.json();
+  return fetchArray<CareersPerk>('/api/careers-perks');
 }
 export async function saveCareersPerks(items: CareersPerk[]) {
   return authedFetch('/api/admin/careers-perks', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
