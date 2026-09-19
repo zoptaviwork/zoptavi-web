@@ -174,16 +174,16 @@ export default function Home() {
           <div className="ms-work-head">
             <Reveal><h2 className="ms-work-title">OUR<br />WORK</h2></Reveal>
             <Reveal delay={0.08} className="ms-work-intro">
-              <h3>Making stores a<br />damn sight better.</h3>
-              <p>Your website is often the first touchpoint with your audience. It should reflect the quality and ambition of your brand.</p>
-              <p>Smart, intentional design doesn't just look good — it builds trust, captures attention, and sets you apart.</p>
+              <h3>{content.work_headline || 'Making stores a damn sight better.'}</h3>
+              <p>{content.work_para1 || 'Your website is often the first touchpoint with your audience. It should reflect the quality and ambition of your brand.'}</p>
+              <p>{content.work_para2 || "Smart, intentional design doesn't just look good — it builds trust, captures attention, and sets you apart."}</p>
             </Reveal>
           </div>
 
           <RevealStagger className="ms-work-grid" gap={0.1}>
-            {portfolio.map((p, i) => (
+            {livePortfolio.map((p, i) => (
               <motion.a key={p.key} variants={revealItem} whileHover={{ y: -4 }} href={p.url} target="_blank" rel="noreferrer" className="ms-work-card"
-                style={{ backgroundImage: `url(${i === 0 ? '/portfolio-meena-rajwada.jpg' : '/portfolio-helmet-hub.jpg'})` }}>
+                style={{ backgroundImage: `url('${mediaUrl(p.imageKey) || (i === 0 ? '/portfolio-meena-rajwada.jpg' : '/portfolio-helmet-hub.jpg')}')` }}>
                 <span className="ms-work-tag">↘ {p.name.toUpperCase()}</span>
                 <p className="ms-work-blurb">{p.blurb}</p>
               </motion.a>
