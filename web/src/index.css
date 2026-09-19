@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Raleway:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Raleway:wght@500;600;700;800&family=Roboto:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 /* ── Tailwind v4 brand tokens ── */
@@ -111,8 +111,34 @@
   h1,h2,h3,h4,h5{font-family:'Poppins',sans-serif;font-weight:800;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.02em}
   /* /admin uses its own light theme (Inter font, own type scale) — don't inherit the
      marketing site's Poppins/navy heading styles */
-  .admin-theme h1,.admin-theme h2,.admin-theme h3,.admin-theme h4{font-family:inherit;font-weight:700;letter-spacing:normal;color:inherit}
+  .admin-theme h1,.admin-theme h2,.admin-theme h3,.admin-theme h4{font-family:'Raleway',sans-serif;font-weight:700;letter-spacing:normal;color:inherit}
   p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer;border:none;background:none}ul{margin:0;padding:0;list-style:none}
+}
+
+/* ---------- admin panel responsive shell ---------- */
+.admin-topbar{display:none}
+.admin-backdrop{display:none}
+@media (max-width:860px){
+  .admin-shell{flex-direction:column}
+  .admin-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;position:sticky;top:0;z-index:150}
+  .admin-sidebar{
+    position:fixed;inset:0 auto 0 0;z-index:200;width:260px;max-width:82vw;
+    transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.25);
+  }
+  .admin-sidebar.is-open{transform:translateX(0)}
+  .admin-backdrop.is-open{display:block;position:fixed;inset:0;z-index:190;background:rgba(10,6,20,.45)}
+  .admin-main{padding:20px 16px!important;max-width:100%!important}
+  .admin-header-desktop{display:none!important}
+  .admin-collapse-btn{display:none!important}
+  .admin-sidebar{width:260px!important}
+}
+@media (max-width:640px){
+  /* Collapse every multi-column grid row inside the admin editors (portfolio,
+     pricing tables, career roles, etc.) to a single column on small screens —
+     matches on the inline style attribute so it works without per-row classes.
+     !important is required: it's overriding an inline style, which stylesheet
+     rules can only do with !important. */
+  .admin-main [style*="grid-template-columns"]{grid-template-columns:1fr!important}
 }
 
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
