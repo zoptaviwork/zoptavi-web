@@ -243,3 +243,78 @@ export async function fetchNav(): Promise<NavLink[]> {
 export async function saveNav(links: NavLink[]) {
   return authedFetch('/api/admin/nav', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(links) });
 }
+
+// ---- Zoptavi Bill: pillars ----
+export type BillPillar = { id?: number; title: string; detail: string };
+
+export function useLiveBillPillars(fallback: BillPillar[]): BillPillar[] {
+  const [items, setItems] = useState<BillPillar[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/bill-pillars`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: BillPillar[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchBillPillars(): Promise<BillPillar[]> {
+  const res = await fetch(`${WORKER_URL}/api/bill-pillars`);
+  return res.json();
+}
+export async function saveBillPillars(items: BillPillar[]) {
+  return authedFetch('/api/admin/bill-pillars', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- Zoptavi Bill: pricing tiers ----
+export type BillPricingTier = { id?: number; name: string; stores: string; users: string; features: string; perYear: number };
+
+export function useLiveBillPricing(fallback: BillPricingTier[]): BillPricingTier[] {
+  const [items, setItems] = useState<BillPricingTier[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/bill-pricing`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: BillPricingTier[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchBillPricing(): Promise<BillPricingTier[]> {
+  const res = await fetch(`${WORKER_URL}/api/bill-pricing`);
+  return res.json();
+}
+export async function saveBillPricing(items: BillPricingTier[]) {
+  return authedFetch('/api/admin/bill-pricing', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
+}
+
+// ---- Zoptavi Bill: rollout phases ----
+export type BillPhase = { id?: number; phase: string; items: string[] };
+
+export function useLiveBillPhases(fallback: BillPhase[]): BillPhase[] {
+  const [items, setItems] = useState<BillPhase[]>(fallback);
+  useEffect(() => {
+    if (!WORKER_URL) return;
+    let cancelled = false;
+    fetch(`${WORKER_URL}/api/bill-phases`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: BillPhase[]) => { if (!cancelled && d.length) setItems(d); })
+      .catch(() => { /* keep fallback */ });
+    return () => { cancelled = true; };
+  }, []);
+  return items;
+}
+
+export async function fetchBillPhases(): Promise<BillPhase[]> {
+  const res = await fetch(`${WORKER_URL}/api/bill-phases`);
+  return res.json();
+}
+export async function saveBillPhases(phases: BillPhase[]) {
+  return authedFetch('/api/admin/bill-phases', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(phases) });
+}

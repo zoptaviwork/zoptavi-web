@@ -3,7 +3,9 @@ import {
   WORKER_URL, getToken, clearToken, login, saveServices, fetchAnalytics,
   fetchContentFields, saveContent, fetchFaqs, saveFaqs, fetchPortfolio, savePortfolio,
   fetchNav, saveNav, fetchCareerRoles, saveCareerRoles, uploadImage, mediaUrl,
+  fetchBillPillars, saveBillPillars, fetchBillPricing, saveBillPricing, fetchBillPhases, saveBillPhases,
   type ServicesData, type Analytics, type ContentField, type Faq, type PortfolioItem, type NavLink, type CareerRole,
+  type BillPillar, type BillPricingTier, type BillPhase,
 } from '../lib/adminApi';
 import { coreServices as staticCoreServices, websiteTiers as staticWebsiteTiers, carePlans as staticCarePlans } from '../data/business';
 import Seo from '../components/Seo';
@@ -37,6 +39,9 @@ const SECTIONS = [
   { key: 'home', label: 'Home Page', group: 'Pages' },
   { key: 'servicesPage', label: 'Our Services Page', group: 'Pages' },
   { key: 'billPage', label: 'Zoptavi Bill Page', group: 'Pages' },
+  { key: 'billPillars', label: 'Zoptavi Bill — Pillars', group: 'Pages' },
+  { key: 'billPricing', label: 'Zoptavi Bill — Pricing Table', group: 'Pages' },
+  { key: 'billPhases', label: 'Zoptavi Bill — Rollout Phases', group: 'Pages' },
   { key: 'about', label: 'About Page', group: 'Pages' },
   { key: 'careers', label: 'Careers Page — Text', group: 'Pages' },
   { key: 'careersRoles', label: 'Careers Page — Open Roles', group: 'Pages' },
@@ -48,6 +53,27 @@ const SECTIONS = [
   { key: 'analytics', label: 'Analytics', group: 'Overview' },
 ] as const;
 type SectionKey = typeof SECTIONS[number]['key'];
+
+// One-line explanation shown at the top of each section so it's clear what
+// it controls and where it shows up on the live site — no guessing required.
+const SECTION_HINTS: Partial<Record<SectionKey, string>> = {
+  dashboard: 'A live snapshot of your site — traffic, and how much content you have in each section.',
+  home: "Controls the hero text and the intro text above the homepage's \"Our Work\" cards. To change the two Work card images/names/links themselves, use \"Portfolio / Our Work\" below.",
+  servicesPage: 'Controls the title, description, bullet points and photo for each of the 6 service blocks on the /services page (Website, Marketing, Zoptavi Bill, Studio, Zoptavi Pay, Fulfilment).',
+  billPage: 'Controls the hero text, bottom CTA note, and the Zoptavi Pay section (name, strapline, how-it-works steps, gateway explanation) on the /zoptavi-bill page.',
+  billPillars: 'Controls the 3 "Why it works" cards near the top of the /zoptavi-bill page (Works offline, Multi-store live stock, Runs on what they own).',
+  billPricing: 'Controls the pricing table (Free / Shop / Multi-Store / Chain plans) on the /zoptavi-bill page.',
+  billPhases: 'Controls the "What it does, phase by phase" cards on the /zoptavi-bill page. Each phase is a list of bullet items — one per line.',
+  about: 'Controls the text on the /about page.',
+  careers: 'Controls the intro/header text on the /careers page.',
+  careersRoles: 'Controls the list of open job roles shown on the /careers page.',
+  contact: 'Controls the hero text on the /contact page.',
+  faq: 'Controls the FAQ list shown on the homepage and wherever FAQs are used site-wide.',
+  portfolio: 'Controls every client shown in "Our Work" on the homepage and on the /work page — name, category, description, website link, and the background photo for each card. Add or edit entries here to change what appears in those cards.',
+  nav: 'Controls the links shown in the top navigation menu.',
+  services: 'Controls the core-services list and internal pricing reference tables (used on Home/About).',
+  analytics: 'Read-only: pageviews and CTA clicks tracked on the live site over the last 30 days.',
+};
 
 export default function Admin() {
   const [authed, setAuthed] = useState(!!getToken());
@@ -214,10 +240,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         </div>
 
         <main className="admin-main" style={{ flex: 1, padding: '28px 32px', maxWidth: 900, overflowY: 'auto' }}>
+          {SECTION_HINTS[section] && (
+            <div style={{ background: colors.accentBg, border: `1px solid ${colors.accentBorder}`, borderRadius: 10, padding: '10px 14px', marginBottom: 18, fontSize: 12.5, color: '#92400e', lineHeight: 1.55 }}>
+              {SECTION_HINTS[section]}
+            </div>
+          )}
           {section === 'dashboard' && <DashboardHome onNavigate={setSection} />}
         {section === 'home' && <PageContentEditor page="home" title="Home Content" />}
         {section === 'servicesPage' && <PageContentEditor page="services" title="Our Services Page" />}
         {section === 'billPage' && <PageContentEditor page="zoptavi-bill" title="Zoptavi Bill Page" />}
+        {section === 'billPillars' && <BillPillarsEditor />}
+        {section === 'billPricing' && <BillPricingEditor />}
+        {section === 'billPhases' && <BillPhasesEditor />}
         {section === 'about' && <PageContentEditor page="about" title="About Content" />}
         {section === 'careers' && <PageContentEditor page="careers" title="Careers Content" />}
         {section === 'careersRoles' && <CareerRolesEditor />}
@@ -624,6 +658,186 @@ function NavEditor() {
           <button onClick={save} style={btnPrimary}>Save changes</button>
         </div>
         {status && <p style={{ marginTop: 10, fontSize: 13, color: colors.muted }}>{status}</p>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Zoptavi Bill — pillars editor
+// ---------------------------------------------------------------------------
+function BillPillarsEditor() {
+  const [items, setItems] = useState<BillPillar[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchBillPillars().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof BillPillar, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { title: '', detail: '' }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveBillPillars(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Pillars</h2>
+      {items.map((p, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Pillar {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={p.title} onChange={e => update(i, 'title', e.target.value)} placeholder="Title (e.g. Works offline)" />
+          <textarea style={{ ...input, minHeight: 60 }} value={p.detail} onChange={e => update(i, 'detail', e.target.value)} placeholder="Detail" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add pillar</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Zoptavi Bill — pricing table editor
+// ---------------------------------------------------------------------------
+function BillPricingEditor() {
+  const [items, setItems] = useState<BillPricingTier[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchBillPricing().then(setItems).catch(() => {}); }, []);
+
+  function update(i: number, field: keyof BillPricingTier, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, [field]: field === 'perYear' ? Number(value) || 0 : value } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { name: '', stores: '1', users: '1', features: '', perYear: 0 }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try { await saveBillPricing(items); setStatus('Saved ✓'); }
+    catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Pricing Table</h2>
+      {items.map((p, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Plan {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 10 }}>
+            <input style={input} value={p.name} onChange={e => update(i, 'name', e.target.value)} placeholder="Plan name (e.g. Shop)" />
+            <input style={input} value={p.stores} onChange={e => update(i, 'stores', e.target.value)} placeholder="Stores (e.g. 1, up to 3)" />
+            <input style={input} value={p.users} onChange={e => update(i, 'users', e.target.value)} placeholder="Users" />
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={p.features} onChange={e => update(i, 'features', e.target.value)} placeholder="Key features" />
+          <label style={label}>Price per year (₹, use 0 for Free)</label>
+          <input style={input} type="number" value={p.perYear} onChange={e => update(i, 'perYear', e.target.value)} />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add plan</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Zoptavi Bill — rollout phases editor
+// ---------------------------------------------------------------------------
+function BillPhasesEditor() {
+  const [items, setItems] = useState<BillPhase[]>([]);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => { fetchBillPhases().then(setItems).catch(() => {}); }, []);
+
+  function updatePhase(i: number, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, phase: value } : it)));
+  }
+  function updateItems(i: number, value: string) {
+    setItems(list => list.map((it, idx) => (idx === i ? { ...it, items: value.split('\n') } : it)));
+  }
+  function remove(i: number) { setItems(list => list.filter((_, idx) => idx !== i)); }
+  function add() { setItems(list => [...list, { phase: '', items: [] }]); }
+  function move(i: number, dir: -1 | 1) {
+    setItems(list => {
+      const next = [...list];
+      const j = i + dir;
+      if (j < 0 || j >= next.length) return list;
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
+  async function save() {
+    setStatus('Saving…');
+    try {
+      await saveBillPhases(items.map(p => ({ ...p, items: p.items.map(s => s.trim()).filter(Boolean) })));
+      setStatus('Saved ✓');
+    } catch (err) { setStatus(err instanceof Error ? err.message : 'Save failed'); }
+  }
+
+  return (
+    <div>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Rollout Phases</h2>
+      {items.map((p, i) => (
+        <div key={i} style={card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <label style={label}>Phase {i + 1}</label>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
+              <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
+              <button onClick={() => remove(i)} style={btnDanger}>Remove</button>
+            </div>
+          </div>
+          <input style={{ ...input, marginBottom: 10 }} value={p.phase} onChange={e => updatePhase(i, e.target.value)} placeholder="Phase name (e.g. Phase 1 — Core billing)" />
+          <label style={label}>Items (one per line)</label>
+          <textarea style={{ ...input, minHeight: 100 }} value={p.items.join('\n')} onChange={e => updateItems(i, e.target.value)} placeholder="One bullet item per line" />
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <button onClick={add} style={btnGhost}>+ Add phase</button>
+        <button onClick={save} style={btnPrimary}>Save changes</button>
+        {status && <span style={{ fontSize: 13, color: colors.muted }}>{status}</span>}
       </div>
     </div>
   );

@@ -5,8 +5,8 @@ Free-tier only: one Worker, one D1 database (`zoptavi-admin`, id
 admin-uploaded images). No KV, no paid add-ons.
 
 ## Redeploy (do this now — picks up: careers open-roles CRUD, Our Services
-## page photo, Zoptavi Bill page content, user-ID + password login, and the
-## security hardening below)
+## page photo, Zoptavi Bill page content, Zoptavi Bill pillars/pricing/phases
+## CRUD, user-ID + password login, and the security hardening below)
 
 From this `cf-worker` folder:
 
@@ -47,6 +47,9 @@ Then set `WORKER_URL` in `web/src/lib/adminApi.ts` to the printed URL.
 - `GET /api/portfolio` — client showcase list
 - `GET /api/nav` — nav menu links
 - `GET /api/careers-roles` — careers open-roles list
+- `GET /api/bill-pillars` — Zoptavi Bill "why it works" pillar cards
+- `GET /api/bill-pricing` — Zoptavi Bill pricing table
+- `GET /api/bill-phases` — Zoptavi Bill rollout-phases cards
 - `GET /api/media/:key` — serves an uploaded image
 - `POST /api/track` — records a pageview or CTA click
 - `POST /api/login` — `{ username, password }` → `{ token }`
@@ -57,7 +60,8 @@ outage never breaks the public site — it just means edits made in `/admin`
 won't show up until the Worker is back.
 
 **Protected (`/admin` page only, needs a valid login token):**
-- `PUT /api/admin/services`, `/content`, `/faqs`, `/portfolio`, `/nav`, `/careers-roles`
+- `PUT /api/admin/services`, `/content`, `/faqs`, `/portfolio`, `/nav`, `/careers-roles`,
+  `/bill-pillars`, `/bill-pricing`, `/bill-phases`
 - `POST /api/admin/upload` — stores an image in R2, returns a key
 - `GET /api/admin/analytics`
 

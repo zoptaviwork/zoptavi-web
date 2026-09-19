@@ -3,7 +3,7 @@ import ShinyText from '../components/reactbits/ShinyText';
 import { SpotlightDiv } from '../components/reactbits/SpotlightCard';
 import { motion } from 'motion/react';
 import { billPillars, billPricing, billPhases, zoptaviPay } from '../data/business';
-import { useLiveContent } from '../lib/adminApi';
+import { useLiveContent, useLiveBillPillars, useLiveBillPricing, useLiveBillPhases } from '../lib/adminApi';
 import Seo from '../components/Seo';
 import '../styles/messold-home.css';
 
@@ -12,6 +12,15 @@ const defaultHeadline = 'Billing software that never stops working.';
 
 export default function ZoptaviBill() {
   const content = useLiveContent('zoptavi-bill');
+  const pillars = useLiveBillPillars(billPillars);
+  const pricing = useLiveBillPricing(billPricing);
+  const phases = useLiveBillPhases(billPhases);
+  const payName = content.pay_name || zoptaviPay.name;
+  const payStrapline = content.pay_strapline || zoptaviPay.strapline;
+  const payHowItWorks = content.pay_how_it_works
+    ? content.pay_how_it_works.split('\n').map(s => s.trim()).filter(Boolean)
+    : zoptaviPay.howItWorks;
+  const payWhyNotOwnGateway = content.pay_why_not_own_gateway || zoptaviPay.whyNotOwnGateway;
   return (
     <div className="ms-home ms-light">
       <Seo
@@ -45,7 +54,7 @@ export default function ZoptaviBill() {
       <section className="ms-section tight">
         <div className="ms-wrap">
           <RevealStagger className="ms-grid-3 two-up-md" gap={0.1}>
-            {billPillars.map((p, i) => (
+            {pillars.map((p, i) => (
               <SpotlightDiv key={p.title} variants={revealItem} whileHover={{ y: -5 }} className="ms-card lift">
                 <span className="ms-num">{String(i + 1).padStart(2, '0')}</span>
                 <h3 style={{ margin: '16px 0 8px' }}>{p.title}</h3>
@@ -76,7 +85,7 @@ export default function ZoptaviBill() {
         <div className="ms-wrap">
           <Reveal className="ms-sec-head"><h2>What it does, phase by phase</h2></Reveal>
           <RevealStagger className="ms-grid-3 two-up-md" gap={0.1}>
-            {billPhases.map(ph => (
+            {phases.map(ph => (
               <SpotlightDiv key={ph.phase} variants={revealItem} className="ms-card">
                 <h3 style={{ fontSize: 15, color: 'var(--ms-accent)', marginBottom: 14 }}>{ph.phase}</h3>
                 <ul className="ms-check-list">
@@ -102,7 +111,7 @@ export default function ZoptaviBill() {
                   <tr><th>Plan</th><th>Stores</th><th>Users</th><th>Key features</th><th style={{ textAlign: 'right' }}>Per year</th></tr>
                 </thead>
                 <tbody>
-                  {billPricing.map(p => (
+                  {pricing.map(p => (
                     <tr key={p.name}>
                       <td className="name">{p.name}</td>
                       <td>{p.stores}</td>
@@ -125,10 +134,10 @@ export default function ZoptaviBill() {
             <Reveal>
               <span className="ms-badge">Checkout, branded</span>
               <h2 style={{ margin: '14px 0 18px', fontSize: 'clamp(1.5rem,2.8vw,2.1rem)', fontWeight: 700, letterSpacing: '-0.02em' }}>
-                {zoptaviPay.name} — {zoptaviPay.strapline}
+                {payName} — {payStrapline}
               </h2>
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {zoptaviPay.howItWorks.map((h, i) => (
+                {payHowItWorks.map((h, i) => (
                   <li key={i} style={{ display: 'flex', gap: 12, fontSize: 13.5, color: 'var(--ms-grey-80)', lineHeight: 1.6 }}>
                     <span
                       style={{
@@ -150,7 +159,7 @@ export default function ZoptaviBill() {
                 <p style={{ color: '#fff', fontFamily: 'var(--ms-f-head)', fontWeight: 700, fontSize: 12, textTransform: 'uppercase', letterSpacing: '.08em', margin: '0 0 12px' }}>
                   Why not our own gateway?
                 </p>
-                <p style={{ color: 'rgba(255,255,255,.82)', fontSize: 13.5, lineHeight: 1.7, margin: '0 0 16px' }}>{zoptaviPay.whyNotOwnGateway}</p>
+                <p style={{ color: 'rgba(255,255,255,.82)', fontSize: 13.5, lineHeight: 1.7, margin: '0 0 16px' }}>{payWhyNotOwnGateway}</p>
                 <div className="ms-chips">
                   {['UPI', 'Cards', 'Net Banking', 'Wallets', 'EMI'].map(m => <span key={m}>{m}</span>)}
                 </div>

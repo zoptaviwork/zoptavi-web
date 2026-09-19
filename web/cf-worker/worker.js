@@ -178,6 +178,27 @@ export default {
         return json(rows.results);
       }
 
+      if (pathname === "/api/bill-pillars" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, title, detail FROM bill_pillars ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/bill-pricing" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, name, stores, users, features, per_year as perYear FROM bill_pricing ORDER BY sort_order"
+        ).all();
+        return json(rows.results);
+      }
+
+      if (pathname === "/api/bill-phases" && request.method === "GET") {
+        const rows = await env.DB.prepare(
+          "SELECT id, phase, items FROM bill_phases ORDER BY sort_order"
+        ).all();
+        return json(rows.results.map(r => ({ ...r, items: r.items.split("\n").filter(Boolean) })));
+      }
+
       if (pathname.startsWith("/api/media/") && request.method === "GET") {
         const key = pathname.replace("/api/media/", "");
         const obj = await env.MEDIA.get(key);
@@ -313,6 +334,42 @@ export default {
         body.forEach((r, i) => stmts.push(
           env.DB.prepare("INSERT INTO careers_roles (title, type, place, blurb, sort_order) VALUES (?,?,?,?,?)")
             .bind(r.title, r.type, r.place, r.blurb, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/bill-pillars" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM bill_pillars")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO bill_pillars (title, detail, sort_order) VALUES (?,?,?)")
+            .bind(r.title, r.detail, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/bill-pricing" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM bill_pricing")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO bill_pricing (name, stores, users, features, per_year, sort_order) VALUES (?,?,?,?,?,?)")
+            .bind(r.name, r.stores, r.users, r.features, Number(r.perYear) || 0, i)
+        ));
+        await env.DB.batch(stmts);
+        return json({ ok: true });
+      }
+
+      if (pathname === "/api/admin/bill-phases" && request.method === "PUT") {
+        const body = await request.json().catch(() => null);
+        if (!Array.isArray(body)) return json({ error: "Invalid body" }, 400);
+        const stmts = [env.DB.prepare("DELETE FROM bill_phases")];
+        body.forEach((r, i) => stmts.push(
+          env.DB.prepare("INSERT INTO bill_phases (phase, items, sort_order) VALUES (?,?,?)")
+            .bind(r.phase, Array.isArray(r.items) ? r.items.join("\n") : (r.items || ""), i)
         ));
         await env.DB.batch(stmts);
         return json({ ok: true });
