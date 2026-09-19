@@ -47,7 +47,7 @@ const SECTIONS = [
   { key: 'careersRoles', label: 'Careers Page — Open Roles', group: 'Pages' },
   { key: 'contact', label: 'Contact Page', group: 'Pages' },
   { key: 'faq', label: 'FAQ', group: 'Site-wide' },
-  { key: 'portfolio', label: 'Portfolio / Our Work', group: 'Site-wide' },
+  { key: 'portfolio', label: 'Our Work — Store Cards & Images', group: 'Site-wide' },
   { key: 'nav', label: 'Navigation Menu', group: 'Site-wide' },
   { key: 'services', label: 'Pricing Tables', group: 'Site-wide' },
   { key: 'analytics', label: 'Analytics', group: 'Overview' },
@@ -516,11 +516,11 @@ function PortfolioEditor() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: 18 }}>Portfolio / client showcase</h2>
+      <h2 style={{ marginBottom: 18 }}>Portfolio / Our Work — store cards</h2>
       {items.map((p, i) => (
         <div key={p.key} style={card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <label style={label}>Client {i + 1}</label>
+            <label style={label}>Store {i + 1}{p.name ? ` — ${p.name}` : ''}</label>
             <div style={{ display: 'flex', gap: 6 }}>
               <button onClick={() => move(i, -1)} disabled={i === 0} style={iconBtn} aria-label="Move up">↑</button>
               <button onClick={() => move(i, 1)} disabled={i === items.length - 1} style={iconBtn} aria-label="Move down">↓</button>
@@ -534,8 +534,11 @@ function PortfolioEditor() {
             <input style={input} value={p.tier || ''} onChange={e => update(i, 'tier', e.target.value)} placeholder="Tier (e.g. Store Pro)" />
           </div>
           <textarea style={{ ...input, minHeight: 60, marginBottom: 10 }} value={p.blurb} onChange={e => update(i, 'blurb', e.target.value)} placeholder="Description" />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {p.imageKey && <img src={mediaUrl(p.imageKey)} alt="" style={{ width: 48, height: 48, borderRadius: 8, objectFit: 'cover', border: `1px solid ${colors.border}` }} />}
+          <label style={label}>Card background image (the photo shown behind this card on the homepage "Our Work" section and the /work page)</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: colors.bg, border: `1px dashed ${colors.border}`, borderRadius: 8, padding: 10 }}>
+            {p.imageKey
+              ? <img src={mediaUrl(p.imageKey)} alt="" style={{ width: 72, height: 72, borderRadius: 8, objectFit: 'cover', border: `1px solid ${colors.border}`, flexShrink: 0 }} />
+              : <div style={{ width: 72, height: 72, borderRadius: 8, background: colors.card, border: `1px solid ${colors.border}`, flexShrink: 0, display: 'grid', placeItems: 'center', fontSize: 10, color: colors.muted, textAlign: 'center' }}>No image yet</div>}
             <input type="file" accept="image/*" onChange={e => onImagePick(i, e.target.files?.[0])} style={{ fontSize: 12 }} />
             {uploading === i && <span style={{ fontSize: 12, color: colors.muted }}>Uploading…</span>}
           </div>
