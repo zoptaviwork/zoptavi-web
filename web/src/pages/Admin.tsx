@@ -1095,7 +1095,12 @@ function ServicesEditor() {
   const [data, setData] = useState<ServicesData>({ coreServices: staticCoreServices, websiteTiers: staticWebsiteTiers, carePlans: staticCarePlans });
   const [status, setStatus] = useState('');
 
-  useEffect(() => { fetch(`${WORKER_URL}/api/services`).then(r => r.json()).then(setData).catch(() => {}); }, []);
+  useEffect(() => {
+    fetch(`${WORKER_URL}/api/services`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d: ServicesData) => { if (d && Array.isArray(d.coreServices)) setData(d); })
+      .catch(() => { /* keep static fallback */ });
+  }, []);
 
   async function save() {
     setStatus('Saving…');

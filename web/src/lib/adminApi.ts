@@ -329,8 +329,7 @@ export function useLiveCareersHiringSteps(fallback: CareersHiringStep[]): Career
 }
 
 export async function fetchCareersHiringSteps(): Promise<CareersHiringStep[]> {
-  const res = await fetch(`${WORKER_URL}/api/careers-hiring-steps`);
-  return res.json();
+  return fetchArray<CareersHiringStep>('/api/careers-hiring-steps');
 }
 export async function saveCareersHiringSteps(items: CareersHiringStep[]) {
   return authedFetch('/api/admin/careers-hiring-steps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -354,8 +353,7 @@ export function useLiveAboutValues(fallback: AboutValue[]): AboutValue[] {
 }
 
 export async function fetchAboutValues(): Promise<AboutValue[]> {
-  const res = await fetch(`${WORKER_URL}/api/about-values`);
-  return res.json();
+  return fetchArray<AboutValue>('/api/about-values');
 }
 export async function saveAboutValues(items: AboutValue[]) {
   return authedFetch('/api/admin/about-values', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -379,8 +377,7 @@ export function useLiveAboutSteps(fallback: AboutStep[]): AboutStep[] {
 }
 
 export async function fetchAboutSteps(): Promise<AboutStep[]> {
-  const res = await fetch(`${WORKER_URL}/api/about-steps`);
-  return res.json();
+  return fetchArray<AboutStep>('/api/about-steps');
 }
 export async function saveAboutSteps(items: AboutStep[]) {
   return authedFetch('/api/admin/about-steps', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -390,8 +387,7 @@ export async function saveAboutSteps(items: AboutStep[]) {
 export type NavLink = { id?: number; label: string; path: string };
 
 export async function fetchNav(): Promise<NavLink[]> {
-  const res = await fetch(`${WORKER_URL}/api/nav`);
-  return res.json();
+  return fetchArray<NavLink>('/api/nav');
 }
 export async function saveNav(links: NavLink[]) {
   return authedFetch('/api/admin/nav', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(links) });
@@ -415,8 +411,7 @@ export function useLiveBillPillars(fallback: BillPillar[]): BillPillar[] {
 }
 
 export async function fetchBillPillars(): Promise<BillPillar[]> {
-  const res = await fetch(`${WORKER_URL}/api/bill-pillars`);
-  return res.json();
+  return fetchArray<BillPillar>('/api/bill-pillars');
 }
 export async function saveBillPillars(items: BillPillar[]) {
   return authedFetch('/api/admin/bill-pillars', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -440,8 +435,7 @@ export function useLiveBillPricing(fallback: BillPricingTier[]): BillPricingTier
 }
 
 export async function fetchBillPricing(): Promise<BillPricingTier[]> {
-  const res = await fetch(`${WORKER_URL}/api/bill-pricing`);
-  return res.json();
+  return fetchArray<BillPricingTier>('/api/bill-pricing');
 }
 export async function saveBillPricing(items: BillPricingTier[]) {
   return authedFetch('/api/admin/bill-pricing', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
@@ -465,8 +459,7 @@ export function useLiveBillPhases(fallback: BillPhase[]): BillPhase[] {
 }
 
 export async function fetchBillPhases(): Promise<BillPhase[]> {
-  const res = await fetch(`${WORKER_URL}/api/bill-phases`);
-  return res.json();
+  return fetchArray<BillPhase>('/api/bill-phases');
 }
 export async function saveBillPhases(phases: BillPhase[]) {
   return authedFetch('/api/admin/bill-phases', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(phases) });
