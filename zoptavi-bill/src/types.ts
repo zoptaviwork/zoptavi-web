@@ -9,6 +9,7 @@ export interface Item {
   unit: string; // pc, kg, box, etc
   stock: number; // current stock on hand
   category?: string;
+  barcode?: string; // EAN-13 or in-house barcode, for scan lookup
 }
 
 export interface BillLine {

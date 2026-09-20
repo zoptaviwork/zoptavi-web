@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Bill, BillLine, Item, StoreSettings } from '../types';
 import { makeBillLine, totalsForLines, formatINR } from '../lib/gst';
 import { getItems, updateItemStock, nextBillNumber, saveBill, getSettings, saveSettings } from '../lib/db';
+import { buildBillPdf, billPdfFileName } from '../lib/pdf';
 import Receipt from './Receipt';
+import BarcodeScanner from './BarcodeScanner';
 import './BillingScreen.css';
 
 export default function BillingScreen() {
@@ -16,6 +18,7 @@ export default function BillingScreen() {
   const [customerGstin, setCustomerGstin] = useState('');
   const [lastBill, setLastBill] = useState<Bill | null>(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +29,9 @@ export default function BillingScreen() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return items;
-    return items.filter((i) => i.name.toLowerCase().includes(q) || i.hsn.includes(q));
+    return items.filter(
+      (i) => i.name.toLowerCase().includes(q) || i.hsn.includes(q) || (i.barcode ?? '').includes(q),
+    );
   }, [items, search]);
 
   const totals = useMemo(() => totalsForLines(cart), [cart]);
@@ -54,6 +59,32 @@ export default function BillingScreen() {
     }
     if (qty > item.stock) qty = item.stock;
     setCart((prev) => prev.map((l) => (l.itemId === itemId ? makeBillLine(item, qty) : l)));
+  }
+
+  function tryAddByBarcode(code: string) {
+    const trimmed = code.trim();
+    if (!trimmed) return false;
+    const match = items.find((i) => i.barcode === trimmed);
+    if (match) {
+      addToCart(match);
+      setSearch('');
+      return true;
+    }
+    return false;
+  }
+
+  function handleSearchKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      // Covers USB/Bluetooth scanners, which "type" the code then send Enter.
+      tryAddByBarcode(search);
+    }
+  }
+
+  function handleScanned(code: string) {
+    setShowScanner(false);
+    if (!tryAddByBarcode(code)) {
+      setSearch(code);
+    }
   }
 
   function removeLine(itemId: string) {
@@ -101,6 +132,49 @@ export default function BillingScreen() {
     window.print();
   }
 
+  async function downloadPdf() {
+    if (!lastBill || !settings) return;
+    const blob = buildBillPdf(lastBill, settings);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = billPdfFileName(lastBill);
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function shareBill() {
+    if (!lastBill || !settings) return;
+    const blob = buildBillPdf(lastBill, settings);
+    const fileName = billPdfFileName(lastBill);
+    const file = new File([blob], fileName, { type: 'application/pdf' });
+
+    // Web Share API with files works on most Android/mobile browsers and can hand the PDF
+    // straight to WhatsApp (or any installed app) via the native share sheet.
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: `Invoice ${lastBill.billNo}`,
+          text: `Invoice ${lastBill.billNo} from ${settings.storeName} — ${formatINR(lastBill.grandTotal)}`,
+        });
+        return;
+      } catch {
+        // user cancelled the share sheet — fall through to the WhatsApp link fallback below
+      }
+    }
+
+    // Fallback: no file-sharing support (e.g. desktop browsers) — open WhatsApp with a text
+    // summary, and also trigger a PDF download so the user can attach it manually.
+    const phone = lastBill.customerPhone?.replace(/\D/g, '');
+    const text = encodeURIComponent(
+      `Invoice ${lastBill.billNo} from ${settings.storeName}\nTotal: ${formatINR(lastBill.grandTotal)}\nThank you for your purchase!`,
+    );
+    const waUrl = phone ? `https://wa.me/${phone}?text=${text}` : `https://wa.me/?text=${text}`;
+    window.open(waUrl, '_blank');
+    downloadPdf();
+  }
+
   async function saveSettingsForm(next: StoreSettings) {
     await saveSettings(next);
     setSettings(next);
@@ -118,12 +192,18 @@ export default function BillingScreen() {
 
       <div className="billing-main">
         <div className="billing-items-pane">
-          <input
-            className="billing-search"
-            placeholder="Search items or HSN…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="search-row">
+            <input
+              className="billing-search"
+              placeholder="Search items, HSN, or scan a barcode…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+            />
+            <button className="btn-scan" onClick={() => setShowScanner(true)} title="Scan with camera">
+              📷 Scan
+            </button>
+          </div>
           <div className="item-grid">
             {filtered.map((item) => (
               <button
@@ -207,6 +287,8 @@ export default function BillingScreen() {
             </div>
             <div className="receipt-modal-actions">
               <button className="btn-ghost" onClick={() => setLastBill(null)}>Close</button>
+              <button className="btn-ghost" onClick={downloadPdf}>Download PDF</button>
+              <button className="btn-ghost" onClick={shareBill}>Share / WhatsApp</button>
               <button className="btn-solid" onClick={printReceipt}>Print</button>
             </div>
           </div>
@@ -215,6 +297,10 @@ export default function BillingScreen() {
 
       {showSettings && (
         <SettingsModal settings={settings} onCancel={() => setShowSettings(false)} onSave={saveSettingsForm} />
+      )}
+
+      {showScanner && (
+        <BarcodeScanner onDetected={handleScanned} onClose={() => setShowScanner(false)} />
       )}
     </div>
   );

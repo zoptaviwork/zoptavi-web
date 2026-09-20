@@ -30,12 +30,30 @@
 
 .billing-items-pane { display: flex; flex-direction: column; overflow: hidden; }
 
+.search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
 .billing-search {
+  flex: 1;
   padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 10px;
   font-size: 14px;
+}
+
+.btn-scan {
+  padding: 0 14px;
+  border: 1px solid #1a1a1a;
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .item-grid {

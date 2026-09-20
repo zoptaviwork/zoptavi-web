@@ -20,12 +20,12 @@ const defaultSettings: StoreSettings = {
 };
 
 const seedItems: Item[] = [
-  { id: 'i1', name: 'Rice 1kg', hsn: '1006', price: 60, gstRate: 5, unit: 'kg', stock: 50, category: 'Grocery' },
-  { id: 'i2', name: 'Cooking Oil 1L', hsn: '1512', price: 150, gstRate: 5, unit: 'ltr', stock: 30, category: 'Grocery' },
-  { id: 'i3', name: 'Notebook', hsn: '4820', price: 40, gstRate: 12, unit: 'pc', stock: 100, category: 'Stationery' },
-  { id: 'i4', name: 'Ballpoint Pen', hsn: '9608', price: 10, gstRate: 12, unit: 'pc', stock: 200, category: 'Stationery' },
-  { id: 'i5', name: 'Soap Bar', hsn: '3401', price: 35, gstRate: 18, unit: 'pc', stock: 80, category: 'Personal Care' },
-  { id: 'i6', name: 'Biscuit Pack', hsn: '1905', price: 25, gstRate: 18, unit: 'pc', stock: 120, category: 'Snacks' },
+  { id: 'i1', name: 'Rice 1kg', hsn: '1006', price: 60, gstRate: 5, unit: 'kg', stock: 50, category: 'Grocery', barcode: '8901030875021' },
+  { id: 'i2', name: 'Cooking Oil 1L', hsn: '1512', price: 150, gstRate: 5, unit: 'ltr', stock: 30, category: 'Grocery', barcode: '8901030875038' },
+  { id: 'i3', name: 'Notebook', hsn: '4820', price: 40, gstRate: 12, unit: 'pc', stock: 100, category: 'Stationery', barcode: '8901030875045' },
+  { id: 'i4', name: 'Ballpoint Pen', hsn: '9608', price: 10, gstRate: 12, unit: 'pc', stock: 200, category: 'Stationery', barcode: '8901030875052' },
+  { id: 'i5', name: 'Soap Bar', hsn: '3401', price: 35, gstRate: 18, unit: 'pc', stock: 80, category: 'Personal Care', barcode: '8901030875069' },
+  { id: 'i6', name: 'Biscuit Pack', hsn: '1905', price: 25, gstRate: 18, unit: 'pc', stock: 120, category: 'Snacks', barcode: '8901030875076' },
 ];
 
 export async function getItems(): Promise<Item[]> {
