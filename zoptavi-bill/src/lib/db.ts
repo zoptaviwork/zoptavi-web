@@ -17,6 +17,7 @@ const defaultSettings: StoreSettings = {
   invoicePrefix: 'ZB',
   nextBillSeq: 1,
   thermalWidth: '80mm',
+  onboarded: false,
 };
 
 const seedItems: Item[] = [
@@ -39,6 +40,22 @@ export async function getItems(): Promise<Item[]> {
 
 export async function saveItems(items: Item[]): Promise<void> {
   await set(ITEMS_KEY, items, store);
+}
+
+export async function addItem(item: Item): Promise<void> {
+  await update<Item[]>(ITEMS_KEY, (items) => [...(items ?? []), item], store);
+}
+
+/** Replaces one item by id — used by the "Edit item" flow to fix name/price/GST/HSN later. */
+export async function updateItem(updated: Item): Promise<void> {
+  await update<Item[]>(
+    ITEMS_KEY,
+    (items) => {
+      if (!items) return [];
+      return items.map((it) => (it.id === updated.id ? updated : it));
+    },
+    store,
+  );
 }
 
 export async function updateItemStock(itemId: string, delta: number): Promise<void> {

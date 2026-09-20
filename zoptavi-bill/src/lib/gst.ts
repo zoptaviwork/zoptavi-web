@@ -8,9 +8,12 @@ export function round2(n: number): number {
  * Builds a bill line for a given item + quantity, splitting GST evenly into
  * CGST + SGST (intra-state sale — the common case for a single local store).
  */
-export function makeBillLine(item: Item, qty: number): BillLine {
+// gstRateOverride lets a single bill line use a different GST rate than the item's master
+// record — e.g. a one-off correction at billing time without permanently changing the item.
+export function makeBillLine(item: Item, qty: number, gstRateOverride?: number): BillLine {
+  const gstRate = gstRateOverride ?? item.gstRate;
   const lineTotal = round2(item.price * qty);
-  const gstAmount = round2((lineTotal * item.gstRate) / 100);
+  const gstAmount = round2((lineTotal * gstRate) / 100);
   const cgst = round2(gstAmount / 2);
   const sgst = round2(gstAmount - cgst); // avoid rounding leaving a paisa unaccounted
   const lineGrandTotal = round2(lineTotal + cgst + sgst);
@@ -21,7 +24,7 @@ export function makeBillLine(item: Item, qty: number): BillLine {
     qty,
     unit: item.unit,
     price: item.price,
-    gstRate: item.gstRate,
+    gstRate,
     lineTotal,
     cgst,
     sgst,

@@ -50,4 +50,11 @@ export interface StoreSettings {
   invoicePrefix: string; // e.g. "ZB"
   nextBillSeq: number;
   thermalWidth: '58mm' | '80mm' | 'a4';
+  onboarded: boolean; // has this store completed the first-run business setup?
+  supplyContactPhone?: string; // Zoptavi's supply-order WhatsApp number, once set up
+}
+
+export interface SupplyOrderLine {
+  label: string;
+  qty: number;
 }

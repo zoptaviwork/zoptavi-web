@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Bill, BillLine, Item, StoreSettings } from '../types';
 import { makeBillLine, totalsForLines, formatINR } from '../lib/gst';
-import { getItems, updateItemStock, nextBillNumber, saveBill, getSettings, saveSettings } from '../lib/db';
+import { getItems, updateItemStock, nextBillNumber, saveBill, getSettings, saveSettings, addItem, updateItem } from '../lib/db';
 import { buildBillPdf, billPdfFileName } from '../lib/pdf';
+import { lookupBarcodeOnline } from '../lib/barcodeLookup';
 import Receipt from './Receipt';
 import BarcodeScanner from './BarcodeScanner';
+import CustomerLedger from './CustomerLedger';
+import Dashboard from './Dashboard';
+import BusinessSetup from './BusinessSetup';
+import SuppliesOrder from './SuppliesOrder';
 import './BillingScreen.css';
 
 export default function BillingScreen() {
@@ -19,6 +24,11 @@ export default function BillingScreen() {
   const [lastBill, setLastBill] = useState<Bill | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
+  const [newItemBarcode, setNewItemBarcode] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
+  const [showLedger, setShowLedger] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [showSupplies, setShowSupplies] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -58,7 +68,23 @@ export default function BillingScreen() {
       return;
     }
     if (qty > item.stock) qty = item.stock;
-    setCart((prev) => prev.map((l) => (l.itemId === itemId ? makeBillLine(item, qty) : l)));
+    setCart((prev) =>
+      prev.map((l) => {
+        if (l.itemId !== itemId) return l;
+        // Keep any per-line GST override the user already set instead of resetting to
+        // the item's master rate when qty changes.
+        const override = l.gstRate !== item.gstRate ? l.gstRate : undefined;
+        return makeBillLine(item, qty, override);
+      }),
+    );
+  }
+
+  function changeLineGstRate(itemId: string, gstRate: number) {
+    const item = items.find((i) => i.id === itemId);
+    if (!item) return;
+    setCart((prev) =>
+      prev.map((l) => (l.itemId === itemId ? makeBillLine(item, l.qty, gstRate) : l)),
+    );
   }
 
   function tryAddByBarcode(code: string) {
@@ -76,15 +102,42 @@ export default function BillingScreen() {
   function handleSearchKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       // Covers USB/Bluetooth scanners, which "type" the code then send Enter.
-      tryAddByBarcode(search);
+      // A barcode-shaped entry (8+ digits) that matches nothing is offered as a new item,
+      // rather than silently doing nothing — that's the actual first-run experience most
+      // shops will hit, since a fresh install only has 6 demo items in it.
+      const trimmed = search.trim();
+      if (!tryAddByBarcode(trimmed) && /^\d{8,}$/.test(trimmed)) {
+        setNewItemBarcode(trimmed);
+      }
     }
   }
 
   function handleScanned(code: string) {
     setShowScanner(false);
     if (!tryAddByBarcode(code)) {
-      setSearch(code);
+      setNewItemBarcode(code);
     }
+  }
+
+  async function handleNewItemSave(item: Item) {
+    await addItem(item);
+    const refreshed = await getItems();
+    setItems(refreshed);
+    setNewItemBarcode(null);
+    setSearch('');
+    addToCart(item);
+  }
+
+  async function handleEditItemSave(item: Item) {
+    await updateItem(item);
+    const refreshed = await getItems();
+    setItems(refreshed);
+    // If this item is already in the cart, refresh its line to reflect the new
+    // price/GST/HSN too (keeping the same quantity).
+    setCart((prev) =>
+      prev.map((l) => (l.itemId === item.id ? makeBillLine(item, l.qty) : l)),
+    );
+    setEditingItem(null);
   }
 
   function removeLine(itemId: string) {
@@ -183,11 +236,28 @@ export default function BillingScreen() {
 
   if (!settings) return <div className="billing-loading">Loading…</div>;
 
+  if (!settings.onboarded) {
+    return (
+      <BusinessSetup
+        initial={settings}
+        onDone={async (next) => {
+          await saveSettings(next);
+          setSettings(next);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="billing-screen">
       <header className="billing-header">
         <h1>{settings.storeName}</h1>
-        <button className="btn-ghost" onClick={() => setShowSettings(true)}>Settings</button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className="btn-ghost" onClick={() => setShowDashboard(true)}>Dashboard</button>
+          <button className="btn-ghost" onClick={() => setShowLedger(true)}>Customers</button>
+          <button className="btn-ghost" onClick={() => setShowSupplies(true)}>Supplies</button>
+          <button className="btn-ghost" onClick={() => setShowSettings(true)}>Settings</button>
+        </div>
       </header>
 
       <div className="billing-main">
@@ -206,16 +276,31 @@ export default function BillingScreen() {
           </div>
           <div className="item-grid">
             {filtered.map((item) => (
-              <button
-                key={item.id}
-                className="item-card"
-                onClick={() => addToCart(item)}
-                disabled={item.stock <= 0}
-              >
-                <span className="item-name">{item.name}</span>
-                <span className="item-price">{formatINR(item.price)}</span>
-                <span className="item-stock">{item.stock > 0 ? `${item.stock} ${item.unit} left` : 'Out of stock'}</span>
-              </button>
+              <div key={item.id} className="item-card-wrap" style={{ position: 'relative' }}>
+                <button
+                  className="item-card"
+                  onClick={() => addToCart(item)}
+                  disabled={item.stock <= 0}
+                >
+                  <span className="item-name">{item.name}</span>
+                  <span className="item-price">{formatINR(item.price)} · {item.gstRate}% GST</span>
+                  <span className="item-stock">{item.stock > 0 ? `${item.stock} ${item.unit} left` : 'Out of stock'}</span>
+                </button>
+                <button
+                  className="item-edit-btn"
+                  title="Edit item (price, GST, HSN…)"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditingItem(item);
+                  }}
+                  style={{
+                    position: 'absolute', top: 4, right: 4, border: 'none', background: 'rgba(255,255,255,0.9)',
+                    borderRadius: 6, width: 24, height: 24, fontSize: 12, cursor: 'pointer', lineHeight: '24px', padding: 0,
+                  }}
+                >
+                  ✎
+                </button>
+              </div>
             ))}
             {filtered.length === 0 && <p className="empty-hint">No items match.</p>}
           </div>
@@ -229,7 +314,21 @@ export default function BillingScreen() {
               <div className="cart-line" key={line.itemId}>
                 <div className="cart-line-name">
                   <strong>{line.name}</strong>
-                  <span>HSN {line.hsn} · {line.gstRate}% GST</span>
+                  <span className="cart-line-gst">
+                    HSN {line.hsn} ·{' '}
+                    <select
+                      value={line.gstRate}
+                      onChange={(e) => changeLineGstRate(line.itemId, Number(e.target.value))}
+                      title="Override GST rate for this line only"
+                    >
+                      <option value="0">0%</option>
+                      <option value="5">5%</option>
+                      <option value="12">12%</option>
+                      <option value="18">18%</option>
+                      <option value="28">28%</option>
+                    </select>{' '}
+                    GST
+                  </span>
                 </div>
                 <div className="cart-line-qty">
                   <button onClick={() => changeQty(line.itemId, line.qty - 1)}>−</button>
@@ -302,6 +401,176 @@ export default function BillingScreen() {
       {showScanner && (
         <BarcodeScanner onDetected={handleScanned} onClose={() => setShowScanner(false)} />
       )}
+
+      {newItemBarcode !== null && (
+        <NewItemModal
+          barcode={newItemBarcode}
+          onCancel={() => setNewItemBarcode(null)}
+          onSave={handleNewItemSave}
+        />
+      )}
+
+      {editingItem && (
+        <EditItemModal
+          item={editingItem}
+          onCancel={() => setEditingItem(null)}
+          onSave={handleEditItemSave}
+        />
+      )}
+
+      {showLedger && <CustomerLedger onClose={() => setShowLedger(false)} />}
+
+      {showDashboard && <Dashboard onClose={() => setShowDashboard(false)} />}
+
+      {showSupplies && <SuppliesOrder settings={settings} onClose={() => setShowSupplies(false)} />}
+    </div>
+  );
+}
+
+function NewItemModal({
+  barcode,
+  onSave,
+  onCancel,
+}: {
+  barcode: string;
+  onSave: (item: Item) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [gstRate, setGstRate] = useState('5');
+  const [hsn, setHsn] = useState('');
+  const [unit, setUnit] = useState('pc');
+  const [stock, setStock] = useState('10');
+  const [lookupState, setLookupState] = useState<'looking' | 'found' | 'not-found'>('looking');
+
+  useEffect(() => {
+    let cancelled = false;
+    setLookupState('looking');
+    lookupBarcodeOnline(barcode).then((result) => {
+      if (cancelled) return;
+      if (result) {
+        setName(result.name);
+        setLookupState('found');
+      } else {
+        setLookupState('not-found');
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [barcode]);
+
+  const canSave = name.trim().length > 0 && Number(price) > 0;
+
+  function save() {
+    if (!canSave) return;
+    onSave({
+      id: crypto.randomUUID(),
+      name: name.trim(),
+      hsn: hsn.trim() || '0000',
+      price: Number(price),
+      gstRate: Number(gstRate),
+      unit: unit.trim() || 'pc',
+      stock: Number(stock) || 0,
+      barcode,
+    });
+  }
+
+  return (
+    <div className="receipt-modal">
+      <div className="receipt-modal-inner settings-form">
+        <h2>New item</h2>
+        <p className="empty-hint" style={{ padding: 0, marginBottom: 4 }}>
+          {lookupState === 'looking' && <>Looking up barcode <strong>{barcode}</strong> online…</>}
+          {lookupState === 'found' && <>Found a name from an online product database — check it's right, then fill in price and GST.</>}
+          {lookupState === 'not-found' && <>No item matches barcode <strong>{barcode}</strong> yet, and it wasn't in the public product database either — add it once and it's scannable from now on.</>}
+        </p>
+        <label>Name<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label>
+        <label>Price (₹)<input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+        <label>
+          GST rate
+          <select value={gstRate} onChange={(e) => setGstRate(e.target.value)}>
+            <option value="0">0%</option>
+            <option value="5">5%</option>
+            <option value="12">12%</option>
+            <option value="18">18%</option>
+            <option value="28">28%</option>
+          </select>
+        </label>
+        <label>HSN code (optional)<input value={hsn} onChange={(e) => setHsn(e.target.value)} /></label>
+        <label>Unit<input value={unit} onChange={(e) => setUnit(e.target.value)} placeholder="pc, kg, ltr…" /></label>
+        <label>Opening stock<input type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value)} /></label>
+        <div className="receipt-modal-actions">
+          <button className="btn-ghost" onClick={onCancel}>Cancel</button>
+          <button className="btn-solid" onClick={save} disabled={!canSave}>Add &amp; bill it</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EditItemModal({
+  item,
+  onSave,
+  onCancel,
+}: {
+  item: Item;
+  onSave: (item: Item) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState(item.name);
+  const [price, setPrice] = useState(String(item.price));
+  const [gstRate, setGstRate] = useState(String(item.gstRate));
+  const [hsn, setHsn] = useState(item.hsn);
+  const [unit, setUnit] = useState(item.unit);
+  const [stock, setStock] = useState(String(item.stock));
+  const [barcode, setBarcode] = useState(item.barcode ?? '');
+
+  const canSave = name.trim().length > 0 && Number(price) > 0;
+
+  function save() {
+    if (!canSave) return;
+    onSave({
+      ...item,
+      name: name.trim(),
+      hsn: hsn.trim() || '0000',
+      price: Number(price),
+      gstRate: Number(gstRate),
+      unit: unit.trim() || 'pc',
+      stock: Number(stock) || 0,
+      barcode: barcode.trim() || undefined,
+    });
+  }
+
+  return (
+    <div className="receipt-modal">
+      <div className="receipt-modal-inner settings-form">
+        <h2>Edit item</h2>
+        <p className="empty-hint" style={{ padding: 0, marginBottom: 4 }}>
+          Fixes here (price, GST rate, HSN…) apply permanently to this item, not just the current bill.
+        </p>
+        <label>Name<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label>
+        <label>Price (₹)<input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+        <label>
+          GST rate
+          <select value={gstRate} onChange={(e) => setGstRate(e.target.value)}>
+            <option value="0">0%</option>
+            <option value="5">5%</option>
+            <option value="12">12%</option>
+            <option value="18">18%</option>
+            <option value="28">28%</option>
+          </select>
+        </label>
+        <label>HSN code<input value={hsn} onChange={(e) => setHsn(e.target.value)} /></label>
+        <label>Unit<input value={unit} onChange={(e) => setUnit(e.target.value)} placeholder="pc, kg, ltr…" /></label>
+        <label>Stock<input type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value)} /></label>
+        <label>Barcode (optional)<input value={barcode} onChange={(e) => setBarcode(e.target.value)} /></label>
+        <div className="receipt-modal-actions">
+          <button className="btn-ghost" onClick={onCancel}>Cancel</button>
+          <button className="btn-solid" onClick={save} disabled={!canSave}>Save changes</button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -325,6 +594,14 @@ function SettingsModal({
         <label>GSTIN<input value={form.gstin} onChange={(e) => setForm({ ...form, gstin: e.target.value })} /></label>
         <label>Phone<input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></label>
         <label>Invoice prefix<input value={form.invoicePrefix} onChange={(e) => setForm({ ...form, invoicePrefix: e.target.value })} /></label>
+        <label>
+          Supply order WhatsApp number (optional)
+          <input
+            value={form.supplyContactPhone ?? ''}
+            onChange={(e) => setForm({ ...form, supplyContactPhone: e.target.value })}
+            placeholder="Zoptavi's supply contact, once set up"
+          />
+        </label>
         <label>
           Printer width
           <select value={form.thermalWidth} onChange={(e) => setForm({ ...form, thermalWidth: e.target.value as StoreSettings['thermalWidth'] })}>
