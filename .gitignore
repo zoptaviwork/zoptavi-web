@@ -2,3 +2,6 @@
 web/.env
 node_modules
 zoptavi desgin/
+
+# Business/planning documents don't belong in the site's source repo
+/*.pdf
