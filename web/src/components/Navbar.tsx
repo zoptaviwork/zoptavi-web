@@ -6,7 +6,7 @@ const defaultLinks = [
   { label: 'Home', to: '/' },
   { label: 'Our Work', to: '/work' },
   { label: 'Our Services', to: '/services' },
-  { label: 'Zoptavi Bill', to: '/zoptavi-bill' },
+  { label: 'Zoptavi Tab', to: '/zoptavi-tab' },
   { label: 'About', to: '/about' },
   { label: 'Careers', to: '/careers' },
   { label: 'Contact', to: '/contact' },

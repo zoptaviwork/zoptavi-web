@@ -1,15 +1,21 @@
-// Core data model for Zoptavi Bill — core billing MVP (single store, offline-first)
+// Core data model for Zoptavi Tab — core billing MVP (single store, offline-first)
 
 export interface Item {
   id: string;
   name: string;
   hsn: string; // HSN/SAC code
-  price: number; // unit price, GST-exclusive, in rupees
+  price: number; // unit price, GST-EXCLUSIVE (taxable value), in rupees — always the canonical
+  // price used for every calculation. When mrpInclusive is true, this is back-calculated
+  // from mrp so billing charges exactly the MRP printed on the pack, not MRP + extra GST.
   gstRate: number; // total GST %, e.g. 5, 12, 18
   unit: string; // pc, kg, box, etc
   stock: number; // current stock on hand
   category?: string;
   barcode?: string; // EAN-13 or in-house barcode, for scan lookup
+  mrpInclusive?: boolean; // true if the shop enters prices as MRP (GST already included) —
+  // the common case for most retail/grocery. false/undefined means price is entered before GST.
+  mrp?: number; // the GST-inclusive price as entered by the owner, kept only for display/editing
+  // so the item card and edit form show the number the owner recognizes, not the derived one.
 }
 
 export interface BillLine {

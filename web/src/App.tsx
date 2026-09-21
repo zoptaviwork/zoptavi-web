@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import SiteFooter from './components/SiteFooter';
 import ScrollToTop from './components/ScrollToTop';
@@ -42,7 +42,8 @@ export default function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
         <Route path="/services" element={<SiteLayout><Services /></SiteLayout>} />
-        <Route path="/zoptavi-bill" element={<SiteLayout><ZoptaviBill /></SiteLayout>} />
+        <Route path="/zoptavi-tab" element={<SiteLayout><ZoptaviBill /></SiteLayout>} />
+        <Route path="/zoptavi-bill" element={<Navigate to="/zoptavi-tab" replace />} />
         <Route path="/work" element={<SiteLayout><Work /></SiteLayout>} />
         <Route path="/about" element={<SiteLayout><About /></SiteLayout>} />
         <Route path="/careers" element={<SiteLayout><Careers /></SiteLayout>} />

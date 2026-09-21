@@ -106,7 +106,7 @@ export default function Footer() {
                 { l: 'About Zoptavi', to: '/about' },
                 { l: 'Our Work', to: '/work' },
                 { l: 'Pricing', to: '/services' },
-                { l: 'Zoptavi Pay', to: '/zoptavi-bill' },
+                { l: 'Zoptavi Tab', to: '/zoptavi-tab' },
                 { l: 'Contact', to: '/contact' },
               ].map(item => (
                 <li key={item.l} style={{ marginBottom: 10 }}>
@@ -125,12 +125,7 @@ export default function Footer() {
         </div>
 
         <div className="zfoot-bottom" style={{ borderTop: '1px solid rgba(255,255,255,.1)', padding: '20px 0 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <p style={{ fontSize: 12, color: '#64748b', margin: 0 }}>© 2026–2027 Zoptavi. Hyderabad. Payments secured by Zoptavi Pay, powered by Razorpay Route / Cashfree.</p>
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {['UPI', 'Cards', 'Net Banking', 'Wallets'].map(p => (
-              <span key={p} style={{ background: '#fff', color: 'var(--navy)', fontWeight: 700, fontFamily: 'Poppins', fontSize: 10, padding: '4px 8px', borderRadius: 6 }}>{p}</span>
-            ))}
-          </div>
+          <p style={{ fontSize: 12, color: '#64748b', margin: 0 }}>© 2026–2027 Zoptavi. Hyderabad.</p>
         </div>
       </div>
     </footer>

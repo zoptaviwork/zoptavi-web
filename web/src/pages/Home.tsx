@@ -27,13 +27,10 @@ const toolCluster = [
   { label: 'Google', src: '/logos/google.png', x: 1, y: 1 },
   { label: 'Instagram', src: '/logos/instagram.png', x: 2, y: 0 },
   { label: 'WhatsApp', src: '/logos/whatsapp.png', x: 3, y: 1 },
-  { label: 'Razorpay', src: '/logos/razorpay.png', x: 0, y: 3 },
-  { label: 'Cashfree', src: '/logos/cashfree.png', x: 1, y: 2 },
-  { label: 'UPI', src: '/logos/upi.png', x: 2, y: 3 },
 ];
 
 const faqs = [
-  { question: 'What exactly is in the Zoptavi Bundle?', answer: 'Website, billing software (Zoptavi Bill), branded checkout (Zoptavi Pay), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
+  { question: 'What exactly is in the Zoptavi Bundle?', answer: 'Website, billing software (Zoptavi Tab), content, Meta ads and order fulfilment — one monthly bill for whichever pieces you need.' },
   { question: 'Do I have to buy the whole bundle?', answer: "No. Every service — website, billing, content, ads, fulfilment — is available à la carte. See full pricing on the Services page." },
   { question: 'How fast can I get online?', answer: "Most stores go live within days of signing up, and our clients' stores typically get their first order within 48 hours of launch." },
   { question: "What if I'm doing very few orders a month?", answer: "That's exactly who we built this for. Zoptavi starts at 10 orders/month — most shipping partners won't even onboard you below 200." },

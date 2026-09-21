@@ -393,7 +393,7 @@ export async function saveNav(links: NavLink[]) {
   return authedFetch('/api/admin/nav', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(links) });
 }
 
-// ---- Zoptavi Bill: pillars ----
+// ---- Zoptavi Tab: pillars ----
 export type BillPillar = { id?: number; title: string; detail: string };
 
 export function useLiveBillPillars(fallback: BillPillar[]): BillPillar[] {
@@ -417,7 +417,7 @@ export async function saveBillPillars(items: BillPillar[]) {
   return authedFetch('/api/admin/bill-pillars', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
 }
 
-// ---- Zoptavi Bill: pricing tiers ----
+// ---- Zoptavi Tab: pricing tiers ----
 export type BillPricingTier = { id?: number; name: string; stores: string; users: string; features: string; perYear: number };
 
 export function useLiveBillPricing(fallback: BillPricingTier[]): BillPricingTier[] {
@@ -441,7 +441,7 @@ export async function saveBillPricing(items: BillPricingTier[]) {
   return authedFetch('/api/admin/bill-pricing', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(items) });
 }
 
-// ---- Zoptavi Bill: rollout phases ----
+// ---- Zoptavi Tab: rollout phases ----
 export type BillPhase = { id?: number; phase: string; items: string[] };
 
 export function useLiveBillPhases(fallback: BillPhase[]): BillPhase[] {

@@ -82,7 +82,7 @@ export interface CoreService {
 
 export const coreServices: CoreService[] = [
   { key: 'build', name: 'Zoptavi Build', what: 'Websites — from template sites to fully custom stores', revenueType: 'One-time + yearly care plan', icon: 'build' },
-  { key: 'bill', name: 'Zoptavi Bill', what: 'Offline billing and multi-store stock software', revenueType: 'Yearly subscription', icon: 'bill' },
+  { key: 'bill', name: 'Zoptavi Tab', what: 'Offline billing and multi-store stock software', revenueType: 'Yearly subscription', icon: 'bill' },
   { key: 'studio', name: 'Zoptavi Studio', what: 'Reels, drone shoots, photography, editing', revenueType: 'Monthly retainer', icon: 'studio' },
   { key: 'reach', name: 'Zoptavi Reach', what: 'Meta ads management — leads and sales', revenueType: 'Monthly retainer', icon: 'reach' },
   { key: 'fulfill', name: 'Zoptavi Fulfill', what: 'Pack and ship for brands under 200 orders/month', revenueType: 'Per order + monthly', icon: 'fulfill' },
@@ -114,7 +114,7 @@ export const adsPlans = [
   { name: 'Scale', budget: '₹60,000+/month', fee: '20% of spend' },
 ];
 
-// Zoptavi Bill — the billing product (Vyapar-class, offline-first)
+// Zoptavi Tab — the billing product (Vyapar-class, offline-first)
 export const billPillars = [
   { title: 'Works offline', detail: "Shops lose internet and power constantly. Billing must never stop — bills save locally and sync when connection returns." },
   { title: 'Multi-store live stock', detail: 'Owner sees every branch from anywhere, instantly. Out-of-stock in one store, in-stock two streets away — the sale is saved, not lost.' },
@@ -133,20 +133,6 @@ export const billPhases = [
   { phase: 'Phase 2 — Multi-store', items: ['Live stock by location, updating in real time', 'Out-of-stock alerts across branches', 'Stock transfers between branches', 'Variant tracking — size and colour', 'Staff accounts with per-cashier logs'] },
   { phase: 'Phase 3 — Platform', items: ['Play Store release (same PWA, wrapped)', 'Website order sync — online orders reduce shop stock automatically', 'WhatsApp bills sent straight to the customer', 'Low-stock automation and owner alerts'] },
 ];
-
-// Zoptavi Pay — branded checkout, NOT a self-issued payment gateway.
-// Money moves on Razorpay Route / Cashfree Easy Split's RBI licence; Zoptavi branding shows on checkout.
-export const zoptaviPay = {
-  name: 'Zoptavi Pay',
-  strapline: 'One checkout brand across every Zoptavi store',
-  howItWorks: [
-    'Every client store checks out under the same "Zoptavi Pay" badge — UPI, cards, net banking, wallets.',
-    'Underneath, settlement runs on Razorpay Route or Cashfree Easy Split — both RBI-licensed Payment Aggregators.',
-    'Zoptavi never touches or holds customer money directly — no RBI PA licence is required to operate this.',
-    'Zoptavi takes a small platform fee (e.g. 0.75%) that settles automatically alongside the payout.',
-  ],
-  whyNotOwnGateway: 'Holding customer funds in India requires an RBI Payment Aggregator licence — ₹15 crore net worth today, rising to ₹25 crore. Operating without it is a serious offence. Zoptavi Pay gets the same branded experience without the licence, the capital, or the risk.',
-};
 
 // Proof of scale — live stores built and run on the Zoptavi stack
 export interface PortfolioSite {

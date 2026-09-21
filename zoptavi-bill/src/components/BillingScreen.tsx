@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Bill, BillLine, Item, StoreSettings } from '../types';
-import { makeBillLine, totalsForLines, formatINR } from '../lib/gst';
+import { makeBillLine, totalsForLines, formatINR, exclusiveFromMrp, round2 } from '../lib/gst';
 import { getItems, updateItemStock, nextBillNumber, saveBill, getSettings, saveSettings, addItem, updateItem } from '../lib/db';
 import { buildBillPdf, billPdfFileName } from '../lib/pdf';
 import { lookupBarcodeOnline } from '../lib/barcodeLookup';
@@ -283,7 +283,10 @@ export default function BillingScreen() {
                   disabled={item.stock <= 0}
                 >
                   <span className="item-name">{item.name}</span>
-                  <span className="item-price">{formatINR(item.price)} · {item.gstRate}% GST</span>
+                  <span className="item-price">
+                    {formatINR(item.mrpInclusive ? (item.mrp ?? item.price) : item.price)} · {item.gstRate}% GST
+                    {item.mrpInclusive && <span className="mrp-badge"> incl.</span>}
+                  </span>
                   <span className="item-stock">{item.stock > 0 ? `${item.stock} ${item.unit} left` : 'Out of stock'}</span>
                 </button>
                 <button
@@ -322,6 +325,7 @@ export default function BillingScreen() {
                       title="Override GST rate for this line only"
                     >
                       <option value="0">0%</option>
+                      <option value="2.5">2.5%</option>
                       <option value="5">5%</option>
                       <option value="12">12%</option>
                       <option value="18">18%</option>
@@ -437,6 +441,7 @@ function NewItemModal({
   onCancel: () => void;
 }) {
   const [name, setName] = useState('');
+  const [priceMode, setPriceMode] = useState<'mrp' | 'exclusive'>('mrp');
   const [price, setPrice] = useState('');
   const [gstRate, setGstRate] = useState('5');
   const [hsn, setHsn] = useState('');
@@ -462,18 +467,23 @@ function NewItemModal({
   }, [barcode]);
 
   const canSave = name.trim().length > 0 && Number(price) > 0;
+  const exclusivePreview = priceMode === 'mrp' && Number(price) > 0 ? exclusiveFromMrp(Number(price), Number(gstRate)) : null;
 
   function save() {
     if (!canSave) return;
+    const entered = Number(price);
+    const mrpInclusive = priceMode === 'mrp';
     onSave({
       id: crypto.randomUUID(),
       name: name.trim(),
       hsn: hsn.trim() || '0000',
-      price: Number(price),
+      price: mrpInclusive ? exclusiveFromMrp(entered, Number(gstRate)) : entered,
       gstRate: Number(gstRate),
       unit: unit.trim() || 'pc',
       stock: Number(stock) || 0,
       barcode,
+      mrpInclusive,
+      mrp: mrpInclusive ? entered : undefined,
     });
   }
 
@@ -487,17 +497,30 @@ function NewItemModal({
           {lookupState === 'not-found' && <>No item matches barcode <strong>{barcode}</strong> yet, and it wasn't in the public product database either — add it once and it's scannable from now on.</>}
         </p>
         <label>Name<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label>
-        <label>Price (₹)<input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+        <div className="price-mode-toggle">
+          <button type="button" className={priceMode === 'mrp' ? 'active' : ''} onClick={() => setPriceMode('mrp')}>MRP (GST included)</button>
+          <button type="button" className={priceMode === 'exclusive' ? 'active' : ''} onClick={() => setPriceMode('exclusive')}>Price before GST</button>
+        </div>
+        <label>
+          {priceMode === 'mrp' ? 'MRP — price printed on the pack (₹)' : 'Price before GST (₹)'}
+          <input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} />
+        </label>
         <label>
           GST rate
           <select value={gstRate} onChange={(e) => setGstRate(e.target.value)}>
             <option value="0">0%</option>
+            <option value="2.5">2.5%</option>
             <option value="5">5%</option>
             <option value="12">12%</option>
             <option value="18">18%</option>
             <option value="28">28%</option>
           </select>
         </label>
+        {exclusivePreview !== null && (
+          <p className="empty-hint" style={{ padding: 0, margin: '-4px 0 2px', fontSize: 11.5 }}>
+            = {formatINR(exclusivePreview)} + {formatINR(round2(Number(price) - exclusivePreview))} GST ({gstRate}%) — customer is charged {formatINR(Number(price))}, not more.
+          </p>
+        )}
         <label>HSN code (optional)<input value={hsn} onChange={(e) => setHsn(e.target.value)} /></label>
         <label>Unit<input value={unit} onChange={(e) => setUnit(e.target.value)} placeholder="pc, kg, ltr…" /></label>
         <label>Opening stock<input type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value)} /></label>
@@ -520,7 +543,8 @@ function EditItemModal({
   onCancel: () => void;
 }) {
   const [name, setName] = useState(item.name);
-  const [price, setPrice] = useState(String(item.price));
+  const [priceMode, setPriceMode] = useState<'mrp' | 'exclusive'>(item.mrpInclusive === false ? 'exclusive' : 'mrp');
+  const [price, setPrice] = useState(String(item.mrpInclusive ? (item.mrp ?? item.price) : item.price));
   const [gstRate, setGstRate] = useState(String(item.gstRate));
   const [hsn, setHsn] = useState(item.hsn);
   const [unit, setUnit] = useState(item.unit);
@@ -528,18 +552,23 @@ function EditItemModal({
   const [barcode, setBarcode] = useState(item.barcode ?? '');
 
   const canSave = name.trim().length > 0 && Number(price) > 0;
+  const exclusivePreview = priceMode === 'mrp' && Number(price) > 0 ? exclusiveFromMrp(Number(price), Number(gstRate)) : null;
 
   function save() {
     if (!canSave) return;
+    const entered = Number(price);
+    const mrpInclusive = priceMode === 'mrp';
     onSave({
       ...item,
       name: name.trim(),
       hsn: hsn.trim() || '0000',
-      price: Number(price),
+      price: mrpInclusive ? exclusiveFromMrp(entered, Number(gstRate)) : entered,
       gstRate: Number(gstRate),
       unit: unit.trim() || 'pc',
       stock: Number(stock) || 0,
       barcode: barcode.trim() || undefined,
+      mrpInclusive,
+      mrp: mrpInclusive ? entered : undefined,
     });
   }
 
@@ -551,17 +580,30 @@ function EditItemModal({
           Fixes here (price, GST rate, HSN…) apply permanently to this item, not just the current bill.
         </p>
         <label>Name<input value={name} onChange={(e) => setName(e.target.value)} autoFocus /></label>
-        <label>Price (₹)<input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+        <div className="price-mode-toggle">
+          <button type="button" className={priceMode === 'mrp' ? 'active' : ''} onClick={() => setPriceMode('mrp')}>MRP (GST included)</button>
+          <button type="button" className={priceMode === 'exclusive' ? 'active' : ''} onClick={() => setPriceMode('exclusive')}>Price before GST</button>
+        </div>
+        <label>
+          {priceMode === 'mrp' ? 'MRP — price printed on the pack (₹)' : 'Price before GST (₹)'}
+          <input type="number" min={0} value={price} onChange={(e) => setPrice(e.target.value)} />
+        </label>
         <label>
           GST rate
           <select value={gstRate} onChange={(e) => setGstRate(e.target.value)}>
             <option value="0">0%</option>
+            <option value="2.5">2.5%</option>
             <option value="5">5%</option>
             <option value="12">12%</option>
             <option value="18">18%</option>
             <option value="28">28%</option>
           </select>
         </label>
+        {exclusivePreview !== null && (
+          <p className="empty-hint" style={{ padding: 0, margin: '-4px 0 2px', fontSize: 11.5 }}>
+            = {formatINR(exclusivePreview)} + {formatINR(round2(Number(price) - exclusivePreview))} GST ({gstRate}%) — customer is charged {formatINR(Number(price))}, not more.
+          </p>
+        )}
         <label>HSN code<input value={hsn} onChange={(e) => setHsn(e.target.value)} /></label>
         <label>Unit<input value={unit} onChange={(e) => setUnit(e.target.value)} placeholder="pc, kg, ltr…" /></label>
         <label>Stock<input type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value)} /></label>

@@ -5,6 +5,15 @@ export function round2(n: number): number {
 }
 
 /**
+ * Backs out the GST-exclusive unit price from an MRP (a price that already has GST baked
+ * in) — the common case for most retail/grocery items sold at a printed pack price.
+ * e.g. an MRP of ₹60 at 5% GST → ₹57.14 taxable value + ₹2.86 GST = ₹60 charged, not ₹63.
+ */
+export function exclusiveFromMrp(mrp: number, gstRate: number): number {
+  return round2(mrp / (1 + gstRate / 100));
+}
+
+/**
  * Builds a bill line for a given item + quantity, splitting GST evenly into
  * CGST + SGST (intra-state sale — the common case for a single local store).
  */

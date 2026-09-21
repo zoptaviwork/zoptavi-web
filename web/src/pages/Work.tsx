@@ -81,9 +81,8 @@ export default function Work() {
               The Zoptavi Network
             </h2>
             <p style={{ color: 'var(--ms-grey-63)', fontSize: 15, lineHeight: 1.75 }}>
-              Every store above runs on the same backbone — Zoptavi Build for the storefront, Zoptavi Bill for
-              stock and billing, and Zoptavi Pay for a single branded checkout across every one of them. Onboard
-              with us and your store joins a network that's already live, not a first attempt.
+              Every store above runs on the same backbone — Zoptavi Build for the storefront and Zoptavi Tab for
+              stock and billing. Onboard with us and your store joins a network that's already live, not a first attempt.
             </p>
           </Reveal>
         </div>

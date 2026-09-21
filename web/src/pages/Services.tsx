@@ -66,7 +66,7 @@ const blocks: Block[] = [
   },
   {
     key: 'bill',
-    eyebrow: '03 — Zoptavi Bill',
+    eyebrow: '03 — Zoptavi Tab',
     title: ['Billing &', 'Stock'],
     lead: 'Works offline. Prints anywhere.',
     bullets: [
@@ -74,7 +74,7 @@ const blocks: Block[] = [
       "Live stock across every branch, visible from the owner's phone.",
       'GST invoices, HSN codes and thermal printing on any ₹3,400 printer.',
     ],
-    cta: { label: 'Know More', to: '/zoptavi-bill' },
+    cta: { label: 'Know More', to: '/zoptavi-tab' },
     cap: 'Offline billing + multi-store stock',
     grad: 'g-mint',
     icon: (
@@ -101,26 +101,8 @@ const blocks: Block[] = [
     ),
   },
   {
-    key: 'pay',
-    eyebrow: '05 — Zoptavi Pay',
-    title: ['Branded Checkout'],
-    bullets: [
-      'UPI, cards, net banking and wallets under one branded badge.',
-      'Settlement runs on RBI-licensed aggregators — Razorpay Route / Cashfree.',
-      'No gateway licence, no held funds, no compliance risk on your side.',
-    ],
-    cta: { label: 'Know More', to: '/zoptavi-bill' },
-    cap: 'Branded checkout — small platform fee',
-    grad: 'g-lav',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2.5" y="5" width="19" height="14" rx="2" /><path d="M2.5 10h19M6 15h4" />
-      </svg>
-    ),
-  },
-  {
     key: 'fulfill',
-    eyebrow: '06 — Zoptavi Fulfill',
+    eyebrow: '05 — Zoptavi Fulfill',
     title: ['Pack &', 'Ship'],
     bullets: [
       'Pick, pack and dispatch from our floor.',

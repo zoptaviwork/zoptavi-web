@@ -41,10 +41,10 @@ const SECTIONS = [
   { key: 'dashboard', label: 'Dashboard', group: 'Overview' },
   { key: 'home', label: 'Home Page', group: 'Pages' },
   { key: 'servicesPage', label: 'Our Services Page', group: 'Pages' },
-  { key: 'billPage', label: 'Zoptavi Bill Page', group: 'Pages' },
-  { key: 'billPillars', label: 'Zoptavi Bill — Pillars', group: 'Pages' },
-  { key: 'billPricing', label: 'Zoptavi Bill — Pricing Table', group: 'Pages' },
-  { key: 'billPhases', label: 'Zoptavi Bill — Rollout Phases', group: 'Pages' },
+  { key: 'billPage', label: 'Zoptavi Tab Page', group: 'Pages' },
+  { key: 'billPillars', label: 'Zoptavi Tab — Pillars', group: 'Pages' },
+  { key: 'billPricing', label: 'Zoptavi Tab — Pricing Table', group: 'Pages' },
+  { key: 'billPhases', label: 'Zoptavi Tab — Rollout Phases', group: 'Pages' },
   { key: 'about', label: 'About Page', group: 'Pages' },
   { key: 'aboutValues', label: 'About Page — Our Values', group: 'Pages' },
   { key: 'aboutSteps', label: 'About Page — How We Work Steps', group: 'Pages' },
@@ -67,11 +67,11 @@ type SectionKey = typeof SECTIONS[number]['key'];
 const SECTION_HINTS: Partial<Record<SectionKey, string>> = {
   dashboard: 'A live snapshot of your site — traffic, and how much content you have in each section.',
   home: "Controls the hero text and the intro text above the homepage's \"Our Work\" cards. To change the two Work card images/names/links themselves, use \"Portfolio / Our Work\" below.",
-  servicesPage: 'Controls the title, description, bullet points and photo for each of the 6 service blocks on the /services page (Website, Marketing, Zoptavi Bill, Studio, Zoptavi Pay, Fulfilment).',
-  billPage: 'Controls the hero text, bottom CTA note, and the Zoptavi Pay section (name, strapline, how-it-works steps, gateway explanation) on the /zoptavi-bill page.',
-  billPillars: 'Controls the 3 "Why it works" cards near the top of the /zoptavi-bill page (Works offline, Multi-store live stock, Runs on what they own).',
-  billPricing: 'Controls the pricing table (Free / Shop / Multi-Store / Chain plans) on the /zoptavi-bill page.',
-  billPhases: 'Controls the "What it does, phase by phase" cards on the /zoptavi-bill page. Each phase is a list of bullet items — one per line.',
+  servicesPage: 'Controls the title, description, bullet points and photo for each of the 5 service blocks on the /services page (Website, Marketing, Zoptavi Tab, Studio, Fulfilment).',
+  billPage: 'Controls the hero text and bottom CTA note on the /zoptavi-tab page.',
+  billPillars: 'Controls the 3 "Why it works" cards near the top of the /zoptavi-tab page (Works offline, Multi-store live stock, Runs on what they own).',
+  billPricing: 'Controls the pricing table (Free / Shop / Multi-Store / Chain plans) on the /zoptavi-tab page.',
+  billPhases: 'Controls the "What it does, phase by phase" cards on the /zoptavi-tab page. Each phase is a list of bullet items — one per line.',
   about: 'Controls the hero, "The story" text, "Our values" heading, mission heading/body, "How we work" heading, and the bottom CTA heading/subtext on the /about page.',
   aboutValues: 'Controls the 4 "Our values" cards on the /about page.',
   aboutSteps: 'Controls the 5 "How we work" step cards on the /about page.',
@@ -83,7 +83,7 @@ const SECTION_HINTS: Partial<Record<SectionKey, string>> = {
   faq: 'Controls the FAQ list shown on the homepage and wherever FAQs are used site-wide.',
   portfolio: 'Controls every client shown in "Our Work" on the homepage and on the /work page — name, category, description, website link, and the background photo for each card. Add or edit entries here to change what appears in those cards.',
   nav: 'Controls the links shown in the top navigation menu.',
-  siteContact: 'Controls the address, phone number and email shown in the "Looking for us?" side menu, the Contact page, and every WhatsApp / call / email button site-wide (Home, Services, Careers, Zoptavi Bill, About, Footer). One change here updates all of them.',
+  siteContact: 'Controls the address, phone number and email shown in the "Looking for us?" side menu, the Contact page, and every WhatsApp / call / email button site-wide (Home, Services, Careers, Zoptavi Tab, About, Footer). One change here updates all of them.',
   services: 'Controls the core-services list and internal pricing reference tables (used on Home/About).',
   analytics: 'Read-only: pageviews and CTA clicks tracked on the live site over the last 30 days.',
 };
@@ -261,7 +261,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           {section === 'dashboard' && <DashboardHome onNavigate={setSection} />}
         {section === 'home' && <PageContentEditor page="home" title="Home Content" />}
         {section === 'servicesPage' && <PageContentEditor page="services" title="Our Services Page" />}
-        {section === 'billPage' && <PageContentEditor page="zoptavi-bill" title="Zoptavi Bill Page" />}
+        {section === 'billPage' && <PageContentEditor page="zoptavi-bill" title="Zoptavi Tab Page" />}
         {section === 'billPillars' && <BillPillarsEditor />}
         {section === 'billPricing' && <BillPricingEditor />}
         {section === 'billPhases' && <BillPhasesEditor />}
@@ -909,7 +909,7 @@ function NavEditor() {
 }
 
 // ---------------------------------------------------------------------------
-// Zoptavi Bill — pillars editor
+// Zoptavi Tab — pillars editor
 // ---------------------------------------------------------------------------
 function BillPillarsEditor() {
   const [items, setItems] = useState<BillPillar[]>([]);
@@ -940,7 +940,7 @@ function BillPillarsEditor() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Pillars</h2>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Tab — Pillars</h2>
       {items.map((p, i) => (
         <div key={i} style={card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -965,7 +965,7 @@ function BillPillarsEditor() {
 }
 
 // ---------------------------------------------------------------------------
-// Zoptavi Bill — pricing table editor
+// Zoptavi Tab — pricing table editor
 // ---------------------------------------------------------------------------
 function BillPricingEditor() {
   const [items, setItems] = useState<BillPricingTier[]>([]);
@@ -996,7 +996,7 @@ function BillPricingEditor() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Pricing Table</h2>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Tab — Pricing Table</h2>
       {items.map((p, i) => (
         <div key={i} style={card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -1027,7 +1027,7 @@ function BillPricingEditor() {
 }
 
 // ---------------------------------------------------------------------------
-// Zoptavi Bill — rollout phases editor
+// Zoptavi Tab — rollout phases editor
 // ---------------------------------------------------------------------------
 function BillPhasesEditor() {
   const [items, setItems] = useState<BillPhase[]>([]);
@@ -1063,7 +1063,7 @@ function BillPhasesEditor() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: 18 }}>Zoptavi Bill — Rollout Phases</h2>
+      <h2 style={{ marginBottom: 18 }}>Zoptavi Tab — Rollout Phases</h2>
       {items.map((p, i) => (
         <div key={i} style={card}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
