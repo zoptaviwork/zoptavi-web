@@ -49,7 +49,7 @@ const perks = [
 ];
 
 const hiring = [
-  { n: '01', t: 'Send your work', d: 'Email hello@zoptavi.com with a portfolio, a repo, an ad account — whatever proves the craft.' },
+  { n: '01', t: 'Send your work', d: 'Email career@zoptavi.com with a portfolio, a repo, an ad account — whatever proves the craft.' },
   { n: '02', t: 'One real conversation', d: 'A call about how you think and a small paid task close to the actual job.' },
   { n: '03', t: 'Decision in a week', d: 'No five-round gauntlet. You’ll know quickly either way.' },
 ];
@@ -61,7 +61,7 @@ export default function Careers() {
   const liveHiring = useLiveCareersHiringSteps(hiring.map(h => ({ title: h.t, detail: h.d })));
   const contact = useLiveSiteContact();
   const WHATSAPP = whatsappUrl(contact.phoneDigits);
-  const MAIL = `mailto:${contact.email}?subject=Careers%20at%20Zoptavi`;
+  const MAIL = `mailto:career@zoptavi.com?subject=Careers%20at%20Zoptavi`;
   return (
     <div className="ms-home ms-light">
       <Seo
@@ -120,7 +120,7 @@ export default function Careers() {
           <Reveal className="ms-sec-head">
             <span className="ms-eyebrow">Open roles</span>
             <h2 style={{ marginTop: 12 }}>Where we need people</h2>
-            <p>{content.roles_intro || 'All roles are Hyderabad-based. Apply by emailing your work to hello@zoptavi.com.'}</p>
+            <p>{content.roles_intro || 'All roles are Hyderabad-based. Apply by emailing your work to career@zoptavi.com.'}</p>
           </Reveal>
           <RevealStagger style={{ display: 'flex', flexDirection: 'column', gap: 12 }} gap={0.07}>
             {liveRoles.map(r => (
@@ -164,7 +164,7 @@ export default function Careers() {
             <h2>{content.cta_heading || 'Don’t see your role? Tell us what you’d own.'}</h2>
             <p>{content.cta_subtext || 'If you can point at a part of the business and say “I’d run that better,” we want to hear from you.'}</p>
             <div className="ms-hero-btns" style={{ justifyContent: 'center' }}>
-              <a href={MAIL} className="ms-btn ms-btn-solid">Email hello@zoptavi.com <span className="ms-arrow">→</span></a>
+              <a href={MAIL} className="ms-btn ms-btn-solid">Email career@zoptavi.com <span className="ms-arrow">→</span></a>
               <a href={WHATSAPP} target="_blank" rel="noreferrer" className="ms-btn ms-btn-ghost">Message on WhatsApp <span className="ms-arrow">→</span></a>
             </div>
           </Reveal>
