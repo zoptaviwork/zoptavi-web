@@ -225,7 +225,7 @@ export function useLiveFaqs(fallback: Faq[]): Faq[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/faqs`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: Faq[]) => { if (!cancelled && d.length) setFaqs(d); })
+      .then((d: Faq[]) => { if (!cancelled && Array.isArray(d)) setFaqs(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -249,7 +249,7 @@ export function useLivePortfolio(fallback: PortfolioItem[]): PortfolioItem[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/portfolio`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: PortfolioItem[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: PortfolioItem[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -273,7 +273,7 @@ export function useLiveCareerRoles(fallback: CareerRole[]): CareerRole[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/careers-roles`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: CareerRole[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: CareerRole[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -297,7 +297,7 @@ export function useLiveCareersPerks(fallback: CareersPerk[]): CareersPerk[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/careers-perks`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: CareersPerk[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: CareersPerk[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -321,7 +321,7 @@ export function useLiveCareersHiringSteps(fallback: CareersHiringStep[]): Career
     let cancelled = false;
     fetch(`${WORKER_URL}/api/careers-hiring-steps`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: CareersHiringStep[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: CareersHiringStep[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -345,7 +345,7 @@ export function useLiveAboutValues(fallback: AboutValue[]): AboutValue[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/about-values`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: AboutValue[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: AboutValue[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -369,7 +369,7 @@ export function useLiveAboutSteps(fallback: AboutStep[]): AboutStep[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/about-steps`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: AboutStep[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: AboutStep[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -403,7 +403,7 @@ export function useLiveBillPillars(fallback: BillPillar[]): BillPillar[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/bill-pillars`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: BillPillar[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: BillPillar[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -427,7 +427,7 @@ export function useLiveBillPricing(fallback: BillPricingTier[]): BillPricingTier
     let cancelled = false;
     fetch(`${WORKER_URL}/api/bill-pricing`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: BillPricingTier[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: BillPricingTier[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
@@ -451,7 +451,7 @@ export function useLiveBillPhases(fallback: BillPhase[]): BillPhase[] {
     let cancelled = false;
     fetch(`${WORKER_URL}/api/bill-phases`)
       .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: BillPhase[]) => { if (!cancelled && d.length) setItems(d); })
+      .then((d: BillPhase[]) => { if (!cancelled && Array.isArray(d)) setItems(d); })
       .catch(() => { /* keep fallback */ });
     return () => { cancelled = true; };
   }, []);
