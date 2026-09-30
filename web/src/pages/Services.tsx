@@ -183,6 +183,18 @@ export default function Services() {
         title="Our Services — Web Development, Marketing & Billing Software"
         description="Zoptavi's marketing agency services in Hyderabad: website development, performance marketing (Meta ads), billing & stock software, branded checkout, content creation, and order fulfilment."
         path="/services"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: resolvedBlocks.map((b, i) => ({
+            '@type': 'Service',
+            position: i + 1,
+            name: b.title.join(' '),
+            description: b.lead || b.bullets[0],
+            provider: { '@type': 'Organization', name: 'Zoptavi' },
+            areaServed: { '@type': 'City', name: 'Hyderabad' },
+          })),
+        }}
       />
       {/* ===================== HERO ===================== */}
       <section className="ors-hero" role="banner" aria-label="Our Services">

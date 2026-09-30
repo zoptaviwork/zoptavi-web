@@ -49,6 +49,15 @@ export default function Home() {
         title="Zoptavi — Digital Marketing & Web Development Agency in Hyderabad"
         description="Zoptavi is a digital marketing agency in Hyderabad. We design and build websites, billing software, branded checkout, content and Meta ads for small businesses — one team, one monthly bill."
         path="/"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: liveFaqs.map(f => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: { '@type': 'Answer', text: f.answer },
+          })),
+        }}
       />
       {/* ===================== HERO ===================== */}
       <section className="ms-hero ms-hero--video">

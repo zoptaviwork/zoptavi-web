@@ -5,6 +5,8 @@ type SeoProps = {
   description: string;
   path: string; // e.g. '/services'
   noindex?: boolean;
+  jsonLd?: object; // page-specific structured data (FAQPage, Service, etc.) —
+  // additive to the site-wide Organization schema already in index.html.
 };
 
 const SITE_URL = 'https://www.zoptavi.com';
@@ -38,7 +40,9 @@ function upsertLink(rel: string, href: string) {
  * refines them per page for browser tabs, link previews, and JS-capable
  * crawlers.
  */
-export default function Seo({ title, description, path, noindex }: SeoProps) {
+const JSONLD_ID = 'seo-page-jsonld';
+
+export default function Seo({ title, description, path, noindex, jsonLd }: SeoProps) {
   useEffect(() => {
     const fullTitle = title.includes('Zoptavi') ? title : `${title} | Zoptavi`;
     document.title = fullTitle;
@@ -55,7 +59,22 @@ export default function Seo({ title, description, path, noindex }: SeoProps) {
     upsertMeta('name', 'twitter:title', fullTitle);
     upsertMeta('name', 'twitter:description', description);
     upsertMeta('name', 'twitter:image', DEFAULT_IMAGE);
-  }, [title, description, path, noindex]);
+
+    // Page-specific structured data (FAQPage, Service, etc.). Removed and
+    // re-added per route change so pages never inherit a previous page's schema.
+    let script = document.getElementById(JSONLD_ID) as HTMLScriptElement | null;
+    if (jsonLd) {
+      if (!script) {
+        script = document.createElement('script');
+        script.id = JSONLD_ID;
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+      script.textContent = JSON.stringify(jsonLd);
+    } else if (script) {
+      script.remove();
+    }
+  }, [title, description, path, noindex, jsonLd]);
 
   return null;
 }

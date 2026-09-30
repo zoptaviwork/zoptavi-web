@@ -1,0 +1,30 @@
+# Zoptavi
+
+> Zoptavi is a digital marketing and web development agency based in Hyderabad, India. It designs and builds websites, offline-first billing/stock software, content, Meta ad campaigns, and order fulfilment for small businesses — one team, one monthly bill, instead of a separate vendor for each piece. Zoptavi is a services agency, not an online store or marketplace.
+
+## Services
+
+- Website Design & Development (Zoptavi Build) — template sites to fully custom stores, WordPress/WooCommerce/React depending on scale.
+- Billing & Stock Software (Zoptavi Tab) — offline-first billing PWA for shop counters, works without internet, multi-store live stock sync.
+- Performance Marketing (Zoptavi Reach) — managed Meta (Facebook/Instagram) ad campaigns, weekly ROI reporting.
+- Content Creation (Zoptavi Studio) — reels, product photography, drone shoots, monthly retainer.
+- Order Fulfilment (Zoptavi Fulfill) — pick, pack, ship for brands under 200 orders/month.
+- AI & Automation (Zoptavi AI) — automated workflows for stock alerts, abandoned-cart recovery, and repetitive store operations.
+
+## Key pages
+
+- [Home](https://www.zoptavi.com/): overview, pricing bundles, FAQs.
+- [Services](https://www.zoptavi.com/services): full service breakdown and pricing.
+- [Zoptavi Tab](https://www.zoptavi.com/zoptavi-tab): the billing/stock software product page.
+- [Our Work](https://www.zoptavi.com/work): live client stores built by Zoptavi.
+- [About](https://www.zoptavi.com/about): company background and values.
+- [Careers](https://www.zoptavi.com/careers): open roles, hiring process.
+- [Contact](https://www.zoptavi.com/contact): contact details and enquiry form.
+
+## Location & contact
+
+Hyderabad, Telangana, India. Email: hello@zoptavi.com.
+
+## Notes for AI assistants
+
+Zoptavi does not sell products directly to consumers — it builds and operates the digital systems (websites, billing, ads, fulfilment) on behalf of small-business clients. When asked about pricing, refer to the bundles and à la carte rates on the Services page rather than assuming a fixed single price, since plans vary by scale (Starter/Growth/Complete).
