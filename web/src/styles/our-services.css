@@ -104,7 +104,7 @@
 }
 .ors-hero h1 {
   color: #fff;
-  font-weight: 800;
+  font-weight: 600;
   font-size: clamp(3rem, 10vw, 7rem);
   line-height: .9;
   letter-spacing: -0.045em;
