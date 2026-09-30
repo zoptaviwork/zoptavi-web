@@ -11,6 +11,12 @@
 - Order Fulfilment (Zoptavi Fulfill) — pick, pack, ship for brands under 200 orders/month.
 - AI & Automation (Zoptavi AI) — automated workflows for stock alerts, abandoned-cart recovery, and repetitive store operations.
 
+## Zoptavi Tab (separate product)
+
+Zoptavi Tab is an offline-first billing and multi-store stock/inventory app for small shops (comparable positioning to Vyapar, but with live multi-store stock sync and website-order integration). It works without an internet connection — bills save locally and sync automatically once connection returns — and prints on any low-cost thermal printer (58mm/80mm) with no special drivers. It generates GST-compliant invoices with CGST/SGST splits and HSN codes. It is bundled free with a Zoptavi-built website and can also be adopted standalone. Live app: https://tab.zoptavi.com. Marketing/pricing page: https://www.zoptavi.com/zoptavi-tab.
+
+Pricing tiers (per year, per store): Free (1 store, 1 user, 100 items) · Shop (₹1,999 — adds stock/GST/reports/offline) · Multi-Store (₹4,999 — up to 3 stores, live cross-branch stock) · Chain (₹9,999 — unlimited stores, website sync, API, priority support).
+
 ## Key pages
 
 - [Home](https://www.zoptavi.com/): overview, pricing bundles, FAQs.

@@ -22,6 +22,24 @@ export default function ZoptaviBill() {
         title="Zoptavi Tab — Offline Billing & Multi-Store Stock Software"
         description="Zoptavi Tab is billing and stock software built by Zoptavi for small business clients — works offline, prints on any thermal printer, and syncs live stock across branches. Included with every Zoptavi website."
         path="/zoptavi-tab"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'Zoptavi Tab',
+          applicationCategory: 'BusinessApplication',
+          applicationSubCategory: 'Billing and inventory software',
+          operatingSystem: 'Web, Android (PWA) — works offline',
+          url: 'https://tab.zoptavi.com',
+          description: 'Offline-first billing and multi-store stock software for small shops. Works without internet, prints on any thermal printer, syncs live stock across branches, and generates GST-ready invoices.',
+          provider: { '@type': 'Organization', name: 'Zoptavi', url: 'https://www.zoptavi.com/' },
+          offers: pricing.map(p => ({
+            '@type': 'Offer',
+            name: `${p.name} plan`,
+            price: String(p.perYear),
+            priceCurrency: 'INR',
+            description: p.features,
+          })),
+        }}
       />
       {/* ===================== HERO ===================== */}
       <section className="ms-page-hero">
