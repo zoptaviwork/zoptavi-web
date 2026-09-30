@@ -1393,8 +1393,15 @@
 }
 .mnav[data-open="true"]{
   background:rgba(6,7,10,.78);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:0 8px 30px rgba(0,0,0,.4);
+  /* No backdrop-filter here: it's a fixed-position ancestor of .mmenu
+     (the full-screen menu overlay below), and per spec, filter/backdrop-filter
+     on an ancestor becomes the containing block for `position: fixed`
+     descendants. Safari (especially iOS) enforces this strictly, so with the
+     blur here .mmenu was sizing itself to this ~60px header bar instead of
+     the full viewport — the menu was opening, just squashed invisibly at the
+     top of the screen. The overlay already has its own solid background, so
+     this blur isn't needed while it's open anyway. */
 }
 .mnav__bar{
   max-width:1320px;margin:0 auto;
