@@ -28,7 +28,7 @@ type Block = {
 const blocks: Block[] = [
   {
     key: 'build',
-    eyebrow: '01 — Zoptavi Build',
+    eyebrow: 'Zoptavi Build',
     title: ['Web-', 'Development'],
     lead: 'Your storefront, done properly.',
     bullets: [
@@ -47,7 +47,7 @@ const blocks: Block[] = [
   },
   {
     key: 'reach',
-    eyebrow: '02 — Zoptavi Reach',
+    eyebrow: 'Zoptavi Reach',
     title: ['Performance', 'Marketing'],
     lead: 'From spend to sales.',
     bullets: [
@@ -66,7 +66,7 @@ const blocks: Block[] = [
   },
   {
     key: 'bill',
-    eyebrow: '03 — Zoptavi Tab',
+    eyebrow: 'Zoptavi Tab',
     title: ['Billing &', 'Stock'],
     lead: 'Works offline. Prints anywhere.',
     bullets: [
@@ -85,7 +85,7 @@ const blocks: Block[] = [
   },
   {
     key: 'studio',
-    eyebrow: '04 — Zoptavi Studio',
+    eyebrow: 'Zoptavi Studio',
     title: ['Content &', 'Creative'],
     bullets: [
       'Reels, drone shoots, photography and editing — a full content team, on retainer.',
@@ -102,7 +102,7 @@ const blocks: Block[] = [
   },
   {
     key: 'ai',
-    eyebrow: '06 — Zoptavi AI',
+    eyebrow: 'Zoptavi AI',
     title: ['AI and', 'Automation'],
     lead: 'Automate the boring, scale the exciting.',
     bullets: [
@@ -122,7 +122,7 @@ const blocks: Block[] = [
   },
   {
     key: 'fulfill',
-    eyebrow: '05 — Zoptavi Fulfill',
+    eyebrow: 'Zoptavi Fulfill',
     title: ['Pack &', 'Ship'],
     bullets: [
       'Pick, pack and dispatch from our floor.',
@@ -140,10 +140,10 @@ const blocks: Block[] = [
   },
 ];
 
-function CopyCol({ b }: { b: Block }) {
+function CopyCol({ b, index }: { b: Block; index: number }) {
   return (
     <div className="ors-svc__copy">
-      <span className="ors-svc__eyebrow">{b.eyebrow}</span>
+      <span className="ors-svc__eyebrow">{String(index + 1).padStart(2, '0')} — {b.eyebrow}</span>
       <h2 className="ors-svc__title">
         {b.title.map((t, i) => <span key={i}>{t}</span>)}
       </h2>
@@ -206,7 +206,7 @@ export default function Services() {
       {resolvedBlocks.map((b, i) => (
         <section key={b.key} className={i % 2 === 1 ? 'ors-svc rev' : 'ors-svc'} aria-label={b.title.join(' ')}>
           <Reveal className="ors-svc__wrap">
-            <CopyCol b={b} />
+            <CopyCol b={b} index={i} />
             {b.photo ? (
               <div className={`ors-svc__media ${b.grad}`} style={{ backgroundImage: `url('${b.photo}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <span className="cap">{b.cap}</span>
