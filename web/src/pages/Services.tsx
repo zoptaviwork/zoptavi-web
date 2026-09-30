@@ -101,6 +101,26 @@ const blocks: Block[] = [
     ),
   },
   {
+    key: 'ai',
+    eyebrow: '06 — Zoptavi AI',
+    title: ['AI and', 'Automation'],
+    lead: 'Automate the boring, scale the exciting.',
+    bullets: [
+      'AI handles the busywork, you handle the profits.',
+      'No more "out of stock" nightmares.',
+      'Abandoned carts, no more abandoned.',
+    ],
+    cta: { label: 'Know More', href: '__WHATSAPP__' },
+    cap: 'AI & automation — workflows built around your store',
+    grad: 'g-sky',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" />
+        <circle cx="12" cy="12" r="4" />
+      </svg>
+    ),
+  },
+  {
     key: 'fulfill',
     eyebrow: '05 — Zoptavi Fulfill',
     title: ['Pack &', 'Ship'],
