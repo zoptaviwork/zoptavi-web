@@ -7,7 +7,7 @@ type SeoProps = {
   noindex?: boolean;
 };
 
-const SITE_URL = 'https://zoptavi.com';
+const SITE_URL = 'https://www.zoptavi.com';
 const DEFAULT_IMAGE = `${SITE_URL}/zoptavi-logo-final.png`;
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {

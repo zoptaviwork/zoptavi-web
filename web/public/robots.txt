@@ -25,4 +25,4 @@ User-agent: Google-Extended
 Allow: /
 Disallow: /admin
 
-Sitemap: https://zoptavi.com/sitemap.xml
+Sitemap: https://www.zoptavi.com/sitemap.xml

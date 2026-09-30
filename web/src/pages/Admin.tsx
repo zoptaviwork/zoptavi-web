@@ -154,7 +154,7 @@ function Login({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
-const SITE_URL = 'https://zoptavi.com';
+const SITE_URL = 'https://www.zoptavi.com';
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [section, setSection] = useState<SectionKey>('dashboard');
